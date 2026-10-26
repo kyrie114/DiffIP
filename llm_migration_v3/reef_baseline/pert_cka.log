@@ -1,0 +1,10 @@
+fine_tune 0.9097
+weight_perm 0.9097
+rep_perm 0.9097
+scale 0.9097
+prune 0.7855
+neg_smollm2_135m 0.2571
+neg_smollm2_360m 0.202
+neg_gpt2 0.2823
+neg_pythia_160m 0.2842
+neg_qwen2_0.5b 0.2973
