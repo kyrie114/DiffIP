@@ -16,3 +16,7 @@ website/
 llm_migration/**/feats/
 llm_migration/**/ckpt/
 llm_migration/**/__pycache__/
+
+# llm_migration_v2 PCA sweep caches (regenerable)
+llm_migration_v2/pca_sweep/feats/
+llm_migration_v2/**/__pycache__/
