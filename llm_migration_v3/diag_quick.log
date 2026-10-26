@@ -1,0 +1,20 @@
+fine_tune  N=  8 d= 8 paired sim 0.894 d 0.118 rel 0.081 | shuffled sim 0.528 d 0.854 rel 0.524
+fine_tune  N=  8 d=20 paired sim 0.925 d 0.080 rel 0.046 | shuffled sim 0.696 d 0.440 rel 0.254
+fine_tune  N= 16 d= 8 paired sim 0.780 d 0.285 rel 0.147 | shuffled sim 0.354 d 1.283 rel 0.765
+fine_tune  N= 16 d=20 paired sim 0.836 d 0.192 rel 0.095 | shuffled sim 0.446 d 0.933 rel 0.529
+fine_tune  N= 32 d= 8 paired sim 0.743 d 0.355 rel 0.159 | shuffled sim 0.288 d 1.483 rel 0.881
+fine_tune  N= 32 d=20 paired sim 0.742 d 0.359 rel 0.144 | shuffled sim 0.296 d 1.474 rel 0.762
+fine_tune  N= 64 d= 8 paired sim 0.721 d 0.396 rel 0.172 | shuffled sim 0.257 d 1.624 rel 0.943
+fine_tune  N= 64 d=20 paired sim 0.704 d 0.436 rel 0.171 | shuffled sim 0.248 d 1.753 rel 0.880
+fine_tune  N=128 d= 8 paired sim 0.716 d 0.405 rel 0.171 | shuffled sim 0.237 d 1.763 rel 0.972
+fine_tune  N=128 d=20 paired sim 0.697 d 0.456 rel 0.172 | shuffled sim 0.221 d 1.949 rel 0.943
+neg_gpt2   N=  8 d= 8 paired sim 0.597 d 0.590 rel 0.408 | shuffled sim 0.546 d 0.783 rel 0.511
+neg_gpt2   N=  8 d=20 paired sim 0.743 d 0.329 rel 0.188 | shuffled sim 0.685 d 0.423 rel 0.276
+neg_gpt2   N= 16 d= 8 paired sim 0.350 d 1.291 rel 0.767 | shuffled sim 0.356 d 1.265 rel 0.768
+neg_gpt2   N= 16 d=20 paired sim 0.476 d 0.848 rel 0.486 | shuffled sim 0.464 d 0.857 rel 0.502
+neg_gpt2   N= 32 d= 8 paired sim 0.285 d 1.503 rel 0.880 | shuffled sim 0.285 d 1.512 rel 0.889
+neg_gpt2   N= 32 d=20 paired sim 0.292 d 1.491 rel 0.759 | shuffled sim 0.296 d 1.499 rel 0.763
+neg_gpt2   N= 64 d= 8 paired sim 0.260 d 1.616 rel 0.938 | shuffled sim 0.257 d 1.636 rel 0.949
+neg_gpt2   N= 64 d=20 paired sim 0.246 d 1.758 rel 0.883 | shuffled sim 0.248 d 1.744 rel 0.877
+neg_gpt2   N=128 d= 8 paired sim 0.239 d 1.766 rel 0.972 | shuffled sim 0.238 d 1.764 rel 0.972
+neg_gpt2   N=128 d=20 paired sim 0.222 d 1.946 rel 0.942 | shuffled sim 0.221 d 1.950 rel 0.943
