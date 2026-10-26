@@ -140,3 +140,6 @@ bash llm_migration/exp_distill_v2/pipeline.sh   # 全流程；需 GPU/CPU 与模
 - 实验与整理：陆顺鑫 `<2018869035@qq.com>`
 - 本目录为 fork 附加实验，**不覆盖**上游 DiffIP 实现
 - 报告中的绝对路径（如 `/workspace/...`）是原实验机路径，换机器需改脚本里的特征/模型路径
+
+
+> 协议已纠正：请看 [`llm_migration_v2/`](../llm_migration_v2/)（多样本 + ALS mean L2，无 margin 主表）。本目录保留为历史对照。
