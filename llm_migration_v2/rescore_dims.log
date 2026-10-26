@@ -1,0 +1,10 @@
+self                       8: sim=1.0000 d=0.0000 | 20: sim=1.0000 d=0.0000
+fine_tune_instruct         8: sim=0.8528 d=0.1593 | 20: sim=0.9047 d=0.1002
+neg_cross_family           8: sim=0.2635 d=1.3337 | 20: sim=0.5383 d=0.6194
+perm_vs_instruct_shared    8: sim=1.0000 d=0.0000 | 20: sim=1.0000 d=0.0000
+perm_vs_victim             8: sim=0.8527 d=0.1593 | 20: sim=0.9047 d=0.1002
+feat_perm_vs_instruct      8: sim=1.0000 d=0.0000 | 20: sim=1.0000 d=0.0000
+scale_vs_instruct          8: sim=0.9945 d=0.0055 | 20: sim=0.9978 d=0.0022
+scale_vs_victim            8: sim=0.8080 d=0.2131 | 20: sim=0.8993 d=0.1061
+prune_vs_instruct          8: sim=0.7032 d=0.3521 | 20: sim=0.9453 d=0.0563
+prune_vs_victim            8: sim=0.6060 d=0.5008 | 20: sim=0.8455 d=0.1678

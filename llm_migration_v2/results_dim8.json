@@ -1,0 +1,316 @@
+{
+  "protocol": {
+    "n_components_primary": 8,
+    "n_components_reference": 20,
+    "chosen_from": "pca_sweep/维数扫描.md",
+    "seed": 123,
+    "n_samples": 8,
+    "perturbation_scale": 0.002,
+    "n_layers": 4,
+    "dp": "off",
+    "metric": "ALS mean L2; sim=exp(-sum d/L)",
+    "lora": "no LoRA checkpoint in v2; not run"
+  },
+  "results": [
+    {
+      "pair": "self",
+      "group": "baseline",
+      "suspect": "victim",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.9999999999999974,
+        "distance_mean": 2.5102968900982277e-15,
+        "per_layer_distance": [
+          9.343348369199746e-17,
+          8.730591755325335e-15,
+          1.210249597543913e-15,
+          6.912723831665561e-18
+        ],
+        "n_components_used": 8,
+        "converged_all": true
+      },
+      "d20": {
+        "similarity": 0.9999999999999761,
+        "distance_mean": 2.3912264242887744e-14,
+        "per_layer_distance": [
+          9.552276885881435e-14,
+          4.451651234085965e-17,
+          8.177153848771293e-17,
+          6.190804595971738e-23
+        ],
+        "n_components_used": 20,
+        "converged_all": true
+      }
+    },
+    {
+      "pair": "fine_tune_instruct",
+      "group": "A_finetune",
+      "suspect": "instruct",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.852756397056493,
+        "distance_mean": 0.15928135603284102,
+        "per_layer_distance": [
+          6.081448263933655e-05,
+          0.12671217475863386,
+          0.13887534098254886,
+          0.3714770939075421
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.9046812309957941,
+        "distance_mean": 0.10017262827397426,
+        "per_layer_distance": [
+          2.5702972453874383e-05,
+          0.12191830137433955,
+          0.12974035751348748,
+          0.1490061512356161
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "neg_cross_family",
+      "group": "negative",
+      "suspect": "neg_smol",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.26349395856248087,
+        "distance_mean": 1.333724838920182,
+        "per_layer_distance": [
+          0.00021291877797509866,
+          1.4530657175657282,
+          2.0878237365604138,
+          1.7937969827766107
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.5382667692177174,
+        "distance_mean": 0.6194009881505773,
+        "per_layer_distance": [
+          0.00024954777173188345,
+          1.1876981722689943,
+          0.7939107912659022,
+          0.4957454412956808
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "perm_vs_instruct_shared",
+      "group": "B_weight_perm",
+      "suspect": "instruct_perm",
+      "victim": "instruct_shared",
+      "d8": {
+        "similarity": 0.9999999951789083,
+        "distance_mean": 4.82109174560211e-09,
+        "per_layer_distance": [
+          1.3403411602771799e-12,
+          9.145548044628669e-10,
+          7.056952780311458e-10,
+          1.766277655875415e-08
+        ],
+        "n_components_used": 8,
+        "converged_all": true
+      },
+      "d20": {
+        "similarity": 0.999999999356873,
+        "distance_mean": 6.431269912946174e-10,
+        "per_layer_distance": [
+          4.641504035072208e-13,
+          8.570706647934889e-10,
+          6.482420642629122e-10,
+          1.0667310857185613e-09
+        ],
+        "n_components_used": 20,
+        "converged_all": true
+      }
+    },
+    {
+      "pair": "perm_vs_victim",
+      "group": "B_weight_perm",
+      "suspect": "instruct_perm",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.8527453407873228,
+        "distance_mean": 0.15929432144814965,
+        "per_layer_distance": [
+          6.081362080771219e-05,
+          0.1267128650355943,
+          0.13887492635276044,
+          0.37152868078343615
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.9046790308156992,
+        "distance_mean": 0.1001750602717819,
+        "per_layer_distance": [
+          2.5704726810217473e-05,
+          0.12191926030093066,
+          0.12973822308042635,
+          0.14901705297896037
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "feat_perm_vs_instruct",
+      "group": "B_repr_perm",
+      "suspect": "instruct_feat_perm",
+      "victim": "instruct_shared",
+      "d8": {
+        "similarity": 0.9999999999999118,
+        "distance_mean": 8.81143504677883e-14,
+        "per_layer_distance": [
+          5.428978443351731e-15,
+          2.147370692763757e-13,
+          1.3138799523767798e-13,
+          9.033589137477708e-16
+        ],
+        "n_components_used": 8,
+        "converged_all": true
+      },
+      "d20": {
+        "similarity": 1.0,
+        "distance_mean": 8.99733586079638e-18,
+        "per_layer_distance": [
+          3.58607263459803e-17,
+          1.2775492841947583e-19,
+          8.620698306630996e-22,
+          9.895508053264788e-26
+        ],
+        "n_components_used": 20,
+        "converged_all": true
+      }
+    },
+    {
+      "pair": "scale_vs_instruct",
+      "group": "C_scaling",
+      "suspect": "instruct_scale",
+      "victim": "instruct_shared",
+      "d8": {
+        "similarity": 0.9945266746441701,
+        "distance_mean": 0.005488358881734427,
+        "per_layer_distance": [
+          0.00010456453006771433,
+          0.0010267735347142752,
+          0.00318333785463125,
+          0.01763875960752447
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.9978151109001082,
+        "distance_mean": 0.0021872794524861027,
+        "per_layer_distance": [
+          7.169818902710628e-05,
+          0.00061242514901969,
+          0.0014136659028269314,
+          0.0066513285690706836
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "scale_vs_victim",
+      "group": "C_scaling",
+      "suspect": "instruct_scale",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.808037818110484,
+        "distance_mean": 0.2131464169641592,
+        "per_layer_distance": [
+          0.0001391888128999033,
+          0.12515135849299364,
+          0.14108094957741446,
+          0.5862141709733288
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.8993026782437559,
+        "distance_mean": 0.1061356179233733,
+        "per_layer_distance": [
+          0.00015505301739045723,
+          0.12264542562398745,
+          0.13147366213610479,
+          0.1702683309160105
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "prune_vs_instruct",
+      "group": "D_pruning",
+      "suspect": "instruct_prune",
+      "victim": "instruct",
+      "d8": {
+        "similarity": 0.703243245245427,
+        "distance_mean": 0.3520524367127938,
+        "per_layer_distance": [
+          0.00012140923044670653,
+          0.0021134945976909844,
+          0.006298769002374599,
+          1.3996760740206629
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.9452628925008506,
+        "distance_mean": 0.05629219705433274,
+        "per_layer_distance": [
+          6.766791755203106e-05,
+          0.003798211235429264,
+          0.010720239428363912,
+          0.21058266963598576
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    },
+    {
+      "pair": "prune_vs_victim",
+      "group": "D_pruning",
+      "suspect": "instruct_prune",
+      "victim": "victim",
+      "d8": {
+        "similarity": 0.6060246110591353,
+        "distance_mean": 0.5008346814286759,
+        "per_layer_distance": [
+          0.00017747679635452752,
+          0.1138016247527906,
+          0.12248323555751585,
+          1.7668763886080427
+        ],
+        "n_components_used": 8,
+        "converged_all": false
+      },
+      "d20": {
+        "similarity": 0.8455031892443745,
+        "distance_mean": 0.16782333862888402,
+        "per_layer_distance": [
+          1.544086059143387e-05,
+          0.08802232779327002,
+          0.12129773656556292,
+          0.4619578492961117
+        ],
+        "n_components_used": 20,
+        "converged_all": false
+      }
+    }
+  ]
+}
