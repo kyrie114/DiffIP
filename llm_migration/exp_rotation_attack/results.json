@@ -1,0 +1,275 @@
+{
+ "rows": [
+  {
+   "subset": "calib36",
+   "model": "derived",
+   "label": 1,
+   "cos": 0.9875873574327181,
+   "cos_L6_18": 0.9907653241492616,
+   "REEF_cka_std": 0.9962258861497294,
+   "REEF_cka_plain": 0.9952420965325456,
+   "DiffIP20": 0.9947637684422083,
+   "diffip_sec": 0.2956509590148926
+  },
+  {
+   "subset": "calib36",
+   "model": "derived_perm",
+   "label": 1,
+   "cos": -0.00975178196701821,
+   "cos_L6_18": -0.0065956326318060915,
+   "REEF_cka_std": 0.9962258723145684,
+   "REEF_cka_plain": 0.9952420727663449,
+   "DiffIP20": 0.9947637467452507,
+   "diffip_sec": 0.3107924461364746
+  },
+  {
+   "subset": "calib36",
+   "model": "derived_rot",
+   "label": 1,
+   "cos": -0.023605405556896317,
+   "cos_L6_18": -0.02230903041038601,
+   "REEF_cka_std": 0.9757074558420901,
+   "REEF_cka_plain": 0.9952420727109061,
+   "DiffIP20": 0.9889553012340835,
+   "diffip_sec": 0.26736879348754883
+  },
+  {
+   "subset": "calib36",
+   "model": "derived_foldonly",
+   "label": 1,
+   "cos": 0.9676596951110883,
+   "cos_L6_18": 0.9907653196383477,
+   "REEF_cka_std": 0.9962258768898163,
+   "REEF_cka_plain": 0.9952420770280074,
+   "DiffIP20": 0.9889553051519313,
+   "diffip_sec": 0.2725565433502197
+  },
+  {
+   "subset": "calib36",
+   "model": "independent",
+   "label": 0,
+   "cos": 0.1841731241739872,
+   "cos_L6_18": 0.24105585125780835,
+   "REEF_cka_std": 0.939735151666396,
+   "REEF_cka_plain": 0.9485805408010002,
+   "DiffIP20": 0.954114619318651,
+   "diffip_sec": 0.3386077880859375
+  },
+  {
+   "subset": "test36",
+   "model": "derived",
+   "label": 1,
+   "cos": 0.9888561963266453,
+   "cos_L6_18": 0.991074744402489,
+   "REEF_cka_std": 0.9965093642613966,
+   "REEF_cka_plain": 0.996638520992986,
+   "DiffIP20": 0.9969431957640532,
+   "diffip_sec": 0.23900485038757324
+  },
+  {
+   "subset": "test36",
+   "model": "derived_perm",
+   "label": 1,
+   "cos": -0.008644900408073154,
+   "cos_L6_18": -0.0027192142288644003,
+   "REEF_cka_std": 0.9965093764826444,
+   "REEF_cka_plain": 0.996638533603283,
+   "DiffIP20": 0.9969432094773945,
+   "diffip_sec": 0.2462613582611084
+  },
+  {
+   "subset": "test36",
+   "model": "derived_rot",
+   "label": 1,
+   "cos": -0.02756867624337098,
+   "cos_L6_18": -0.024432366936974637,
+   "REEF_cka_std": 0.9752773191519769,
+   "REEF_cka_plain": 0.9966385261124907,
+   "DiffIP20": 0.9878857220189136,
+   "diffip_sec": 0.22606635093688965
+  },
+  {
+   "subset": "test36",
+   "model": "derived_foldonly",
+   "label": 1,
+   "cos": 0.9680085087982621,
+   "cos_L6_18": 0.9910747443893447,
+   "REEF_cka_std": 0.9965093700152391,
+   "REEF_cka_plain": 0.9966385318906377,
+   "DiffIP20": 0.9879088452506136,
+   "diffip_sec": 0.1722261905670166
+  },
+  {
+   "subset": "test36",
+   "model": "independent",
+   "label": 0,
+   "cos": 0.1672532597365941,
+   "cos_L6_18": 0.22046380774673505,
+   "REEF_cka_std": 0.9626800240066936,
+   "REEF_cka_plain": 0.9697568680940181,
+   "DiffIP20": 0.9519858087073045,
+   "diffip_sec": 0.29126763343811035
+  },
+  {
+   "subset": "all72",
+   "model": "derived",
+   "label": 1,
+   "cos": 0.9882217768796815,
+   "cos_L6_18": 0.9909200342758753,
+   "REEF_cka_std": 0.994583200851894,
+   "REEF_cka_plain": 0.9944724913190203,
+   "DiffIP20": 0.9954515900571179,
+   "diffip_sec": 0.24602818489074707
+  },
+  {
+   "subset": "all72",
+   "model": "derived_perm",
+   "label": 1,
+   "cos": -0.009198341187545681,
+   "cos_L6_18": -0.004657423430335246,
+   "REEF_cka_std": 0.9945831997346992,
+   "REEF_cka_plain": 0.9944724860929233,
+   "DiffIP20": 0.9954516003227705,
+   "diffip_sec": 0.24289631843566895
+  },
+  {
+   "subset": "all72",
+   "model": "derived_rot",
+   "label": 1,
+   "cos": -0.025587040900133654,
+   "cos_L6_18": -0.023370698673680326,
+   "REEF_cka_std": 0.9618102616933353,
+   "REEF_cka_plain": 0.9944724861152674,
+   "DiffIP20": 0.9888211025545408,
+   "diffip_sec": 0.22071313858032227
+  },
+  {
+   "subset": "all72",
+   "model": "derived_foldonly",
+   "label": 1,
+   "cos": 0.9678341019546752,
+   "cos_L6_18": 0.9909200320138463,
+   "REEF_cka_std": 0.994583196933603,
+   "REEF_cka_plain": 0.994472485247671,
+   "DiffIP20": 0.9888210838370479,
+   "diffip_sec": 0.21030449867248535
+  },
+  {
+   "subset": "all72",
+   "model": "independent",
+   "label": 0,
+   "cos": 0.17571319195529064,
+   "cos_L6_18": 0.23075982950227172,
+   "REEF_cka_std": 0.9255656013589689,
+   "REEF_cka_plain": 0.9420267725317787,
+   "DiffIP20": 0.9519936830140657,
+   "diffip_sec": 0.2571985721588135
+  }
+ ],
+ "summary": {
+  "calib36/cos": {
+   "margin": -0.2077785297308835,
+   "AUC": 0.5
+  },
+  "calib36/cos_L6_18": {
+   "margin": -0.2633648816681944,
+   "AUC": 0.5
+  },
+  "calib36/REEF_cka_std": {
+   "margin": 0.03597230417569408,
+   "AUC": 1.0
+  },
+  "calib36/REEF_cka_plain": {
+   "margin": 0.04666153190990596,
+   "AUC": 1.0
+  },
+  "calib36/DiffIP20": {
+   "margin": 0.03484068191543244,
+   "AUC": 1.0
+  },
+  "test36/cos": {
+   "margin": -0.19482193597996508,
+   "AUC": 0.5
+  },
+  "test36/cos_L6_18": {
+   "margin": -0.2448961746837097,
+   "AUC": 0.5
+  },
+  "test36/REEF_cka_std": {
+   "margin": 0.012597295145283294,
+   "AUC": 1.0
+  },
+  "test36/REEF_cka_plain": {
+   "margin": 0.026881652898967934,
+   "AUC": 1.0
+  },
+  "test36/DiffIP20": {
+   "margin": 0.03589991331160902,
+   "AUC": 1.0
+  },
+  "all72/cos": {
+   "margin": -0.2013002328554243,
+   "AUC": 0.5
+  },
+  "all72/cos_L6_18": {
+   "margin": -0.25413052817595205,
+   "AUC": 0.5
+  },
+  "all72/REEF_cka_std": {
+   "margin": 0.03624466033436635,
+   "AUC": 1.0
+  },
+  "all72/REEF_cka_plain": {
+   "margin": 0.05244571271589227,
+   "AUC": 1.0
+  },
+  "all72/DiffIP20": {
+   "margin": 0.03682740082298219,
+   "AUC": 1.0
+  }
+ },
+ "sanity": {
+  "source_vs_cached_maxabs": 0.0,
+  "source_absmax": 198.5726776123047,
+  "perm_hidden_is_column_permutation_of_derived": true
+ },
+ "verify": {
+  "derived_perm": {
+   "max_abs_logit_diff": 0.00012350082397460938,
+   "mean_abs_logit_diff": 5.624221785183181e-06,
+   "ref_logit_abs_max": 31.355836868286133,
+   "argmax_agree": 1.0,
+   "greedy_identical": "10/10"
+  },
+  "derived_rot": {
+   "max_abs_logit_diff": 0.0003981590270996094,
+   "mean_abs_logit_diff": 1.3068697080598213e-05,
+   "ref_logit_abs_max": 31.355836868286133,
+   "argmax_agree": 1.0,
+   "greedy_identical": "10/10"
+  },
+  "derived_foldonly": {
+   "max_abs_logit_diff": 8.869171142578125e-05,
+   "mean_abs_logit_diff": 4.4545253331307325e-06,
+   "ref_logit_abs_max": 31.355836868286133,
+   "argmax_agree": 1.0,
+   "greedy_identical": "10/10"
+  },
+  "greedy_examples": [
+   {
+    "prompt": "The capital of France is",
+    "derived": " Paris. It was founded in 789 AD by Charlemagne, the last king of the Carolingian"
+   },
+   {
+    "prompt": "Water boils at a temperature that depends on",
+    "derived": " the atmospheric pressure. At sea level, it is 100 degrees Fahrenheit (°F). If the atmospheric pressure"
+   },
+   {
+    "prompt": "In machine learning, overfitting happens when",
+    "derived": " a model is too complex and fits the training data perfectly. This can lead to poor generalization performance on new data."
+   }
+  ],
+  "orthogonality_err_rot": 5.364418029785156e-07,
+  "runtime_sec": 76.59227323532104
+ }
+}

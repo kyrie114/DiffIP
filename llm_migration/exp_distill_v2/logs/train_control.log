@@ -1,0 +1,29 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights:   0%|          | 1/272 [00:00<00:27,  9.72it/s]Loading weights:  24%|██▍       | 66/272 [00:00<00:00, 356.37it/s]Loading weights:  44%|████▍     | 121/272 [00:00<00:00, 418.41it/s]Loading weights:  62%|██████▎   | 170/272 [00:00<00:00, 418.08it/s]Loading weights:  85%|████████▌ | 232/272 [00:00<00:00, 461.41it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 428.10it/s]
+ep0 step25/600 loss1.8348 38s
+ep0 step50/600 loss1.7395 68s
+ep0 step75/600 loss1.7298 144s
+ep0 step100/600 loss1.7183 179s
+ep0 step125/600 loss1.7192 209s
+ep0 step150/600 loss1.7234 245s
+ep0 step175/600 loss1.7078 274s
+ep0 step200/600 loss1.7101 305s
+EPOCH 0 1.7100914520025254
+ep1 step225/600 loss1.1286 336s
+ep1 step250/600 loss1.1294 374s
+ep1 step275/600 loss1.1117 408s
+ep1 step300/600 loss1.0879 441s
+ep1 step325/600 loss1.0965 473s
+ep1 step350/600 loss1.0978 511s
+ep1 step375/600 loss1.1036 700s
+ep1 step400/600 loss1.1117 730s
+EPOCH 1 1.1116834285855293
+ep2 step425/600 loss0.7553 762s
+ep2 step450/600 loss0.7495 795s
+ep2 step475/600 loss0.7532 832s
+ep2 step500/600 loss0.7576 863s
+ep2 step525/600 loss0.7475 892s
+ep2 step550/600 loss0.7487 923s
+ep2 step575/600 loss0.7508 960s
+ep2 step600/600 loss0.7461 990s
+EPOCH 2 0.7460731753706932
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  2.95it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  2.94it/s]

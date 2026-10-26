@@ -1,3 +1,5 @@
+> **LLM 迁移实验（本 fork）**：见 [`llm_migration/`](llm_migration/)——把 DiffIP 打到 LLM 隐藏层的代码、报告与结果（含负结果）。上游 DiffIP 实现未改。
+
 <div align="center">
 
 <h1>DiffIP: Representation Fingerprints for Robust IP Protection of Diffusion Models</h1>

@@ -10,3 +10,8 @@ build/
 dist/
 website/
 *.pdf
+
+# llm_migration local caches
+llm_migration/**/feats/
+llm_migration/**/ckpt/
+llm_migration/**/__pycache__/

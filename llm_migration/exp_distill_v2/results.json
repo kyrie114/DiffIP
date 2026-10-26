@@ -1,0 +1,354 @@
+{
+ "rows": [
+  {
+   "subset": "calib36",
+   "model": "student_distill",
+   "label": 1,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9201908554627038,
+   "CKA_plain": 0.9177270872769712,
+   "CKA_plain_7avg": 0.9159901988848482,
+   "DiffIP20": 0.9282309193852751,
+   "diffip_sec": 0.30016064643859863
+  },
+  {
+   "subset": "calib36",
+   "model": "student_control",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9177484206744211,
+   "CKA_plain": 0.9178390546764102,
+   "CKA_plain_7avg": 0.914101814928736,
+   "DiffIP20": 0.9299950778951747,
+   "diffip_sec": 0.4171152114868164
+  },
+  {
+   "subset": "calib36",
+   "model": "smollm135_base",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9206098723728954,
+   "CKA_plain": 0.9201093906330613,
+   "CKA_plain_7avg": 0.9110508028995925,
+   "DiffIP20": 0.9303091018115927,
+   "diffip_sec": 0.6473126411437988
+  },
+  {
+   "subset": "calib36",
+   "model": "smollm360",
+   "label": 0,
+   "dim": 960,
+   "layers": 32,
+   "cos": null,
+   "CKA_std": 0.9412883639864523,
+   "CKA_plain": 0.9439361821380029,
+   "CKA_plain_7avg": 0.9248966919315268,
+   "DiffIP20": 0.9378721544806242,
+   "diffip_sec": 0.41031908988952637
+  },
+  {
+   "subset": "calib36",
+   "model": "gpt2",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.9088091703459782,
+   "CKA_plain": 0.9022581786269198,
+   "CKA_plain_7avg": 0.8342213923555695,
+   "DiffIP20": 0.9235111736085622,
+   "diffip_sec": 0.3808720111846924
+  },
+  {
+   "subset": "calib36",
+   "model": "pythia160",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.8838723171939188,
+   "CKA_plain": 0.8568783133237315,
+   "CKA_plain_7avg": 0.8908925725780544,
+   "DiffIP20": 0.9155600708588337,
+   "diffip_sec": 0.4944298267364502
+  },
+  {
+   "subset": "calib36",
+   "model": "qwen2_05b",
+   "label": 0,
+   "dim": 896,
+   "layers": 24,
+   "cos": 0.19013082757299996,
+   "CKA_std": 0.9397110176125567,
+   "CKA_plain": 0.9461495426399079,
+   "CKA_plain_7avg": 0.9598092042831363,
+   "DiffIP20": 0.9544165383554285,
+   "diffip_sec": 0.3329281806945801
+  },
+  {
+   "subset": "test36",
+   "model": "student_distill",
+   "label": 1,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9402484040110759,
+   "CKA_plain": 0.9428390488973661,
+   "CKA_plain_7avg": 0.9199535990334783,
+   "DiffIP20": 0.9206405410204738,
+   "diffip_sec": 0.433154821395874
+  },
+  {
+   "subset": "test36",
+   "model": "student_control",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9370136922114287,
+   "CKA_plain": 0.9435617387922457,
+   "CKA_plain_7avg": 0.9194510432762452,
+   "DiffIP20": 0.9234912892048303,
+   "diffip_sec": 0.35652637481689453
+  },
+  {
+   "subset": "test36",
+   "model": "smollm135_base",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9422972191438648,
+   "CKA_plain": 0.9449136572020453,
+   "CKA_plain_7avg": 0.9210420352668557,
+   "DiffIP20": 0.9224976434933067,
+   "diffip_sec": 0.4536252021789551
+  },
+  {
+   "subset": "test36",
+   "model": "smollm360",
+   "label": 0,
+   "dim": 960,
+   "layers": 32,
+   "cos": null,
+   "CKA_std": 0.9590621517042178,
+   "CKA_plain": 0.9578820446913372,
+   "CKA_plain_7avg": 0.9405383900649522,
+   "DiffIP20": 0.9382594439386013,
+   "diffip_sec": 0.3152635097503662
+  },
+  {
+   "subset": "test36",
+   "model": "gpt2",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.9341981144740221,
+   "CKA_plain": 0.9410885669714459,
+   "CKA_plain_7avg": 0.8412141646285501,
+   "DiffIP20": 0.9109413916113722,
+   "diffip_sec": 0.31956911087036133
+  },
+  {
+   "subset": "test36",
+   "model": "pythia160",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.894062656142093,
+   "CKA_plain": 0.8761556786365207,
+   "CKA_plain_7avg": 0.9019071086054505,
+   "DiffIP20": 0.9048471996981499,
+   "diffip_sec": 0.2427501678466797
+  },
+  {
+   "subset": "test36",
+   "model": "qwen2_05b",
+   "label": 0,
+   "dim": 896,
+   "layers": 24,
+   "cos": 0.1718107447296716,
+   "CKA_std": 0.9639932553166916,
+   "CKA_plain": 0.9686774585732618,
+   "CKA_plain_7avg": 0.9645575989642143,
+   "DiffIP20": 0.9513955550404184,
+   "diffip_sec": 0.34822654724121094
+  },
+  {
+   "subset": "all72",
+   "model": "student_distill",
+   "label": 1,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9014771161885873,
+   "CKA_plain": 0.9092837787879832,
+   "CKA_plain_7avg": 0.8950673602878412,
+   "DiffIP20": 0.9175020290866647,
+   "diffip_sec": 0.37232351303100586
+  },
+  {
+   "subset": "all72",
+   "model": "student_control",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.8991231586122852,
+   "CKA_plain": 0.9109597584293089,
+   "CKA_plain_7avg": 0.8927136247148619,
+   "DiffIP20": 0.9163779040954889,
+   "diffip_sec": 0.33920979499816895
+  },
+  {
+   "subset": "all72",
+   "model": "smollm135_base",
+   "label": 0,
+   "dim": 576,
+   "layers": 30,
+   "cos": null,
+   "CKA_std": 0.9038048718018167,
+   "CKA_plain": 0.9134611491904289,
+   "CKA_plain_7avg": 0.8945134811159454,
+   "DiffIP20": 0.9177782748532428,
+   "diffip_sec": 0.4309651851654053
+  },
+  {
+   "subset": "all72",
+   "model": "smollm360",
+   "label": 0,
+   "dim": 960,
+   "layers": 32,
+   "cos": null,
+   "CKA_std": 0.9252226916929027,
+   "CKA_plain": 0.9348447673503693,
+   "CKA_plain_7avg": 0.9141460913284366,
+   "DiffIP20": 0.9325750925907664,
+   "diffip_sec": 0.4902615547180176
+  },
+  {
+   "subset": "all72",
+   "model": "gpt2",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.8886056444498844,
+   "CKA_plain": 0.8973974094404726,
+   "CKA_plain_7avg": 0.8142849907492394,
+   "DiffIP20": 0.9142388404418567,
+   "diffip_sec": 0.44524455070495605
+  },
+  {
+   "subset": "all72",
+   "model": "pythia160",
+   "label": 0,
+   "dim": 768,
+   "layers": 12,
+   "cos": null,
+   "CKA_std": 0.8356538535859908,
+   "CKA_plain": 0.8141499653798183,
+   "CKA_plain_7avg": 0.8606567934637932,
+   "DiffIP20": 0.9092006253362467,
+   "diffip_sec": 0.4416956901550293
+  },
+  {
+   "subset": "all72",
+   "model": "qwen2_05b",
+   "label": 0,
+   "dim": 896,
+   "layers": 24,
+   "cos": 0.18097078615133577,
+   "CKA_std": 0.9251896759139409,
+   "CKA_plain": 0.939201986938111,
+   "CKA_plain_7avg": 0.9489042397843165,
+   "DiffIP20": 0.9518280045487393,
+   "diffip_sec": 0.2267923355102539
+  }
+ ],
+ "summary": {
+  "calib36/cos": "N/A（学生维度576≠教师896）",
+  "calib36/CKA_std": {
+   "margin": -0.021097508523748476,
+   "margin_vs_same_base": -0.00041901691019152754,
+   "AUC": 0.5,
+   "top_negative": "smollm360"
+  },
+  "calib36/CKA_plain": {
+   "margin": -0.02842245536293675,
+   "margin_vs_same_base": -0.002382303356090132,
+   "AUC": 0.3333333333333333,
+   "top_negative": "qwen2_05b"
+  },
+  "calib36/CKA_plain_7avg": {
+   "margin": -0.04381900539828809,
+   "margin_vs_same_base": 0.0018883839561122384,
+   "AUC": 0.6666666666666666,
+   "top_negative": "qwen2_05b"
+  },
+  "calib36/DiffIP20": {
+   "margin": -0.026185618970153368,
+   "margin_vs_same_base": -0.002078182426317521,
+   "AUC": 0.3333333333333333,
+   "top_negative": "qwen2_05b"
+  },
+  "test36/cos": "N/A（学生维度576≠教师896）",
+  "test36/CKA_std": {
+   "margin": -0.023744851305615655,
+   "margin_vs_same_base": -0.0020488151327888726,
+   "AUC": 0.5,
+   "top_negative": "qwen2_05b"
+  },
+  "test36/CKA_plain": {
+   "margin": -0.02583840967589568,
+   "margin_vs_same_base": -0.002074608304679204,
+   "AUC": 0.3333333333333333,
+   "top_negative": "qwen2_05b"
+  },
+  "test36/CKA_plain_7avg": {
+   "margin": -0.04460399993073605,
+   "margin_vs_same_base": -0.001088436233377399,
+   "AUC": 0.5,
+   "top_negative": "qwen2_05b"
+  },
+  "test36/DiffIP20": {
+   "margin": -0.030755014019944626,
+   "margin_vs_same_base": -0.0028507481843564886,
+   "AUC": 0.3333333333333333,
+   "top_negative": "qwen2_05b"
+  },
+  "all72/cos": "N/A（学生维度576≠教师896）",
+  "all72/CKA_std": {
+   "margin": -0.02374557550431544,
+   "margin_vs_same_base": -0.0023277556132293986,
+   "AUC": 0.5,
+   "top_negative": "smollm360"
+  },
+  "all72/CKA_plain": {
+   "margin": -0.0299182081501278,
+   "margin_vs_same_base": -0.0041773704024457015,
+   "AUC": 0.3333333333333333,
+   "top_negative": "qwen2_05b"
+  },
+  "all72/CKA_plain_7avg": {
+   "margin": -0.05383687949647531,
+   "margin_vs_same_base": 0.0005538791718957548,
+   "AUC": 0.6666666666666666,
+   "top_negative": "qwen2_05b"
+  },
+  "all72/DiffIP20": {
+   "margin": -0.03432597546207461,
+   "margin_vs_same_base": -0.0002762457665781426,
+   "AUC": 0.5,
+   "top_negative": "qwen2_05b"
+  }
+ }
+}

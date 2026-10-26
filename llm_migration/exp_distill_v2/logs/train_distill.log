@@ -1,0 +1,32 @@
+'Server disconnected without sending a response.' thrown while requesting GET https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-135M/tree/main
+Retrying in 1s [Retry 1/5].
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2794.94it/s]
+ep0 step25/600 loss1.4133 40s
+ep0 step50/600 loss1.3338 77s
+ep0 step75/600 loss1.2943 121s
+ep0 step100/600 loss1.2608 165s
+ep0 step125/600 loss1.2441 204s
+ep0 step150/600 loss1.2315 245s
+ep0 step175/600 loss1.2176 286s
+ep0 step200/600 loss1.2063 324s
+EPOCH 0 1.2063025805354117
+ep1 step225/600 loss0.7182 378s
+ep1 step250/600 loss0.7206 450s
+ep1 step275/600 loss0.7190 496s
+ep1 step300/600 loss0.7093 534s
+ep1 step325/600 loss0.7103 571s
+ep1 step350/600 loss0.7100 609s
+ep1 step375/600 loss0.7087 754s
+ep1 step400/600 loss0.7073 800s
+EPOCH 1 0.707275520414114
+ep2 step425/600 loss0.4464 845s
+ep2 step450/600 loss0.4478 883s
+ep2 step475/600 loss0.4462 922s
+ep2 step500/600 loss0.4492 965s
+ep2 step525/600 loss0.4463 1003s
+ep2 step550/600 loss0.4456 1042s
+ep2 step575/600 loss0.4474 1080s
+ep2 step600/600 loss0.4488 1121s
+EPOCH 2 0.4487885385751724
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.17it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.17it/s]

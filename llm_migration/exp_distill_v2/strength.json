@@ -1,0 +1,69 @@
+[
+ {
+  "model": "smollm_base",
+  "teacher_nll_per_byte": 0.34752839489526643,
+  "teacher_top1": 0.6014085508999075,
+  "alpaca_nll_per_byte": 0.3970478873726587,
+  "alpaca_top1": 0.5509061440990128,
+  "rougeL_vs_teacher": 0.12254441111138611,
+  "rougeL_vs_alpaca": 0.15405019529406264,
+  "gens": [
+   "The hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.\n\n### Explanation:\n\nThe hypothesis is that people yawn because they are tired.",
+   "The concept of 360° feedback is a concept that is used in the design of a system. Feedback is the process of receiving information from a system. Feedback is used in the design of a system to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to help the system understand what is happening. Feedback is used to",
+   "Create an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:\n\nCreate an analogy to describe an AI assistant.\n\n### Response:",
+   "The painting \"Starry Night\" is a beautiful piece of art. It is a painting of a starry night. The painting is a beautiful piece of art.\n\n### Explanation:\n\nThe painting \"Starry Night\" is a beautiful piece of art. It is a painting of a starry night. The painting is a beautiful piece of art.\n\n### Explanation:\n\nThe painting \"Starry Night\" is a beautiful piece of art. It is a painting of a starry night. The painting is a beautiful piece of art.\n\n### Explanation:\n\nThe painting \"Starry Night\"",
+   "\"That's why they call it a holdup\"\n\n### Explanation:\n\n\"That's why they call it a holdup\" is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny. It is a joke that is meant to be funny.",
+   "The tip on a $42 restaurant bill is $1.00.",
+   "The carnivorous plant is a plant that has evolved to catch and eat insects. It has a long, sticky tongue that it uses to catch and eat insects. The plant has a special organ called a proboscis that it uses to suck up the insects.",
+   "Positive thinking is a way to improve your life. It is a way to improve your health, happiness, and success.",
+   "The perimeter of a square with a side length of 9 meters is 9 meters.\n\n### Explanation:\n\nThe perimeter of a square with a side length of 9 meters is 9 meters.\n\n### Explanation:\n\nThe perimeter of a square with a side length of 9 meters is 9 meters.\n\n### Explanation:\n\nThe perimeter of a square with a side length of 9 meters is 9 meters.\n\n### Explanation:\n\nThe perimeter of a square with a side length of 9 meters is 9 meters.\n\n### Explanation:\n\nThe perimeter",
+   "```python\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport matplotlib.dates as mdates\nimport matplotlib.dates.dateutil as mutil\nimport matplotlib.dates.timeunit as munit\nimport matplotlib.dates.time\nimport matplotlib.dates.timefmt as mtime\nimport matplotlib.dates.timefmt.datefmt\nimport matplotlib.dates.timefmt.timefmt\nimport matplotlib.dates.timefmt.timefmt\nimport matplotlib.dates.timefmt.timefmt.timefmt\nimport matplotlib.dates."
+  ]
+ },
+ {
+  "model": "student_distill",
+  "teacher_nll_per_byte": 0.256413608359375,
+  "teacher_top1": 0.6753930426122217,
+  "alpaca_nll_per_byte": 0.4838054245485765,
+  "alpaca_top1": 0.5336673051421836,
+  "rougeL_vs_teacher": 0.26003332474790314,
+  "rougeL_vs_alpaca": 0.182510735907025,
+  "gens": [
+   "To construct a hypothesis that explains why people yawn, we need to consider several factors:\n\n1. **Social Context**: Yawning is often associated with social interaction and communication. People yawn when they are tired, stressed, or bored.\n\n2. **Emotional State**: Yawning can be a sign of emotional distress or frustration. It might indicate that someone is feeling overwhelmed or under pressure.\n\n3. **Cultural Differences**: Different cultures have different attitudes towards yawning. For example, some people believe that yawning is a sign of weakness or laziness, while others view it as a sign of enthusiasm or enthusiasm",
+   "360° feedback is a type of feedback mechanism that allows users to receive feedback on their actions and decisions in real-time. This concept was introduced in the field of computer-aided design (CAD) and 3D modeling software.\n\nIn 360° feedback, users can receive feedback on their actions and decisions from various angles around the entire 3D model. The feedback can be in the form of visual cues such as lines, circles, or other geometric shapes that indicate the current state of the model.\n\nThis type of feedback is particularly useful for users who need to make quick decisions or adjust",
+   "An AI assistant is like a personal assistant that can perform tasks for you without needing to ask you directly. It's designed to help you with everyday activities, such as managing your home, managing your email, or even just answering questions about your life.\n\nJust as a personal assistant can provide information and assistance without needing to be asked, an AI assistant can provide answers to your questions without having to wait for you to respond. This makes it more responsive and efficient than a human assistant, which can lead to faster responses and better outcomes.\n\nIn summary, an AI assistant is like a personal assistant that can perform tasks for you without",
+   "Starry Night is a famous painting by Vincent van Gogh that was painted in 1889. It is one of the most iconic and widely recognized works of art in the history of painting.\n\nThe painting depicts a night sky with stars and planets in it. The painting was painted in oil on canvas and was completed in 1889. The artist's style is characterized by his use of bold colors and expressive brushstrokes. The painting was widely acclaimed for its vivid colors and emotional depth, making it one of the most recognizable works of art in the 19th century.\n\nThe painting was also widely",
+   "Why did the teacher give the students a special assignment? Because it was a holdup!",
+   "To calculate the tip on a $42 restaurant bill, you can use the following formula:\n\n\\[ \\text{Tip} = \\frac{\\text{Total Tip}}{100} \\]\n\nHere's how you can do it:\n\n1. **Calculate the total tip**: The tip is calculated based on the amount of tip you pay.\n2. **Divide the total tip by 100 to convert it to a decimal**:\n   \\[ \\text{Tip} = \\frac{42}{100} \\]\n\nSo, the tip on a $",
+   "One example of a carnivorous plant is the Venus Flytrap (Dionaea muscipula). This plant is known for its ability to trap and digest insects that it encounters during its daily activities. The Venus Flytrap has evolved over time to become highly specialized for its carnivorous lifestyle.\n\nThe Venus Flytrap has several key features that make it particularly suited for its carnivorous nature:\n\n1. **Venus Flytrap**: The Venus Flytrap is a carnivorous plant that grows in tropical and subtropical regions. It has a long, slender stem with sharp teeth on each side.\n\n2. **Eyes",
+   "Positive thinking is crucial for achieving success and happiness in life. It involves thinking positively about oneself and others, which can lead to increased productivity, better relationships, and overall satisfaction with life. Here are some key benefits of positive thinking:\n\n1. **Boosted Productivity**: Positive thinking can significantly improve your ability to focus, concentrate, and stay organized. It helps you see opportunities where others might miss them and reduces stress levels.\n\n2. **Improved Relationships**: Positive thinking can help build stronger connections with friends, family members, and romantic partners. It encourages open communication, empathy, and a sense of shared responsibility.",
+   "To calculate the perimeter of a square, we need to know the length of each side of the square. The perimeter of a square is defined as the total distance around the square.\n\nGiven:\n- The side length of the square is 9 meters.\n- The area of the square is also 9 meters2.\n\nTo calculate the perimeter, we can follow these steps:\n\n1. **Area of the Square**: The area of a square is given by its side length \\(a\\).\n   - \\(a = 9\\) meters.\n\n2. **Perimeter**: The perimeter",
+   "Certainly! Here are three pros and three cons for visiting a new city:\n\n1. **Pros**:\n   - **Experience new sights and sounds**: The city's unique architecture, cuisine, music, and cultural experiences can be truly unforgettable.\n   - **Discover new people and places**: Visiting different neighborhoods, museums, and attractions allows you to get to know people better and learn about their lives.\n   - **Explore the city's history and culture**: Learning about the city's past helps you understand its roots and appreciate its evolution over time.\n\n2. **Cons**:\n   - **Environmental impact**: While some cities may have"
+  ]
+ },
+ {
+  "model": "student_control",
+  "teacher_nll_per_byte": 0.3947483428142408,
+  "teacher_top1": 0.5746603115885324,
+  "alpaca_nll_per_byte": 0.3786507553788443,
+  "alpaca_top1": 0.5822896714306763,
+  "rougeL_vs_teacher": 0.19945666760902545,
+  "rougeL_vs_alpaca": 0.2735419477606213,
+  "gens": [
+   "The hypothesis to explain why people yawn is that yawning is a natural reflex that helps to reduce stress and promote relaxation.",
+   "360° feedback is a technique used to measure and manage performance in teams by tracking and analyzing the progress of a team over a period of time. It involves tracking performance data from multiple sources, such as performance metrics, feedback from team members, and observations from outside the team. The data is then analyzed to identify trends and opportunities for improvement. 360° feedback is a powerful tool for tracking progress and managing performance, as it provides a comprehensive view of the team's performance over time.",
+   "An AI assistant is like a personal assistant that can perform tasks for you, such as searching for information, organizing your tasks, and answering your questions. It can also help with routine tasks like scheduling meetings or making purchases. AI assistants are designed to be intuitive and user-friendly, so they can easily interact with users and provide the best possible experience.",
+   "The painting \"Starry Night\" is a romantic landscape painting by Dutch artist Rembrandt. It is a romantic sunset scene with stars in the sky and a large, dark, moon in the background. The painting is filled with a sense of calm and peace, as the stars appear to float in the night sky above.",
+   "Why did the door open? Because of a joke.",
+   "To calculate the tip on a $42 restaurant bill, you would multiply the price of the meal by 0.70 to get the amount of tip. For example, if the price of a meal was $28.95, and the tip was $10.50, the tip would be calculated as $10.50 * 0.70 = $15.50.",
+   "One example of a carnivorous plant is the Venus Flytrap. This plant is a member of the family Dionesiaceae and is known for its ability to trap and digest insects.",
+   "Positive thinking is essential for success, as it can help to shift negative thoughts and thoughts patterns that can lead to negative outcomes. Positive thinking can help to increase your confidence, improve your relationships, and increase your productivity. It can also help to reduce stress, improve your mood, and increase your overall wellbeing.",
+   "The perimeter of the square is 180 meters.",
+   "Pros of visiting a new city: \n- It is an exciting experience to explore and try different cultures and sights. \n- It is an opportunity to make new friends and make new memories. \n- It is an opportunity to make lifelong friends."
+  ]
+ },
+ {
+  "model": "alpaca_ref_vs_teacher_rougeL",
+  "value": 0.19360040624071645
+ }
+]

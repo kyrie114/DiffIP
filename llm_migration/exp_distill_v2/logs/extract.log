@@ -1,0 +1,18 @@
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:01<05:58,  1.24s/it]Loading weights:  46%|████▌     | 133/290 [00:01<00:01, 136.57it/s]Loading weights:  72%|███████▏  | 208/290 [00:01<00:00, 151.70it/s]Loading weights:  89%|████████▊ | 257/290 [00:02<00:00, 141.31it/s]Loading weights: 100%|██████████| 290/290 [00:02<00:00, 118.25it/s]
+teacher (72, 25, 896)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7762.53it/s]
+student_distill (72, 31, 576)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12657.41it/s]
+student_control (72, 31, 576)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3034.79it/s]
+smollm135_base (72, 31, 576)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:37,  2.97it/s]Loading weights:  16%|█▌        | 46/290 [00:00<00:01, 131.29it/s]Loading weights:  24%|██▍       | 70/290 [00:00<00:01, 125.14it/s]Loading weights:  31%|███       | 89/290 [00:00<00:01, 133.72it/s]Loading weights:  41%|████      | 118/290 [00:00<00:01, 171.57it/s]Loading weights:  50%|█████     | 146/290 [00:00<00:00, 199.39it/s]Loading weights:  59%|█████▊    | 170/290 [00:01<00:00, 191.65it/s]Loading weights:  68%|██████▊   | 197/290 [00:01<00:00, 206.35it/s]Loading weights:  76%|███████▌  | 220/290 [00:01<00:00, 205.00it/s]Loading weights:  84%|████████▍ | 244/290 [00:01<00:00, 201.05it/s]Loading weights:  92%|█████████▏| 266/290 [00:01<00:00, 203.80it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 175.69it/s]
+smollm360 (72, 33, 960)
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 1777.25it/s]
+gpt2 (72, 13, 768)
+Loading weights:   0%|          | 0/148 [00:00<?, ?it/s]Loading weights:   1%|          | 1/148 [00:00<01:02,  2.34it/s]Loading weights:  46%|████▌     | 68/148 [00:00<00:00, 163.54it/s]Loading weights:  70%|██████▉   | 103/148 [00:00<00:00, 195.85it/s]Loading weights: 100%|██████████| 148/148 [00:00<00:00, 196.26it/s]
+pythia160 (72, 13, 768)
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<04:39,  1.03it/s]Loading weights:  38%|███▊      | 111/290 [00:01<00:01, 141.11it/s]Loading weights:  59%|█████▉    | 171/290 [00:01<00:00, 156.82it/s]Loading weights:  73%|███████▎  | 212/290 [00:01<00:00, 151.91it/s]Loading weights:  84%|████████▍ | 243/290 [00:01<00:00, 139.56it/s]Loading weights:  92%|█████████▏| 267/290 [00:02<00:00, 138.60it/s]Loading weights: 100%|██████████| 290/290 [00:02<00:00, 131.47it/s]
+qwen2_05b (72, 25, 896)
+PIPELINE_DONE

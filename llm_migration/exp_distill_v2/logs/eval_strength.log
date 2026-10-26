@@ -1,0 +1,6 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3764.05it/s]
+{'model': 'smollm_base', 'teacher_nll_per_byte': 0.3475, 'teacher_top1': 0.6014, 'alpaca_nll_per_byte': 0.397, 'alpaca_top1': 0.5509, 'rougeL_vs_teacher': 0.1225, 'rougeL_vs_alpaca': 0.1541}
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12686.69it/s]
+{'model': 'student_distill', 'teacher_nll_per_byte': 0.2564, 'teacher_top1': 0.6754, 'alpaca_nll_per_byte': 0.4838, 'alpaca_top1': 0.5337, 'rougeL_vs_teacher': 0.26, 'rougeL_vs_alpaca': 0.1825}
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights:   8%|▊         | 21/272 [00:00<00:01, 209.94it/s]Loading weights:  23%|██▎       | 62/272 [00:00<00:00, 312.64it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 1017.40it/s]
+{'model': 'student_control', 'teacher_nll_per_byte': 0.3947, 'teacher_top1': 0.5747, 'alpaca_nll_per_byte': 0.3787, 'alpaca_top1': 0.5823, 'rougeL_vs_teacher': 0.1995, 'rougeL_vs_alpaca': 0.2735}

@@ -1,0 +1,15 @@
+jobs 366
+50 {'setting': 'S1', 'subset': 'rand36_1', 'model': 'instruct', 'method': 'pca35', 'score': 0.9945093979761743, 'sec': 1.0} 14
+100 {'setting': 'S1', 'subset': 'rand36_4', 'model': 'lora', 'method': 'pca35', 'score': 0.981071460808113, 'sec': 0.9} 27
+150 {'setting': 'S1', 'subset': 'rand36_7', 'model': 'qwen2_05b', 'method': 'pca35', 'score': 0.9614568702423141, 'sec': 0.9} 41
+200 {'setting': 'S2', 'subset': 'rand36_1', 'model': 'prune30', 'method': 'cos', 'score': 0.950541615486145, 'sec': 0.0} 55
+250 {'setting': 'S2', 'subset': 'rand36_2', 'model': 'gpt2_medium', 'method': 'pca20', 'score': 0.8984317282935348, 'sec': 0.3} 70
+300 {'setting': 'S2', 'subset': 'rand36_4', 'model': 'int8', 'method': 'cos', 'score': 0.8421652317047119, 'sec': 0.0} 86
+350 {'setting': 'S2', 'subset': 'all180', 'model': 'pythia_410m', 'method': 'pca10', 'score': 0.9442163216982516, 'sec': 0.2} 103
+361 {'setting': 'S1', 'subset': 'calib36', 'model': 'lora', 'method': 'full', 'score': 0.9975321931535881, 'sec': 2610.4} 2610
+362 {'setting': 'S1', 'subset': 'test36', 'model': 'lora', 'method': 'full', 'score': 0.9980584600850169, 'sec': 2613.2} 2613
+363 {'setting': 'S1', 'subset': 'test36', 'model': 'instruct', 'method': 'full', 'score': 0.9997190949892288, 'sec': 2643.7} 2644
+364 {'setting': 'S1', 'subset': 'calib36', 'model': 'instruct', 'method': 'full', 'score': 0.9996108110695578, 'sec': 2649.9} 2650
+365 {'setting': 'S1', 'subset': 'test36', 'model': 'qwen2_05b', 'method': 'full', 'score': 0.9948574796943052, 'sec': 2650.8} 2651
+366 {'setting': 'S1', 'subset': 'calib36', 'model': 'qwen2_05b', 'method': 'full', 'score': 0.9940524436096396, 'sec': 2652.2} 2652
+done 2652

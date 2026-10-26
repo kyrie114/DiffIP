@@ -1,0 +1,39 @@
+{
+ "derived_perm": {
+  "max_abs_logit_diff": 0.00012350082397460938,
+  "mean_abs_logit_diff": 5.624221785183181e-06,
+  "ref_logit_abs_max": 31.355836868286133,
+  "argmax_agree": 1.0,
+  "greedy_identical": "10/10"
+ },
+ "derived_rot": {
+  "max_abs_logit_diff": 0.0003981590270996094,
+  "mean_abs_logit_diff": 1.3068697080598213e-05,
+  "ref_logit_abs_max": 31.355836868286133,
+  "argmax_agree": 1.0,
+  "greedy_identical": "10/10"
+ },
+ "derived_foldonly": {
+  "max_abs_logit_diff": 8.869171142578125e-05,
+  "mean_abs_logit_diff": 4.4545253331307325e-06,
+  "ref_logit_abs_max": 31.355836868286133,
+  "argmax_agree": 1.0,
+  "greedy_identical": "10/10"
+ },
+ "greedy_examples": [
+  {
+   "prompt": "The capital of France is",
+   "derived": " Paris. It was founded in 789 AD by Charlemagne, the last king of the Carolingian"
+  },
+  {
+   "prompt": "Water boils at a temperature that depends on",
+   "derived": " the atmospheric pressure. At sea level, it is 100 degrees Fahrenheit (°F). If the atmospheric pressure"
+  },
+  {
+   "prompt": "In machine learning, overfitting happens when",
+   "derived": " a model is too complex and fits the training data perfectly. This can lead to poor generalization performance on new data."
+  }
+ ],
+ "orthogonality_err_rot": 5.364418029785156e-07,
+ "runtime_sec": 76.59227323532104
+}

@@ -1,0 +1,6 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+source done
+independent done
+derived_perm {'max_abs_logit_diff': 0.00012350082397460938, 'mean_abs_logit_diff': 5.624221785183181e-06, 'ref_logit_abs_max': 31.355836868286133, 'argmax_agree': 1.0, 'greedy_identical': '10/10'}
+derived_rot {'max_abs_logit_diff': 0.0003981590270996094, 'mean_abs_logit_diff': 1.3068697080598213e-05, 'ref_logit_abs_max': 31.355836868286133, 'argmax_agree': 1.0, 'greedy_identical': '10/10'}
+derived_foldonly {'max_abs_logit_diff': 8.869171142578125e-05, 'mean_abs_logit_diff': 4.4545253331307325e-06, 'ref_logit_abs_max': 31.355836868286133, 'argmax_agree': 1.0, 'greedy_identical': '10/10'}

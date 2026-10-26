@@ -1,0 +1,22 @@
+student_distill {'cos': None, 'CKA_std': 0.9015, 'CKA_plain': 0.9093, 'CKA_plain_7avg': 0.8951, 'DiffIP20': 0.9175}
+student_control {'cos': None, 'CKA_std': 0.8991, 'CKA_plain': 0.911, 'CKA_plain_7avg': 0.8927, 'DiffIP20': 0.9164}
+smollm135_base {'cos': None, 'CKA_std': 0.9038, 'CKA_plain': 0.9135, 'CKA_plain_7avg': 0.8945, 'DiffIP20': 0.9178}
+smollm360 {'cos': None, 'CKA_std': 0.9252, 'CKA_plain': 0.9348, 'CKA_plain_7avg': 0.9141, 'DiffIP20': 0.9326}
+gpt2 {'cos': None, 'CKA_std': 0.8886, 'CKA_plain': 0.8974, 'CKA_plain_7avg': 0.8143, 'DiffIP20': 0.9142}
+pythia160 {'cos': None, 'CKA_std': 0.8357, 'CKA_plain': 0.8141, 'CKA_plain_7avg': 0.8607, 'DiffIP20': 0.9092}
+qwen2_05b {'cos': 0.181, 'CKA_std': 0.9252, 'CKA_plain': 0.9392, 'CKA_plain_7avg': 0.9489, 'DiffIP20': 0.9518}
+calib36/cos N/A（学生维度576≠教师896）
+calib36/CKA_std {'margin': -0.021097508523748476, 'margin_vs_same_base': -0.00041901691019152754, 'AUC': 0.5, 'top_negative': 'smollm360'}
+calib36/CKA_plain {'margin': -0.02842245536293675, 'margin_vs_same_base': -0.002382303356090132, 'AUC': 0.3333333333333333, 'top_negative': 'qwen2_05b'}
+calib36/CKA_plain_7avg {'margin': -0.04381900539828809, 'margin_vs_same_base': 0.0018883839561122384, 'AUC': 0.6666666666666666, 'top_negative': 'qwen2_05b'}
+calib36/DiffIP20 {'margin': -0.026185618970153368, 'margin_vs_same_base': -0.002078182426317521, 'AUC': 0.3333333333333333, 'top_negative': 'qwen2_05b'}
+test36/cos N/A（学生维度576≠教师896）
+test36/CKA_std {'margin': -0.023744851305615655, 'margin_vs_same_base': -0.0020488151327888726, 'AUC': 0.5, 'top_negative': 'qwen2_05b'}
+test36/CKA_plain {'margin': -0.02583840967589568, 'margin_vs_same_base': -0.002074608304679204, 'AUC': 0.3333333333333333, 'top_negative': 'qwen2_05b'}
+test36/CKA_plain_7avg {'margin': -0.04460399993073605, 'margin_vs_same_base': -0.001088436233377399, 'AUC': 0.5, 'top_negative': 'qwen2_05b'}
+test36/DiffIP20 {'margin': -0.030755014019944626, 'margin_vs_same_base': -0.0028507481843564886, 'AUC': 0.3333333333333333, 'top_negative': 'qwen2_05b'}
+all72/cos N/A（学生维度576≠教师896）
+all72/CKA_std {'margin': -0.02374557550431544, 'margin_vs_same_base': -0.0023277556132293986, 'AUC': 0.5, 'top_negative': 'smollm360'}
+all72/CKA_plain {'margin': -0.0299182081501278, 'margin_vs_same_base': -0.0041773704024457015, 'AUC': 0.3333333333333333, 'top_negative': 'qwen2_05b'}
+all72/CKA_plain_7avg {'margin': -0.05383687949647531, 'margin_vs_same_base': 0.0005538791718957548, 'AUC': 0.6666666666666666, 'top_negative': 'qwen2_05b'}
+all72/DiffIP20 {'margin': -0.03432597546207461, 'margin_vs_same_base': -0.0002762457665781426, 'AUC': 0.5, 'top_negative': 'qwen2_05b'}
