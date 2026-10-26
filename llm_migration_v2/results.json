@@ -1,0 +1,401 @@
+{
+  "protocol": {
+    "prompt": "The quick brown fox jumps over the lazy dog.",
+    "n_samples": 8,
+    "perturbation_scale": 0.002,
+    "seed": 123,
+    "n_components": 20,
+    "n_layers_sampled": 4,
+    "pooling": "attention-mask mean (LLMRepresentationCollector)",
+    "primary_metric": "ALS-only mean L2 after PCA-20 (QSX-h); DP disabled",
+    "similarity": "exp(-sum_l d_l / L)",
+    "sampling": "law-of-large-numbers multi-sample via paired-seed embedding perturbation"
+  },
+  "catalog": {
+    "victim": {
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "cached": true,
+      "layers": "cached",
+      "num_hidden_layers": null,
+      "hidden_size": 896
+    },
+    "instruct": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "cached": true,
+      "layers": "cached",
+      "num_hidden_layers": null,
+      "hidden_size": 896
+    },
+    "neg_smol": {
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "shape": [
+        4,
+        8,
+        576
+      ],
+      "cached": true,
+      "layers": "cached",
+      "num_hidden_layers": null,
+      "hidden_size": 576
+    },
+    "instruct_shared": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "layers": [
+        0,
+        8,
+        15,
+        23
+      ],
+      "note": "collected on shared paired embeds (reference for weight attacks)"
+    },
+    "instruct_perm": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "attack": "permutation_weight_space_shared_inputs_equivariant",
+      "fold": false,
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "layers": [
+        0,
+        8,
+        15,
+        23
+      ],
+      "note": "inputs are (E+eps)@P into weight-permuted model; hiddens = h@P"
+    },
+    "instruct_prune": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "num_hidden_layers": 24,
+      "hidden_size": 896,
+      "attack": "layer_prune",
+      "dropped": [
+        5,
+        9,
+        14,
+        18
+      ],
+      "kept_count": 20,
+      "layers": [
+        0,
+        6,
+        13,
+        19
+      ],
+      "shape": [
+        4,
+        8,
+        896
+      ]
+    },
+    "instruct_scale": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "attack": "anisotropic_scale_on_representations",
+      "note": "Y = X @ diag(s), s~U[0.25,4]; ALS closed form for S",
+      "scale_min": 0.2502988576889038,
+      "scale_max": 3.9993932247161865,
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "layers": [
+        0,
+        8,
+        15,
+        23
+      ]
+    },
+    "instruct_feat_perm": {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "attack": "permutation_on_representations",
+      "note": "Y = X @ P; theorem-level test that ALS recovers orthogonal/perm Q",
+      "shape": [
+        4,
+        8,
+        896
+      ],
+      "layers": [
+        0,
+        8,
+        15,
+        23
+      ]
+    }
+  },
+  "verify_function_preserve": {
+    "perm": {
+      "tag": "perm",
+      "identical": "3/3",
+      "before": [
+        " Paris. It was founded in 789 AD by Charlemagne,",
+        " \n    if n <= 1: \n        return n \n    else:",
+        "2，这说明了什么？____\nA. 事物之间是相互"
+      ],
+      "after": [
+        " Paris. It was founded in 789 AD by Charlemagne,",
+        " \n    if n <= 1: \n        return n \n    else:",
+        "2，这说明了什么？____\nA. 事物之间是相互"
+      ]
+    }
+  },
+  "results": [
+    {
+      "pair": "self",
+      "suspect": "victim",
+      "victim": "victim",
+      "group": "baseline",
+      "similarity": 1.0,
+      "distance_mean": 1.42894230776913e-17,
+      "distance_sum": 5.71576923107652e-17,
+      "per_layer_distance": [
+        5.703595421927894e-17,
+        1.1993495892790568e-19,
+        1.803016714191376e-21,
+        1.1584415080485288e-25
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": true,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 1.0,
+        "distance": 2.4390197872995825e-17,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "fine_tune_instruct",
+      "suspect": "instruct",
+      "victim": "victim",
+      "group": "A_finetune",
+      "similarity": 0.9046812310007257,
+      "distance_mean": 0.10017262826852305,
+      "distance_sum": 0.4006905130740922,
+      "per_layer_distance": [
+        2.570297529978375e-05,
+        0.12191830137908834,
+        0.1297403575130023,
+        0.1490061512067018
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.9046812310553921,
+        "distance": 0.40069051283238766,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "neg_cross_family",
+      "suspect": "neg_smol",
+      "victim": "victim",
+      "group": "negative",
+      "similarity": 0.538266769189554,
+      "distance_mean": 0.6194009882028998,
+      "distance_sum": 2.477603952811599,
+      "per_layer_distance": [
+        0.0002495477223658722,
+        1.1876981724852906,
+        0.7939107912989604,
+        0.4957454413049823
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.5856138482915598,
+        "distance": 2.1403786743031192,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "perm_vs_instruct_shared",
+      "suspect": "instruct_perm",
+      "victim": "instruct_shared",
+      "group": "B_permutation",
+      "similarity": 0.9999999993568731,
+      "distance_mean": 6.431268493214781e-10,
+      "distance_sum": 2.5725073972859123e-09,
+      "per_layer_distance": [
+        4.645045244509343e-13,
+        8.570691934416659e-10,
+        6.482426123408405e-10,
+        1.066731086978955e-09
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": true,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.9999999993568729,
+        "distance": 2.572508496179036e-09,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "perm_vs_victim",
+      "suspect": "instruct_perm",
+      "victim": "victim",
+      "group": "B_permutation",
+      "similarity": 0.9046790308277389,
+      "distance_mean": 0.10017506025847356,
+      "distance_sum": 0.40070024103389423,
+      "per_layer_distance": [
+        2.570470944724222e-05,
+        0.12191926028807987,
+        0.1297382230780416,
+        0.14901705295832554
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.9046791253354821,
+        "distance": 0.4006998231719341,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "feat_perm_vs_instruct",
+      "suspect": "instruct_feat_perm",
+      "victim": "instruct_shared",
+      "group": "B_permutation_theorem",
+      "similarity": 0.9999999999999999,
+      "distance_mean": 1.0110274075983011e-16,
+      "distance_sum": 4.0441096303932046e-16,
+      "per_layer_distance": [
+        4.037258664070848e-16,
+        6.726825232536488e-19,
+        1.2413314304439559e-20,
+        7.946775914835177e-25
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": true,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 1.0,
+        "distance": 8.466671545303039e-18,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "scale_vs_instruct",
+      "suspect": "instruct_scale",
+      "victim": "instruct_shared",
+      "group": "C_scaling",
+      "similarity": 0.9978151108960945,
+      "distance_mean": 0.0021872794565085734,
+      "distance_sum": 0.008749117826034294,
+      "per_layer_distance": [
+        7.169820720852083e-05,
+        0.0006124251464705052,
+        0.0014136659032145276,
+        0.0066513285691407395
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.9978151109012838,
+        "distance": 0.00874911780523148,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "scale_vs_victim",
+      "suspect": "instruct_scale",
+      "victim": "victim",
+      "group": "C_scaling",
+      "similarity": 0.8993026781983822,
+      "distance_mean": 0.10613561797382756,
+      "distance_sum": 0.42454247189531025,
+      "per_layer_distance": [
+        0.00015505301949600637,
+        0.12264542562138853,
+        0.13147366213609907,
+        0.17026833111832665
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.8993026780285724,
+        "distance": 0.4245424726506055,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "prune_vs_instruct",
+      "suspect": "instruct_prune",
+      "victim": "instruct",
+      "group": "D_pruning",
+      "similarity": 0.9452628924980496,
+      "distance_mean": 0.05629219705729584,
+      "distance_sum": 0.22516878822918335,
+      "per_layer_distance": [
+        6.766793321097093e-05,
+        0.003798211233481959,
+        0.010720239426535676,
+        0.21058266963595473
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.945262892504625,
+        "distance": 0.22516878820135866,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    },
+    {
+      "pair": "prune_vs_victim",
+      "suspect": "instruct_prune",
+      "victim": "victim",
+      "group": "D_pruning",
+      "similarity": 0.8455031892459589,
+      "distance_mean": 0.1678233386270101,
+      "distance_sum": 0.6712933545080404,
+      "per_layer_distance": [
+        1.5440880287208268e-05,
+        0.08802232776970498,
+        0.12129773656187715,
+        0.4619578492961711
+      ],
+      "n_layers": 4,
+      "n_components": 20,
+      "converged_all": false,
+      "note": null,
+      "diffip_metric_reference": {
+        "similarity": 0.8455031892459893,
+        "distance": 0.6712933545078963,
+        "warning": "includes DP; not the primary number for this experiment"
+      }
+    }
+  ],
+  "runtime_sec": 11.909123182296753
+}

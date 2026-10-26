@@ -231,6 +231,7 @@ class LLMRepresentationCollector:
                     self.model(
                         inputs_embeds=inputs_embeds,
                         attention_mask=attention_mask,
+                        use_cache=False,
                     )
                 finally:
                     self._remove_hooks()
