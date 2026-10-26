@@ -11,7 +11,7 @@ Pairs: SmolLM2-135M vs SmolLM2-135M-Instruct (positive) and SmolLM2-135M vs
 Qwen2.5-0.5B (negative). Reference margin (single prompt): 0.182.
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.per_prompt_eval
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.per_prompt_eval
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPTS = (
     "The quick brown fox jumps over the lazy dog.",

@@ -14,7 +14,7 @@ All configs use L=4 layers, perturbation scale 2e-3, seed 123:
   hybrid 8p x 2n  (N=16)
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.ablate_hybrid
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.ablate_hybrid
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPT = "The quick brown fox jumps over the lazy dog."
 

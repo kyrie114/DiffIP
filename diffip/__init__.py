@@ -9,7 +9,7 @@ def __getattr__(name: str):
     # lazily expose the torch/transformers-dependent LLM collector so that
     # importing diffip stays light when the optional extras are not installed
     if name in ("LLMRepresentationCollector", "CollectedRepresentations"):
-        from . import llm as _llm
+        from llm_transfer import llm as _llm
 
         return getattr(_llm, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

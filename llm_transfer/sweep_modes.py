@@ -12,7 +12,7 @@ Modes:
   - prompts:      8 distinct natural-sentence prompts (fixed pool)
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.sweep_modes \
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.sweep_modes \
         --model HuggingFaceTB/SmolLM2-135M
 """
 
@@ -25,7 +25,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPT = "The quick brown fox jumps over the lazy dog."
 

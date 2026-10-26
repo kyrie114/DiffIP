@@ -15,7 +15,7 @@ point by Youden's J, plus the AUC. Distances are negated before AUC so that
 "more similar" (smaller distance) counts towards the positive class.
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.roc_calibration
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.roc_calibration
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPTS = (
     "The quick brown fox jumps over the lazy dog.",

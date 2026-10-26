@@ -9,7 +9,7 @@ A good operating point shows a wide separation between the light-noise score
 and the heavy-noise score, plus a self score close to 1.
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.sweep_perturbation \
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.sweep_perturbation \
         --model HuggingFaceTB/SmolLM2-135M
 """
 
@@ -22,7 +22,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 
 def load_model(model_id: str):

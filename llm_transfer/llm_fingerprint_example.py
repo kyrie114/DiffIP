@@ -13,7 +13,7 @@ from __future__ import annotations
 import argparse
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 
 def main() -> None:

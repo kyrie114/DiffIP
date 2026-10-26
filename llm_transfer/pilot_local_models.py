@@ -15,7 +15,7 @@ Models are loaded one at a time (fp32, CPU) and fingerprinted per prompt;
 each model is freed before the next loads.
 
 Usage:
-    conda run -n diffip-llm python -m scripts.pilot_local_models
+    conda run -n diffip-llm python -m llm_transfer.pilot_local_models
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 ROOT = Path("/data/luo_lixuan/llms")
 

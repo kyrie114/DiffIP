@@ -15,7 +15,7 @@ the two models are sampled at different layer sets; the DP alignment handles
 the unequal-length trajectories.
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.validate_real_pair
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.validate_real_pair
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPT = "The quick brown fox jumps over the lazy dog."
 N_SAMPLES = 8

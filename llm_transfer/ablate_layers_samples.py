@@ -11,7 +11,7 @@ Configurations (all at perturbation scale 2e-3, seed 123):
   combined       : L=8, N=16
 
 Usage:
-    HF_ENDPOINT=https://hf-mirror.com python -m scripts.ablate_layers_samples
+    HF_ENDPOINT=https://hf-mirror.com python -m llm_transfer.ablate_layers_samples
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from diffip import DiffIPMetric
-from diffip.llm import LLMRepresentationCollector
+from llm_transfer.llm import LLMRepresentationCollector
 
 PROMPT = "The quick brown fox jumps over the lazy dog."
 SCALE = 2e-3

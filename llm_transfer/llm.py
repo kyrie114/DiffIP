@@ -30,7 +30,7 @@ except ImportError as _error:  # pragma: no cover - exercised only without extra
 def _require_torch() -> None:
     if torch is None:
         raise ImportError(
-            "diffip.llm requires torch and transformers; "
+            "llm_transfer.llm requires torch and transformers; "
             "install them with: python -m pip install torch transformers"
         ) from _IMPORT_ERROR
 
