@@ -1,0 +1,283 @@
+{
+  "victim": "Qwen/Qwen2.5-0.5B (feats/victim.npy, same as v2)",
+  "protocol": "see run.py; dims 8 and 20; DP off",
+  "held_out_note": "dim 8 chosen in pca_sweep using only SmolLM2-135M negative; other negatives are held-out",
+  "catalog": {
+    "smollm2_135m": {
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "kind": "unrelated",
+      "layers": [
+        0,
+        10,
+        19,
+        29
+      ],
+      "shape": [
+        4,
+        8,
+        576
+      ]
+    },
+    "smollm2_360m": {
+      "model_id": "HuggingFaceTB/SmolLM2-360M",
+      "kind": "unrelated",
+      "layers": [
+        0,
+        10,
+        21,
+        31
+      ],
+      "shape": [
+        4,
+        8,
+        960
+      ]
+    },
+    "gpt2": {
+      "model_id": "openai-community/gpt2",
+      "kind": "unrelated",
+      "layers": [
+        0,
+        4,
+        7,
+        11
+      ],
+      "shape": [
+        4,
+        8,
+        768
+      ]
+    },
+    "pythia_160m": {
+      "model_id": "EleutherAI/pythia-160m",
+      "kind": "unrelated",
+      "layers": [
+        0,
+        4,
+        7,
+        11
+      ],
+      "shape": [
+        4,
+        8,
+        768
+      ]
+    },
+    "qwen2_0.5b": {
+      "model_id": "Qwen/Qwen2-0.5B",
+      "kind": "same_family_different_model",
+      "layers": [
+        0,
+        8,
+        15,
+        23
+      ],
+      "shape": [
+        4,
+        8,
+        896
+      ]
+    }
+  },
+  "negatives": [
+    {
+      "neg": "smollm2_135m",
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "kind": "unrelated",
+      "d8": {
+        "similarity": 0.26349395716104723,
+        "distance_mean": 1.3337248442388376,
+        "n_components_used": 8
+      },
+      "d20": {
+        "similarity": 0.5382667694997665,
+        "distance_mean": 0.6194009876265824,
+        "n_components_used": 20
+      }
+    },
+    {
+      "neg": "smollm2_360m",
+      "model_id": "HuggingFaceTB/SmolLM2-360M",
+      "kind": "unrelated",
+      "d8": {
+        "similarity": 0.19352020585578597,
+        "distance_mean": 1.6423733489366876,
+        "n_components_used": 8
+      },
+      "d20": {
+        "similarity": 0.4160942530953272,
+        "distance_mean": 0.8768434744432761,
+        "n_components_used": 20
+      }
+    },
+    {
+      "neg": "gpt2",
+      "model_id": "openai-community/gpt2",
+      "kind": "unrelated",
+      "d8": {
+        "similarity": 0.24517404290783643,
+        "distance_mean": 1.4057869414216349,
+        "n_components_used": 8
+      },
+      "d20": {
+        "similarity": 0.4673909257887815,
+        "distance_mean": 0.7605892712960873,
+        "n_components_used": 20
+      }
+    },
+    {
+      "neg": "pythia_160m",
+      "model_id": "EleutherAI/pythia-160m",
+      "kind": "unrelated",
+      "d8": {
+        "similarity": 0.3175651805754322,
+        "distance_mean": 1.1470721885681785,
+        "n_components_used": 8
+      },
+      "d20": {
+        "similarity": 0.634751494886505,
+        "distance_mean": 0.45452170332094965,
+        "n_components_used": 20
+      }
+    },
+    {
+      "neg": "qwen2_0.5b",
+      "model_id": "Qwen/Qwen2-0.5B",
+      "kind": "same_family_different_model",
+      "d8": {
+        "similarity": 0.16160085530533222,
+        "distance_mean": 1.8226258401781323,
+        "n_components_used": 8
+      },
+      "d20": {
+        "similarity": 0.31878411171591053,
+        "distance_mean": 1.143241171087473,
+        "n_components_used": 20
+      }
+    }
+  ],
+  "negative_summary": {
+    "8": {
+      "unrelated": {
+        "similarity": {
+          "min": 0.19352020585578597,
+          "mean": 0.25493834662502546,
+          "max": 0.3175651805754322,
+          "n": 4
+        },
+        "distance_mean": {
+          "min": 1.1470721885681785,
+          "mean": 1.3822393307913348,
+          "max": 1.6423733489366876,
+          "n": 4
+        }
+      },
+      "all_incl_same_family": {
+        "similarity": {
+          "min": 0.16160085530533222,
+          "mean": 0.23627084836108683,
+          "max": 0.3175651805754322,
+          "n": 5
+        },
+        "distance_mean": {
+          "min": 1.1470721885681785,
+          "mean": 1.4703166326686943,
+          "max": 1.8226258401781323,
+          "n": 5
+        }
+      }
+    },
+    "20": {
+      "unrelated": {
+        "similarity": {
+          "min": 0.4160942530953272,
+          "mean": 0.514125860817595,
+          "max": 0.634751494886505,
+          "n": 4
+        },
+        "distance_mean": {
+          "min": 0.45452170332094965,
+          "mean": 0.6778388591717239,
+          "max": 0.8768434744432761,
+          "n": 4
+        }
+      },
+      "all_incl_same_family": {
+        "similarity": {
+          "min": 0.31878411171591053,
+          "mean": 0.4750575109972582,
+          "max": 0.634751494886505,
+          "n": 5
+        },
+        "distance_mean": {
+          "min": 0.45452170332094965,
+          "mean": 0.7709193215548737,
+          "max": 1.143241171087473,
+          "n": 5
+        }
+      }
+    }
+  },
+  "derived_vs_victim": [
+    {
+      "pair": "fine_tune_instruct",
+      "d8": {
+        "similarity": 0.852756397056493,
+        "distance_mean": 0.15928135603284102,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      },
+      "d20": {
+        "similarity": 0.9046812309957941,
+        "distance_mean": 0.10017262827397426,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      }
+    },
+    {
+      "pair": "perm_vs_victim",
+      "d8": {
+        "similarity": 0.8527453407873228,
+        "distance_mean": 0.15929432144814965,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      },
+      "d20": {
+        "similarity": 0.9046790308156992,
+        "distance_mean": 0.1001750602717819,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      }
+    },
+    {
+      "pair": "scale_vs_victim",
+      "d8": {
+        "similarity": 0.808037818110484,
+        "distance_mean": 0.2131464169641592,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      },
+      "d20": {
+        "similarity": 0.8993026782437559,
+        "distance_mean": 0.1061356179233733,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      }
+    },
+    {
+      "pair": "prune_vs_victim",
+      "d8": {
+        "similarity": 0.6060246110591353,
+        "distance_mean": 0.5008346814286759,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      },
+      "d20": {
+        "similarity": 0.8455031892443745,
+        "distance_mean": 0.16782333862888402,
+        "above_max_unrelated": true,
+        "above_max_incl_same_family": true
+      }
+    }
+  ]
+}
