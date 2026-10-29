@@ -20,3 +20,10 @@ llm_migration/**/__pycache__/
 # llm_migration_v2 PCA sweep caches (regenerable)
 llm_migration_v2/pca_sweep/feats/
 llm_migration_v2/**/__pycache__/
+
+# experiment logs (regenerable)
+*.log
+llm_migration_v3/feats/
+llm_migration_v3/reef_baseline/acts/
+llm_migration_v3/**/__pycache__/
+llm_transfer/**/__pycache__/

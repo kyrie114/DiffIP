@@ -1,8 +1,8 @@
 # LLM 指纹方法对比与实验笔记
 
-> 记录时间：2026-10-27。整理自与 AtomCode 的多轮讨论（会话 b06956c4，2026-10-25 ~ 10-27），
-> 覆盖：三代指纹方法的对比、本仓库两条路线（llm_migration 旧方法 vs collector/campaign 新方法）
-> 的机制区别、主要实验数字与结论。
+> ⚠️ **DiffIP→LLM 实验请以 [`docs/LLM迁移实验导读.md`](../docs/LLM迁移实验导读.md) 为准。**  
+> 本笔记整理自多轮讨论，混入了「三代指纹」与其它路线；下文「旧方法 vs collector/campaign 新方法」把严格重跑误写成「余弦聚合」，**不准确**。  
+> 正确对照：另一台机 = `llm_transfer/`（collector + DiffIPMetric）；本 bot 主线 = `llm_migration_v2/`→`llm_migration_v3/`（ALS + 平均 L2，不是余弦）。`llm_migration/` 最早版本用 margin，已否。
 
 ---
 
@@ -32,6 +32,8 @@
 ---
 
 ## 二、本仓库两条路线的区别（机制层面，不是版本迭代）
+
+> **更正（导读为准）**：下面把「新方法」写成 collector/campaign **余弦**，与事实不符。严格重跑（`llm_migration_v3`）的判定是 DiffIP 的 **ALS mean L2**；`llm_transfer` 用的是 **DiffIPMetric**。请勿再按本节省略理解主实验。
 
 ### 旧方法：`llm_migration/`（官方 DiffIPMetric 直接迁移到 LLM）
 

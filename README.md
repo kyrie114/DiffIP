@@ -1,4 +1,4 @@
-> **LLM 迁移实验（本 fork）**：见 [`llm_migration/`](llm_migration/)——把 DiffIP 打到 LLM 隐藏层的代码、报告与结果（含负结果）。上游 DiffIP 实现未改。
+> **LLM 迁移实验（本 fork）**：入口 [`docs/LLM迁移实验导读.md`](docs/LLM迁移实验导读.md)。四条线：[`llm_transfer/`](llm_transfer/)（另一台机：collector + DiffIPMetric）、[`llm_migration/`](llm_migration/)（最早版本，已否）、[`llm_migration_v2/`](llm_migration_v2/)（修正协议）、[`llm_migration_v3/`](llm_migration_v3/)（严格重跑，主结论）。上游 DiffIP 实现未改。
 
 <div align="center">
 
