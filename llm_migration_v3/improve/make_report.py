@@ -1,0 +1,182 @@
+"""Build 提升报告.md from results_exp1.json / results_exp2.json / results_exp1_ft_only.json."""
+from __future__ import annotations
+import json
+from pathlib import Path
+OUT = Path(__file__).resolve().parent
+e1 = json.loads((OUT / "results_exp1.json").read_text())
+e1ft = json.loads((OUT / "results_exp1_ft_only.json").read_text())
+e2 = json.loads((OUT / "results_exp2.json").read_text())
+
+def fmt(x, nd=3):
+    return f"{x:.{nd}f}" if isinstance(x, (int, float)) and x == x else str(x)
+
+r1019 = e1["reproduce_1019"]
+lines = []
+lines += [
+"# DiffIP→LLM 准确率提升实验报告",
+"",
+"目录：`llm_migration_v3/improve/`。数字全部实跑；负结果如实写。",
+"优先级来自协作方（2026-10-29）：① 约束 Q/S/h 回拉 vs 直接余弦的公平复测；② 剪枝层选择；③ 主线仍是抽取/蒸馏鲁棒性（本轮未新开蒸馏训练）。",
+"",
+"---",
+"",
+"## 0. Phase 1 候选排序（期望收益 / 成本）",
+"",
+"| 秩 | 实验 | 期望 | 成本 | 本轮 |",
+"|---:|---|---|---|---|",
+"| 1 | 约束 QSh（仅旋转+对角缩放+平移）留出评估 vs 直接余弦；加大校准样本量 | 核实「余弦 AUC≈1 / 全维回拉≈0.538」，决定回拉是否该做 | 复用 feats，CPU | **已跑** |",
+"| 2 | 剪枝：相对深度 / 中层子集 / last-token vs mean-pool | 拉高最弱正例 prune 的 gap/AUC | 复用 acts+dp_all+pert | **已跑** |",
+"| 3 | 抽取/蒸馏鲁棒性（加强学生、同词表 logit KD） | 主研究方向；v3 以前 distill_v2 为负 | 需训练，CPU 慢 | **未新开**（见既有 `llm_migration/exp_distill_v2`） |",
+"| 4 | 更难负例 + 阈值/TPR@FPR | 决策层指标 | 部分已有同族 Qwen2 | 口径写入本报告 |",
+"| 5 | CKA 与 DiffIP 融合 | 次要；reef_baseline 已显示同扰动云上 CKA≈DiffIP | 低 | **不优先** |",
+"| 6 | LoRA / 更大模型 | 协作方明确暂不当主线 | GPU 缺失 | **跳过** |",
+"",
+"说明：协作方写的「logit-space pull-back」按仓库既有 10/19 协议实现为 **last-token / mean-pool 隐状态**上的 Q/S/h 回拉（词表 logits ~15 万维，无法直接做全维 Procrustes）。下文一律称「表征回拉」。",
+"",
+"---",
+"",
+"## 1. 实验 1：QSh 回拉 vs 直接余弦（公平复测）",
+"",
+"### 1.1 要核实的主张",
+"",
+"来源：`/workspace/20261019_DiffIP迁移LLM_线性回拉/实验报告.md`——",
+"直接余弦逐提示 AUC≈**1.0**，全维（正交+逐维缩放+平移）留出回拉 AUC≈**0.538**。",
+"注意：10/19 的「全维」**已经是**仅 Q/S/h，不是无约束线性映射。",
+"",
+"### 1.2 复现 10/19（同一份 feats）",
+"",
+f"| 方法 | AUC（合并 instruct+LoRA vs Qwen2） | gap |",
+f"|---|---:|---:|",
+f"| 直接余弦 | {fmt(r1019['cosine']['auc_pooled'])} | {fmt(r1019['cosine']['gap'])} |",
+f"| QSh（R+s+h，校准 36 / 测试 36） | {fmt(r1019['qsh']['auc_pooled'])} | {fmt(r1019['qsh']['gap'])} |",
+"",
+"**结论：主张成立。** 本机复现余弦 AUC=1.000、QSh AUC≈0.52（与原文 0.538 同量级）。",
+"",
+"### 1.3 v3 对、仅微调口径（acts，1 向量/提示）",
+"",
+"正例 = fine_tune；负例 = neg_qwen2_0.5b；连续划分校准/测试。",
+"",
+"| pool | n_cal | 方法 | AUC_ft | gap_ft | AUC_prune | gap_prune |",
+"|---|---:|---|---:|---:|---:|---:|",
+]
+for r in e1ft:
+    lines.append(
+        f"| {r['pool']} | {r['n_cal']} | {r['mode']}"
+        + (f"(k={r['pca_k']})" if r['pca_k'] else "")
+        + f" | {fmt(r['auc_ft'])} | {fmt(r['gap_ft'])} | {fmt(r['auc_prune'])} | {fmt(r['gap_prune'])} |"
+    )
+lines += [
+"",
+"要点：",
+"- **仅微调时，直接余弦仍然 AUC=1.0、gap≈0.7**，与 10/19 一致。",
+"- **全维 QSh 在「每提示 1 向量」下仍然塌掉**（AUC≈0.4–0.67，gap≈0），加大 n_cal 到 24 也救不回来——自由度相对样本数仍然过大。",
+"- **QSh+PCA20** 在同一设定下 AUC=1.0，gap 尚可，说明限制维数是必要的（与 DiffIP 官方先 PCA 再 ALS 一致）。",
+"",
+"### 1.4 v3 全衍生集（含置换/缩放/剪枝）+ 加大校准样本量（扰动云）",
+"",
+"衍生 = fine_tune / weight_perm / rep_perm / scale / prune；硬负例 = Qwen2-0.5B。",
+"扰动云：每个校准提示贡献 N 个成对样本，**每层校准向量数 M = n_cal × N**。",
+"",
+"| 空间 | n_cal | M/层 | 方法 | AUC（均值） | gap |",
+"|---|---:|---:|---|---:|---:|",
+]
+for block in ("acts_last", "acts_mean", "pert_N64", "pert_N128"):
+    for r in e1.get(block, []):
+        lines.append(
+            f"| {r['space']} | {r['n_cal']} | {r.get('n_calib_vectors', r['n_cal'])} | {r['mode']}"
+            + (f"(k={r['pca_k']})" if r.get("pca_k") else "")
+            + f" | {fmt(r['auc_mean'])}±{fmt(r['auc_std'])} | {fmt(r['gap_mean'])} |"
+        )
+lines += [
+"",
+"**关键对照：**",
+"",
+"1. **含置换时，直接余弦 AUC 固定在 0.600、gap 为负**——置换打掉坐标轴对齐，这与 `exp_rotation_attack` 一致。余弦的「AUC≈1」只在微调/LoRA、未做置换伪装时成立。",
+"2. **扰动云 + 全维 QSh，当 M≳1024 时留出 AUC→1.000，gap≈0.10**（例如 N=128,n_cal=8/16/24）。",
+"   也就是说：**10/19 的 0.538 是「样本远少于维度」的欠定拟合现象，不是「只要做 QSh 就会塌」。** 加大成对校准样本后，QSh 能解开置换，余弦不能。",
+"3. QSh+PCA20 在扰动云上 AUC≈0.79–0.86，有时 gap 仍贴零；全维大样本反而更好——因为置换/缩放需要足够样本估 R、s。",
+"",
+"### 1.5 对主张的最终判定",
+"",
+"| 设定 | 余弦 | 全维 QSh 留出 | 判定 |",
+"|---|---|---|---|",
+"| 10/19 原协议（1 向量/提示，36 校准） | AUC≈1.0 | AUC≈0.52 | **复现主张** |",
+"| v3 仅微调，acts 1 向量/提示 | AUC=1.0 | AUC≈0.4–0.7，gap≈0 | **同方向复现** |",
+"| v3 含置换，扰动云 M≥1024 | AUC=0.60 | AUC=1.0，gap≈0.10 | **否定「QSh 必然有害」**；大样本下 QSh 优于余弦 |",
+"",
+"---",
+"",
+"## 2. 实验 2：剪枝专项（层选择）",
+"",
+"基线（v3 主结果，pert N=128 dims=8，4 均匀层）：prune sim≈0.645，gap≈0.408，逐 prompt AUC≈0.956。",
+"",
+"### 2.1 相对深度上的 DiffIP（dp_all，N=20，单层）",
+"",
+"| 相对深度 | prune sim | gap | AUC(prune vs 5 neg) |",
+"|---:|---:|---:|---:|",
+]
+for r in e2["dp_all_diffip_depth"]:
+    if r["kind"] != "single_frac":
+        continue
+    lines.append(f"| {r['frac']:.1f} | {fmt(r['means']['prune'])} | {fmt(r['gap'])} | {fmt(r['auc_prune_vs_all'])} |")
+lines += [
+"",
+"末层（1.0）最差（gap≈0.11，AUC≈0.67）；中前段（0.1–0.6）gap≈0.53–0.55。",
+"",
+"### 2.2 层束 / 既有 4 层子集（pert N=128）",
+"",
+"| 层子集 | 度量 | prune | gap | AUC | wins |",
+"|---|---|---:|---:|---:|---:|",
+]
+for r in e2["pert4_subsets"]:
+    lines.append(
+        f"| {r['layers']} | {r['metric']} | {fmt(r['means']['prune'])} | {fmt(r['gap'])} | {fmt(r['auc_pooled'])} | {r['wins_prune']}/32 |"
+    )
+# highlight middle2 vs all4
+all4 = next(r for r in e2["pert4_subsets"] if r["layers"] == "all4" and r["metric"] == "diffip")
+mid2 = next(r for r in e2["pert4_subsets"] if r["layers"] == "middle2" and r["metric"] == "diffip")
+last1 = next(r for r in e2["pert4_subsets"] if r["layers"] == "last1" and r["metric"] == "diffip")
+lines += [
+"",
+f"**相对 v3 默认 all4 DiffIP：middle2 把 gap 从 {fmt(all4['gap'])} 提到 {fmt(mid2['gap'])}（+{fmt(mid2['gap']-all4['gap'])}），"
+f"AUC 从 {fmt(all4['auc_pooled'])} 提到 {fmt(mid2['auc_pooled'])}。** "
+f"只用最后一层则 gap 掉到 {fmt(last1['gap'])}、AUC {fmt(last1['auc_pooled'])}。",
+"",
+"### 2.3 last-token vs mean-pool（acts 余弦，同族硬负例）",
+"",
+"在仅看 prune vs Qwen2 的余弦深度扫描上，mean-pool 中层 gap 可到 0.9+，last-token 也可分，但末段更不稳。"
+"完整逐 frac 表见 `results_exp2.json` → `acts_cosine_depth_sweep`。",
+"",
+"---",
+"",
+"## 3. Before / After 对照（检测准确率）",
+"",
+"| 设定 | gap = min(derived)−max(neg) | 逐 prompt AUC | prune 专项 |",
+"|---|---:|---:|---|",
+f"| v3 基线 DiffIP（all4, N=128, d=8） | ≈0.408 | ≈0.956 | prune≈0.645 |",
+f"| **improve：DiffIP 只用 middle2** | **{fmt(mid2['gap'])}** | **{fmt(mid2['auc_pooled'])}** | prune={fmt(mid2['means']['prune'])} |",
+f"| 扰动云 CKA all4（既有 reef） | ≈0.488 | 1.000 | prune≈0.786 |",
+f"| 留出全维 QSh（pert N=128, M=1024+） | gap≈0.10（仅同维硬负例） | 1.000 | 依赖大样本校准 |",
+"",
+"本轮**可落地的准确率提升**：把 v3 打分层从「4 均匀层」改成「去掉 embedding/末层、保留中层」——prune 间隔明显变宽，且不重新采特征。",
+"",
+"---",
+"",
+"## 4. 局限与下一步建议",
+"",
+"1. **蒸馏/抽取主线尚未在本目录重跑**；既有 `exp_distill_v2` 仍为负。下一步应：同词表或同架构学生、更强 KD，再用 middle2 DiffIP + 大样本 QSh 留出协议重测。",
+"2. 实验 1 的扰动云 AUC=1.0 目前负例只有同维 Qwen2；跨维负例不能直接做余弦/QSh，需投影器或继续用 DiffIP/CKA。",
+"3. 无 GPU：LoRA / 更大模型本轮跳过。",
+"4. CKA 融合仍次要；若只追 gap，可直接报 middle2 DiffIP 或扰动云 CKA。",
+"",
+"---",
+"",
+"## 5. 文件",
+"",
+"- `exp1_qsh_vs_cosine.py` / `results_exp1.json` / `results_exp1_ft_only.json` / `exp1.log`",
+"- `exp2_prune_layers.py` / `results_exp2.json` / `exp2.log`",
+"- `README.md`（本目录说明）",
+"",
+]
+(OUT / "提升报告.md").write_text("\n".join(lines) + "\n")
+print("wrote", OUT / "提升报告.md")

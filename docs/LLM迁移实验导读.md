@@ -16,7 +16,7 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 ├── llm_transfer/                ← 【另一台机 / 用户线】collector + DiffIPMetric
 ├── llm_migration/               ← 【最早版本】已被否掉，只作历史对照
 ├── llm_migration_v2/            ← 【修正协议】ALS + 平均 L2；单 prompt、N=8
-├── llm_migration_v3/            ← 【严格重跑】主结论所在；含 decode / DP / REEF
+├── llm_migration_v3/            ← 【严格重跑】主结论所在；含 decode / DP / REEF / improve
 └── notes/                       ← 杂记；DiffIP→LLM 请回本导读
 ```
 
@@ -71,6 +71,18 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 - **REEF（CKA）**：按官方设置在这些小模型上分不开；但把 CKA 套在同一批扰动样本上，又能分得很开。说明真正起作用的主要是配对采样，ALS 是不是比 CKA 更强还说不准。
 
 详细报告：[`llm_migration_v3/实验报告.md`](../llm_migration_v3/实验报告.md)；REEF 说明在 [`reef_baseline/说明.md`](../llm_migration_v3/reef_baseline/说明.md)。
+
+---
+
+### 提升跟进（`llm_migration_v3/improve/`，2026-10-29）
+
+按协作方优先级做了两件事（报告：[`提升报告.md`](../llm_migration_v3/improve/提升报告.md)）：
+
+1. **公平复测 QSh vs 余弦**：复现 10/19「余弦 AUC=1.0 / 全维 QSh 留出≈0.52」；但在 v3 扰动云、校准向量 M≥1024 时，全维 QSh 留出 AUC→1.0（能抗置换），余弦在含置换时只有 0.60。
+2. **剪枝层选择**：v3 默认 4 均匀层改用 **middle2** 后，DiffIP gap 0.394→**0.601**，AUC 0.948→**0.988**。末层最差。
+
+蒸馏/抽取主线本轮未新开训练；LoRA/更大模型因无 GPU 且非主线而跳过。
+
 
 ---
 
