@@ -83,6 +83,9 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 蒸馏/抽取主线本轮未新开训练；LoRA/更大模型因无 GPU 且非主线而跳过。
 
+**改进默认层（middle2）**：在不重新采特征的前提下，把打分层从 4 均匀层改为中间两层索引 `[1,2]` 后，扰动面板（N=128, dims=8）gap **0.411→0.605**、合并 AUC **0.953→0.989**，剪枝相似度 0.646→0.749；微调/置换/缩放几乎不变。完整主表见 [`tables_pert_middle2.md`](../llm_migration_v3/tables_pert_middle2.md) 与 [`主表_middle2.md`](../llm_migration_v3/improve/主表_middle2.md)。**all4 数字仍保留为基线**（`tables_pert.md`）。
+
+
 
 ---
 
