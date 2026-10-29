@@ -31,7 +31,56 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 ---
 
-## 2. 另一台机的方法（`llm_transfer/`）
+## 2. 版本演进（一个版本一个版本讲）
+
+按时间顺序，大白话说明每一版在干什么、为什么留下或否掉。
+
+---
+
+### 第 0 版：另一台机子的探索（`llm_transfer/`）
+
+你在另一台电脑上先做的。做法是：用 collector 抓各层 hidden，再调用 DiffIP 自带的打分函数 `DiffIPMetric.compare`。它定下了后面大家都沿用的工作点：**同一份 embedding 噪声、尺度 2e-3、配对种子**。
+
+主要结果：SmolLM2 基座对 Instruct（真实微调）相似度 **0.505**，跨家族只有 **0.323**，方向对；ROC 的 AUC 是 **0.678**。混合采样和把 N 加到 16 都会塌掉，所以这些路被划掉了。报告在 [`llm_transfer/REPORT.md`](../llm_transfer/REPORT.md)。
+
+---
+
+### 第 1 版：最早的迁移实验（`llm_migration/`）——已被否掉
+
+我最早做的一版。问题有两个：一是用 **margin**（正负例分数差）当最终判据，不是 DiffIP 原文的「平均 L2 距离」；二是没有按大数定律做多样本采集。所以它和 DiffIP 原文对不上，后来被否掉。里面还有 methodA、白盒对比、旋转攻击、蒸馏那些子实验，都是这一套错误协议下的产物，只能当历史记录。
+
+---
+
+### 第 2 版：修正协议（`llm_migration_v2/`）
+
+按要求改回 DiffIP 原文：PCA 降维 → ALS 拟合 Q、S、h → 用平均 L2 算相似度，去掉 margin，DP 先不用。还补了 PCA 维数扫描（选出 **8 维**）和 5 个无关模型的对比。
+
+这一版能分开衍生模型和无关模型了，但还不严谨：只用了一个提示词「The quick brown fox…」，N 只有 8，谈不上大数定律。详见 [`llm_migration_v2/实验报告.md`](../llm_migration_v2/实验报告.md)。
+
+---
+
+### 第 3 版：严格重跑（`llm_migration_v3/`）——现在的主结果
+
+「按这样再来」之后的版本。32 个提示词、3 组种子，N 从 8 扫到 128，同样 5 个无关模型。
+
+核心数字（N=128）：微调 / 置换 / 缩放大约 **0.75–0.76**，剪枝 **0.645**，无关模型大约 **0.24**，32 个提示词全都分对。N 太小时无关模型也会虚高；N≥64 以后结果稳定。剪枝开不开 DP 几乎没差别。
+
+同文件夹里还有两个对照：
+
+- **解码采样**：让模型自己随机写字当样本，分数全掉到 0，证明必须用配对扰动。
+- **REEF（CKA）**：按官方设置在这些小模型上分不开；但把 CKA 套在同一批扰动样本上，又能分得很开。说明真正起作用的主要是配对采样，ALS 是不是比 CKA 更强还说不准。
+
+详细报告：[`llm_migration_v3/实验报告.md`](../llm_migration_v3/实验报告.md)；REEF 说明在 [`reef_baseline/说明.md`](../llm_migration_v3/reef_baseline/说明.md)。
+
+---
+
+### 一句话串起来
+
+另一台机先摸清「怎么采表示」；第 1 版判错了公式；第 2 版改对公式但样本不够；第 3 版严格重跑，才是现在跟导师讲的那套。
+
+---
+
+## 3. 另一台机的方法（`llm_transfer/`）
 
 ### 做了什么
 
@@ -61,7 +110,7 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 ---
 
-## 3. 本 bot 的方法（忠实 DiffIP：ALS + 平均 L2 + 大数定律）
+## 4. 本 bot 的方法（忠实 DiffIP：ALS + 平均 L2 + 大数定律）
 
 ### 依据（DiffIP 原文要点）
 
@@ -104,7 +153,7 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 ---
 
-## 4. 两者的区别与联系
+## 5. 两者的区别与联系
 
 ### 共同点
 
@@ -133,7 +182,7 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 ---
 
-## 5. 怎么复现严格重跑
+## 6. 怎么复现严格重跑
 
 在仓库根目录，需已装 `torch` / `transformers` / 官方 DiffIP 依赖，并有对应模型权重（脚本默认读本地缓存；路径见 `common.py`）。
 
@@ -168,9 +217,9 @@ python collect.py && python score_reef.py && python score_pert_cka.py && python 
 
 ---
 
-## 6. 建议阅读顺序
+## 7. 建议阅读顺序
 
-1. **本导读**（建立地图与对照表）  
+1. **本导读**（先看第 2 节「版本演进」，再看目录地图与对照表）  
 2. [`llm_transfer/REPORT.md`](../llm_transfer/REPORT.md)（另一台机探索与数字）  
 3. [`llm_migration_v3/实验报告.md`](../llm_migration_v3/实验报告.md)（严格重跑全文）  
 4. [`llm_migration_v3/reef_baseline/说明.md`](../llm_migration_v3/reef_baseline/说明.md)（与 REEF/CKA）  
