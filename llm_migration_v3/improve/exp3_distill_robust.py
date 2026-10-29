@@ -141,23 +141,21 @@ def qsh_holdout(S, V, n_cal_prompts=16, n=N_MAX, layers=MIDDLE2, pca_k=None):
     def fit_qsh(X, Y):
         # X,Y [M,D]; solve min ||X R diag(s) + 1 h^T - Y|| ; R orthogonal via SVD on centered
         Xc = X - X.mean(0); Yc = Y - Y.mean(0)
-        if pca_k is not None and pca_k < X.shape[1]:
-            # joint PCA on concat
+        W = None
+        D0 = X.shape[1]
+        if pca_k is not None and pca_k < D0:
             C = np.concatenate([Xc, Yc], 0)
             _, _, Vt = svd(C, full_matrices=False)
             W = Vt[:pca_k].T  # D x k
             Xc, Yc = Xc @ W, Yc @ W
             X, Y = X @ W, Y @ W
-        # orthogonal Procrustes on centered
         U, _, Vt = svd(Xc.T @ Yc, full_matrices=False)
         R = U @ Vt
         Xr = Xc @ R
-        # diagonal scale
         num = (Xr * Yc).sum(0); den = (Xr * Xr).sum(0); den[den == 0] = 1.0
         s = num / den
-        # translation in original (possibly PCA) space
         h = Y.mean(0) - (X.mean(0) @ R) * s
-        return R, s, h, (W if pca_k is not None and pca_k < X.shape[1] else None)
+        return R, s, h, W
 
     def apply(X, R, s, h, W):
         if W is not None:

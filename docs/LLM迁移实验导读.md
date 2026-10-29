@@ -81,7 +81,7 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 1. **公平复测 QSh vs 余弦**：复现 10/19「余弦 AUC=1.0 / 全维 QSh 留出≈0.52」；但在 v3 扰动云、校准向量 M≥1024 时，全维 QSh 留出 AUC→1.0（能抗置换），余弦在含置换时只有 0.60。
 2. **剪枝层选择**：v3 默认 4 均匀层改用 **middle2** 后，DiffIP gap 0.394→**0.601**，AUC 0.948→**0.988**。末层最差。
 
-蒸馏/抽取主线本轮未新开训练；LoRA/更大模型因无 GPU 且非主线而跳过。
+蒸馏线：未新开训练（CPU）；用既有 student ckpt 做 middle2 配对扰动重测，见 [`蒸馏鲁棒性.md`](../llm_migration_v3/improve/蒸馏鲁棒性.md)——相对教师仍 AUC≈0.5；相对基座认得出 SFT，但 distill 不优于 control。LoRA/更大模型跳过。
 
 **改进默认层（middle2）**：在不重新采特征的前提下，把打分层从 4 均匀层改为中间两层索引 `[1,2]` 后，扰动面板（N=128, dims=8）gap **0.411→0.605**、合并 AUC **0.953→0.989**，剪枝相似度 0.646→0.749；微调/置换/缩放几乎不变。完整主表见 [`tables_pert_middle2.md`](../llm_migration_v3/tables_pert_middle2.md) 与 [`主表_middle2.md`](../llm_migration_v3/improve/主表_middle2.md)。**all4 数字仍保留为基线**（`tables_pert.md`）。
 
