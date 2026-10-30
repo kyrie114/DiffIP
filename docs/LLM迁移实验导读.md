@@ -85,7 +85,11 @@ DiffIP/                          ← fork: kyrie114/DiffIP（上游实现未改�
 
 **改进默认层（middle2）**：在不重新采特征的前提下，把打分层从 4 均匀层改为中间两层索引 `[1,2]` 后，扰动面板（N=128, dims=8）gap **0.411→0.605**、合并 AUC **0.953→0.989**，剪枝相似度 0.646→0.749；微调/置换/缩放几乎不变。完整主表见 [`tables_pert_middle2.md`](../llm_migration_v3/tables_pert_middle2.md) 与 [`主表_middle2.md`](../llm_migration_v3/improve/主表_middle2.md)。**all4 数字仍保留为基线**（`tables_pert.md`）。
 
+### FingerInv Table-2 攻击补测（`llm_migration_v3/fingerinv_attacks/`，2026-10-30）
 
+对照 FingerInv（CVPR25）Table 2 的 **3 类攻击 / 22 格**（微调、剪枝 PN%、float16/bfloat16），在 v3 同一 LLM 面板上补强度梯度与量化变体。报告：[`FingerInv攻击补测.md`](../llm_migration_v3/fingerinv_attacks/FingerInv攻击补测.md)；数字：`results.json`。
+
+middle2（N=128, dims=8）要点：**fp16≈微调**（sim 0.763 / gap +0.619）；**bf16 较弱**（0.580）；**真动态 int8 很弱**（0.195）；层丢弃到 30% 仍稳、**50% 崩**；幅值剪枝 30%/50% 明显掉。另有 **模拟** RTN-8/4（`q_w8sim`/`q_w4sim`），不能外推真实 int4 部署。`feats/` 不入库。
 
 ---
 
@@ -239,6 +243,7 @@ python collect.py && python score_reef.py && python score_pert_cka.py && python 
 3. [`llm_migration_v3/实验报告.md`](../llm_migration_v3/实验报告.md)（严格重跑全文）  
 4. [`llm_migration_v3/reef_baseline/说明.md`](../llm_migration_v3/reef_baseline/说明.md)（与 REEF/CKA）  
 5. 需要协议细节时再看 [`llm_migration_v2/PROTOCOL.md`](../llm_migration_v2/PROTOCOL.md) 与 PCA 扫描  
-6. [`llm_migration/`](../llm_migration/) 仅在需要「最早被否的设计」时翻
+6. [`llm_migration_v3/fingerinv_attacks/FingerInv攻击补测.md`](../llm_migration_v3/fingerinv_attacks/FingerInv攻击补测.md)（FingerInv 三类攻击补测）
+7. [`llm_migration/`](../llm_migration/) 仅在需要「最早被否的设计」时翻
 
 一句话收束：**配对扰动采样 + 足够大的 N，能分开衍生模型与无关模型；ALS 相对「同一扰动云上的 CKA」是否更强，尚未被证明——严格重跑已把这一点写进局限。**
