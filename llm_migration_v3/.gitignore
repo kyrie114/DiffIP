@@ -1,3 +1,5 @@
 feats/
 *.log.tmp
 feats_distill_signal/
+failure_diag/feats/
+failure_diag/acts/

@@ -263,3 +263,24 @@ middle2 下的结果：
 - Qwen2.5-Coder 系列（继续预训练）和 R1-DRAFT 失败，跌到负例水平。
 
 蒸馏方面，"教师回答 NLL"信号对 control 学生的 AUC 为 0.89，扰动云分布信号仍只有 0.52。
+
+## 9. 失效诊断与 REEF 对比（`llm_migration_v3/failure_diag/`，2026-10-30）
+
+详见 [`失效诊断与REEF对比.md`](../llm_migration_v3/failure_diag/失效诊断与REEF对比.md)。
+- **R1-DRAFT 的失败是协议问题**：它的分词器会多加一个 BOS，导致 32/32 条输入 token 都和 victim 不一样；它的权重其实只变了约 4%。改用 victim 分词器后，middle2 达到 .645 / gap +.501 / AUC .946。
+- **Coder 是真实漏检**：分词结果相同，换入 victim 嵌入也救不回来（.147）。它每一层的权重都漂移了 24–85%，第 2–20 层逐层 sim 全部落在负例水平。
+- **REEF 官方设定**能把 R1（.961）和 Coder-base（.938）排在负例最大值 .910 之上，但余量只有 +.03 到 +.06，而且 Coder-Inst（.895）低于难负例 Qwen2-Inst（.908）。扰动云 CKA 的表现和 DiffIP 一致。
+
+### 全部结果汇总（数字只取自已提交文件）
+
+| 实验 | 关键数字 | 出处 |
+|---|---|---|
+| v3 主表 all4 vs middle2 | gap .411 → .605；AUC .953 → .989；prune .646 → .749 | [`improve/主表_middle2.md`](../llm_migration_v3/improve/主表_middle2.md)、[`tables_pert_middle2.md`](../llm_migration_v3/tables_pert_middle2.md) |
+| REEF 基线（v3 面板） | 官方 gap **−0.036**（不可分）；扰动云 CKA gap **+0.488** | [`reef_baseline/说明.md`](../llm_migration_v3/reef_baseline/说明.md) |
+| improve：QSh vs 余弦 | 1 向量/prompt 时余弦 AUC 1.0、QSh ≈.52；含置换时余弦 .600，扰动云 QSh 1.000；middle2 prune gap .394 → .601 | [`improve/提升报告.md`](../llm_migration_v3/improve/提升报告.md) |
+| 蒸馏代理 | DiffIP 区分 distill vs teacher：AUC .504（≈0.50，负结果） | [`improve/蒸馏鲁棒性.md`](../llm_migration_v3/improve/蒸馏鲁棒性.md) |
+| FingerInv 攻击（359d8f6） | middle2：fp16 .763 / bf16 .580 / int8dyn .195 / w8sim .767 / w4sim .309；层剪枝 5–30% .763–.740，50% .231；幅值剪枝 30% .366、50% .202 | [`fingerinv_attacks/FingerInv攻击补测.md`](../llm_migration_v3/fingerinv_attacks/FingerInv攻击补测.md) |
+| 文献协议（4b27b75） | 7 个真实后代可检出（NuExtract .984 … Vikhr .426，p=5e-5）；Coder ×2、R1 贴地；合并 AUC .817；溯源无效；蒸馏输出信号 S2 teacher-NLL AUC .891 | [`lit_protocol/文献协议实验.md`](../llm_migration_v3/lit_protocol/文献协议实验.md) |
+| **本次失效诊断** | R1 改用 victim 分词器后 middle2 .645 / +.501 / .946；Coder 换嵌入后仍为 .147 | [failure_diag 报告](../llm_migration_v3/failure_diag/失效诊断与REEF对比.md) §1 |
+| **本次 REEF 对比** | 官方 R1 .961、Coder .938、Coder-Inst .895 < Qwen2-Inst .908 | [failure_diag 报告](../llm_migration_v3/failure_diag/失效诊断与REEF对比.md) §2 |
+
