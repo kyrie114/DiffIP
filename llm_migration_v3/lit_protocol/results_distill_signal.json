@@ -1,0 +1,72 @@
+{
+ "models": {
+  "student_distill": "/workspace/papers/exp_distill_v2/ckpt/student_distill",
+  "student_control": "/workspace/papers/exp_distill_v2/ckpt/student_control",
+  "base_smollm2_135m": "HuggingFaceTB/SmolLM2-135M",
+  "neg_smollm2_360m": "HuggingFaceTB/SmolLM2-360M",
+  "neg_gpt2": "openai-community/gpt2",
+  "neg_pythia_160m": "EleutherAI/pythia-160m",
+  "neg_qwen2_0.5b": "Qwen/Qwen2-0.5B"
+ },
+ "teacher": "Qwen/Qwen2.5-0.5B-Instruct",
+ "n_prompts": 120,
+ "cloud": 16,
+ "rows": {
+  "student_distill": {
+   "shared_vocab": 38933,
+   "s1_mean": 0.6094196438789368,
+   "top1_agree": 0.409375,
+   "teacher_nll_per_byte": 0.2608593034572765
+  },
+  "student_control": {
+   "shared_vocab": 38933,
+   "s1_mean": 0.5879507064819336,
+   "top1_agree": 0.46875,
+   "teacher_nll_per_byte": 0.40724106683866057
+  },
+  "base_smollm2_135m": {
+   "shared_vocab": 38933,
+   "s1_mean": 0.3054768145084381,
+   "top1_agree": 0.016666666666666666,
+   "teacher_nll_per_byte": 0.36918443032943565
+  },
+  "neg_smollm2_360m": {
+   "shared_vocab": 38933,
+   "s1_mean": 0.48021766543388367,
+   "top1_agree": 0.18333333333333332,
+   "teacher_nll_per_byte": 0.3168824374393708
+  },
+  "neg_gpt2": {
+   "shared_vocab": 41961,
+   "s1_mean": 0.002282728673890233,
+   "top1_agree": 0.0,
+   "teacher_nll_per_byte": 0.5844874010925096
+  },
+  "neg_pythia_160m": {
+   "shared_vocab": 40373,
+   "s1_mean": 0.21308450400829315,
+   "top1_agree": 0.0,
+   "teacher_nll_per_byte": 0.5205604050073736
+  },
+  "neg_qwen2_0.5b": {
+   "shared_vocab": 150310,
+   "s1_mean": 0.5608806610107422,
+   "top1_agree": 0.4046875,
+   "teacher_nll_per_byte": 0.2746490831830404
+  }
+ },
+ "S1_cloud_JS": {
+  "gap": 0.021468937397003174,
+  "auc_vs_pooled": 0.7639814814814815,
+  "auc_vs_control": 0.5225,
+  "win_vs_control": 61,
+  "win_vs_all": 43
+ },
+ "S2_teacher_nll": {
+  "gap": 0.013789779725763895,
+  "auc_vs_pooled": 0.8220833333333334,
+  "auc_vs_control": 0.890625,
+  "win_vs_control": 118,
+  "win_vs_all": 69
+ }
+}

@@ -247,3 +247,19 @@ python collect.py && python score_reef.py && python score_pert_cka.py && python 
 7. [`llm_migration/`](../llm_migration/) 仅在需要「最早被否的设计」时翻
 
 一句话收束：**配对扰动采样 + 足够大的 N，能分开衍生模型与无关模型；ALS 相对「同一扰动云上的 CKA」是否更强，尚未被证明——严格重跑已把这一点写进局限。**
+
+## 8. 文献协议实验（REEF / HuRef 式评测）
+
+详见 [`llm_migration_v3/lit_protocol/文献协议实验.md`](../llm_migration_v3/lit_protocol/文献协议实验.md)。这一批做了五件事：
+- 按 REEF（ICLR'25）和 HuRef（NeurIPS'24）的做法，拿 9 个 HF 上真实的 Qwen2.5-0.5B 后代当正例；
+- 加入 2 个同厂商难负例（Qwen2-0.5B-Instruct、Qwen3-0.6B-Base）；
+- 每行给出置换检验 p 值；
+- 做了基座归属实验，但因为相似度的底噪随参考模型变化，这个实验作废；
+- 蒸馏换成输出信号重测。
+
+middle2 下的结果：
+- SFT、权重编辑、合并类的 7/7 个后代全部检出（p=5e-05）；
+- 难负例没有出现假阳性；
+- Qwen2.5-Coder 系列（继续预训练）和 R1-DRAFT 失败，跌到负例水平。
+
+蒸馏方面，"教师回答 NLL"信号对 control 学生的 AUC 为 0.89，扰动云分布信号仍只有 0.52。
