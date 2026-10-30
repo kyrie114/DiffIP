@@ -1,0 +1,7 @@
+# llm_migration_v4 local artifacts (not committed)
+feats/
+ckpt/
+data/
+scores/
+*.log
+__pycache__/
