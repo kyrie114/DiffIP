@@ -232,8 +232,11 @@ if __name__ == "__main__":
     line = sys.argv[1]
     reg = list(MAIN) if line == "main" else list(DISTILL)
     if line == "main":
+        # neg_internlm2_7b is excluded: its custom modeling diverges to NaN
+        # mid-forward on this stack (see 实验报告.md §4.3 / common.py ATTN_IMPL).
         reg = (["victim", "fine_tune", "derivative_cn", "weight_perm",
                 "prune_dpoff", "rep_perm", "scale"]
-               + [k for k in reg if k.startswith("neg_")])
+               + [k for k in reg if k.startswith("neg_")
+                  and k != "neg_internlm2_7b"])
     names = sys.argv[2:] or reg
     score(line, names)
