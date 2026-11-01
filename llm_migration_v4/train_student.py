@@ -8,6 +8,7 @@ Chat-template format (Llama-3.2). Loss on the answer span only. CPU fp32.
 Usage: python train_student.py distill 3 | python train_student.py control 3
 """
 import json
+import os
 import sys
 import time
 import math
@@ -15,14 +16,16 @@ import random
 
 import numpy as np
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM
 
 from common import H, MODELS, load_tok
 
-torch.set_num_threads(12)
+NTHREADS = int(os.environ.get("V4_THREADS", "4"))
+torch.set_num_threads(NTHREADS)
 torch.manual_seed(0)
 random.seed(0)
 MODE, EPOCHS = sys.argv[1], int(sys.argv[2])
+print(f"train {MODE} threads={NTHREADS}", flush=True)
 KEY = "teacher" if MODE == "distill" else "alpaca"
 S = str(MODELS / "Llama-3.2-1B")
 tok = load_tok(S)
@@ -48,8 +51,19 @@ opt = torch.optim.AdamW(m.parameters(), lr=LR, weight_decay=0.0)
 sch = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1, (s + 1) / 30) * max(0.0, 1 - s / steps))
 m.train()
 st = 0
+start_ep = 0
+STATE = H / "ckpt" / f"student_{MODE}.partial.pt"
+(H / "ckpt").mkdir(exist_ok=True)
+if STATE.exists():
+    ck = torch.load(STATE, map_location="cpu", weights_only=False)
+    m.load_state_dict(ck["model"])
+    opt.load_state_dict(ck["opt"])
+    sch.load_state_dict(ck["sch"])
+    st = int(ck["st"])
+    start_ep = int(ck["ep"]) + 1
+    print(f"resume {MODE} from epoch {start_ep} step {st}", flush=True)
 t0 = time.time()
-for ep in range(EPOCHS):
+for ep in range(start_ep, EPOCHS):
     idx = np.random.RandomState(ep).permutation(len(ex))
     tot = 0
     nb = 0
@@ -72,10 +86,13 @@ for ep in range(EPOCHS):
         st += 1
         tot += loss.item()
         nb += 1
-        if st % 25 == 0:
+        if st == 1 or st % 25 == 0:
             print(f"ep{ep} step{st}/{steps} loss{tot / nb:.4f} {time.time() - t0:.0f}s",
                   flush=True)
-    print("EPOCH", ep, tot / nb, flush=True)
+    print("EPOCH", ep, tot / max(nb, 1), flush=True)
+    torch.save(dict(ep=ep, st=st, model=m.state_dict(), opt=opt.state_dict(),
+                    sch=sch.state_dict()), STATE)
+    print(f"checkpoint epoch {ep} -> {STATE}", flush=True)
 
 ( H / "ckpt" ).mkdir(exist_ok=True)
 m.save_pretrained(H / "ckpt" / f"student_{MODE}")
@@ -83,4 +100,5 @@ tok.save_pretrained(H / "ckpt" / f"student_{MODE}")
 json.dump(dict(mode=MODE, epochs=EPOCHS, steps=steps, bs=BS, lr=LR,
                n_train=len(ex), sec=time.time() - t0),
           open(H / "ckpt" / f"train_{MODE}.json", "w"), indent=1)
+STATE.unlink(missing_ok=True)
 print("saved", H / "ckpt" / f"student_{MODE}", flush=True)

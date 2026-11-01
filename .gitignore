@@ -23,6 +23,12 @@ llm_migration_v2/**/__pycache__/
 
 # experiment logs (regenerable)
 *.log
+*.log.*
+
+# llm_migration_v4 local products (regenerable; 7B feats are large)
+llm_migration_v4/feats/
+llm_migration_v4/ckpt/
+llm_migration_v4/**/__pycache__/
 llm_migration_v3/feats/
 llm_migration_v3/reef_baseline/acts/
 llm_migration_v3/**/__pycache__/

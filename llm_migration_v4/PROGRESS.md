@@ -64,7 +64,37 @@ max_new_tokens=64，BS=32）。
 - 采集实现：`output_hidden_states=True` 批量取隐层（无 hook），失败自动降级 batch=1
   （`perturb_batch` 要求 `[1,T,D]` 输入，见下方事故记录 #1）
 
-## 运行状态（截至 2026-10-30 ~19:40，用户要求暂停）
+## 运行状态（2026-10-31 15:13 重启，进行中）
+
+10 月 30 日 19:40 停下时磁盘没有 npz / checkpoint，教师文件也没被那次运行改写（`data/teacher_data.json` 仍是 v1 那份，control 用里面的 alpaca 字段）。2026-10-31 15:11 重新拉起三条任务。GPU 仍被 qvh 占满，全程 CPU、`HF_HUB_OFFLINE=1`、`nice -n 10`。当时负载约 29/48 核，线程从计划的 16/16/12 降到 **8 / 6 / 4**（PLAN 风险表里的降线程动作）。
+
+断点（这次新加，避免再停一次就丢光）：
+- 采集：每个 prompt 写 `feats/{line}_{name}.partial.npz`，重跑从下一个 prompt 续
+- 教师：进度在 `data/teacher_data.generating.json`，两段都完成才替换 `teacher_data.json`（control 读到的 alpaca 文件中途不会被截断）
+- 学生：每个 epoch 存 `ckpt/student_{mode}.partial.pt`（含 optimizer / scheduler），重跑从下一个 epoch 续
+
+| 任务 | pid | 线程 | 起步实测 | 粗估 |
+|---|---|---|---|---|
+| A 主线采集 `collect.py main` | 882371 | 8 | victim 52s/prompt | ~5–6h（11 个模型） |
+| B 教师生成 `gen_teacher.py` | 882383 | 6 | 64/1600 用了 77s | **15:44 完成**（1600+120，33 min） |
+| C control `train_student.py control 3` | 882378 | 4 | step1 loss 2.22 / 52s | 进行中，step50 loss 2.03 |
+| D distill `train_student.py distill 3` | 920433 | 4 | step1 loss 1.41 / 27s | 15:45 启动，约 7–9h |
+
+B 的产物已替换 `data/teacher_data.json`（与 v1 教师文本仅 3/1600 相同，alpaca 字段 1600/1600 一致）。主线 `feats/main_victim.npz` 与 `feats/main_fine_tune.npz` 已落盘。
+
+**16:16 采集在 Chinese-llama-2-7b 加载分词器时退出。** transformers 5.20 读 `.model` 需要 `protobuf`，环境里没有就退回 tiktoken，把 sentencepiece 二进制当成 BPE 解析（`Error parsing line b'\x0e'`）。同样会踩中的还有三个剪枝模型和 internlm2-7b。已在 `diffip-llm` 安装 `protobuf 6.33.6`，五个分词器离线复测通过；`load_tok` 补了 `trust_remote_code=True`（internlm2 自定义分词器）。采集从 `derivative_cn` 续跑，已完成的 npz 自动跳过。
+
+教师前 3 条是 Alpaca 续写（"1. Recycling helps…"），不是 v1 那份 "Certainly!" 口吻，也不是 chat 模板乱码。
+
+日志：`collect_main.log` / `gen_teacher.log` / `train_control.log`（10 月 30 日的日志留在 `*.log.1030`）。
+
+衔接（本会话盯着，完成一个接一个）：
+- B 完成 → `python train_student.py distill 3`
+- A 完成 → `python score.py main`
+- C 与 distill 都完成 → `python collect.py distill victim student_distill student_control neg_llama3_2_3b neg_sheared_1_3b neg_qwen2_5_7b neg_llama2_7b` → `python score.py distill …`
+- 然后写 `实验报告.md`
+
+## 历史：2026-10-30 ~19:40 用户要求暂停时
 
 三条任务 19:18 启动，19:40 应用户要求全部停止。停止时磁盘零产物（无 npz / 无 checkpoint /
 teacher 文件未重写），重启即从头跑，损失仅 ~15 分钟算力。
@@ -121,16 +151,38 @@ ls data/         # teacher_data.json 的 train 条数随 B 增长（每 256 条�
 3. 冒烟（smoke_test.py，diffip-llm 环境，27s）：S1 采集 [4,128,2048] 无 NaN 且确定性
    重跑逐位一致；S2 教师回答 `Paris\n\n### Explanation:...`；S3 学生 2 步 loss 有限。
 
+## 最终状态（2026-11-01，已收尾）
+
+| 阶段 | 完成时刻 | 备注 |
+|---|---|---|
+| 主线采集（11 npz） | 10-31 22:46 | internlm2-7b 的 npz 后发现深层全 NaN，已删除并排除 |
+| 蒸馏线采集（7 npz） | 11-01 19:22 | Sheared-LLaMA-1.3B 重采（430s）；2 个负例复用主线 npz（协议一致） |
+| 蒸馏线评分（7 模型，8064 行） | 11-01 20:09 | |
+| 主线评分（12 模型，13824 行） | 11-01 20:32 | internlm2 排除；20:54/20:56 重跑复核数值逐位一致 |
+
+11-01 修复与决策（细节见 `实验报告.md` 第 3 节"执行记录"）：
+1. `load()` 的 rope 补丁限定为 trust_remote_code 自定义 config 类（原补丁在 5.20 上抹掉标准 Llama 的 `rope_parameters`）；
+2. `score.py` 两轮修复：THP compaction 风暴（mallopt 阈值 + `PR_SET_THP_DISABLE` + float32 缓存 + `V4_SCORE_WORKERS` 可配）、worker 级 LRU 特征缓存（2304 job 冒烟 57s）+ summarize 聚合 bug；
+3. `collect.py` 逐 prompt 有限性校验（NaN 立即中止，不落坏文件）；
+4. **internlm2-7b 排除**：本环境（transformers 5.20 CPU + 自定义 modeling）深层激活数值发散为 NaN——权重全部有限、NaN 起始层随 run 漂移（L2/L4/L12/L21）、第 1 层激活幅值 ~4800；SDPA 重采在 prompt 2 仍失败。按 PLAN 风险表"隔离该模型、其余继续"处理，跨家族面板保留 Qwen2.5-7B + Llama-3-8B。
+
+结论（详见 `实验报告.md` 第 4/5/8 节）：
+- **主线**：协议可迁移到 7B，相对谱系排序保持（同底座剪枝 0.53–0.56 > SFT 簇 0.357–0.365 > 独立衍生 0.311 > 跨家族 0.254）；三种线性伪装全部隐形；绝对 similarity 随规模压缩（fine_tune 0.76→0.36，margin 0.52→0.11），跨规模只可迁移排序、不可迁移阈值；同底座剪枝副本比官方 SFT 更像基座（v4 新维度，v3 排序反转）。
+- **蒸馏线**：负结果——distill vs control 差异 ≤0.003（噪声级），教师本身与无关负例无差别（0.591），"被蒸馏过"这一属性在 N≤128 预算下不可检测。
+
 ## 文件清单
 
 ```
 llm_migration_v4/
 ├── common.py           # 协议常量 + 模型注册表 + 采集原语（perturb_batch / pooled_layers）
-├── collect.py          # 特征采集（main / distill 两线，断点续采）
-├── score.py            # ALS 评分 + 汇总（含同底座/跨家族分组统计、逐 prompt 胜负）
+├── collect.py          # 特征采集（main / distill 两线，断点续采 + 有限性校验）
+├── score.py            # ALS 评分 + 汇总（分组统计、逐 prompt 胜负；worker 缓存/THP 修复）
 ├── gen_teacher.py      # 3B 教师回答生成（输出 data/teacher_data.json）
 ├── train_student.py    # 1B 学生训练（distill / control）
+├── analysis.py         # 管外视角分析（难负例、蒸馏对照等）
+├── PLAN.md             # 执行计划（审批决策 + 风险表）
+├── 实验报告.md          # 最终报告（设计/执行记录/结果/对照/小结）
 ├── PROGRESS.md         # 本文件
 ├── feats/  ckpt/  data/  scores/   # 本地产物（.gitignore，不入库）
-└── *.log                            # 任务日志（不入库）
+└── *.log                            # 任务/诊断日志（不入库）
 ```

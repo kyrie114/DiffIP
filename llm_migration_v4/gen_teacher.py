@@ -1,26 +1,32 @@
 """Teacher (Llama-3.2-3B) generates greedy answers for the v1 Alpaca split
 (1600 train + 120 heldout instructions; original Alpaca answers kept as the
-control student's training text). CPU bf16, ~4h.
+control student's training text). CPU bf16.
 
 Output: data/teacher_data.json  {train:[{instruction, teacher, alpaca}], heldout:[...]}
+
+Progress is appended to data/teacher_data.generating.json and only moved onto
+teacher_data.json when both splits are complete, so a concurrent control
+training run keeps the intact Alpaca copy, and a killed run resumes by row.
 """
 import json
-import sys
+import os
 import time
 import random
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM
 
 from common import H, MODELS, ROOT, load_tok
 
-torch.set_num_threads(16)
+NTHREADS = int(os.environ.get("V4_THREADS", "6"))
+torch.set_num_threads(NTHREADS)
 random.seed(0)
 MAXNEW = 64
 BS = 32
 TEACHER = str(MODELS / "Llama-3.2-3B")
 SRC = ROOT / "llm_migration" / "exp_distill_v2" / "data" / "teacher_data.json"
 OUT = H / "data" / "teacher_data.json"
+PARTIAL = H / "data" / "teacher_data.generating.json"
 
 # Llama-3.2-1B/3B local copies are BASE models (no chat tuning) — the chat
 # template is meaningless to them. Use v1's plain Alpaca completion format.
@@ -28,18 +34,25 @@ FMT = "### Instruction:\n{}\n\n### Response:\n"
 
 
 def main():
+    print(f"gen_teacher threads={NTHREADS}", flush=True)
     OUT.parent.mkdir(exist_ok=True)
     tok = load_tok(TEACHER)
     tok.padding_side = "left"
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
-    m = AutoModelForCausalLM.from_pretrained(TEACHER, torch_dtype=torch.bfloat16).eval()
+    m = AutoModelForCausalLM.from_pretrained(TEACHER, dtype=torch.bfloat16).eval()
     src = json.load(open(SRC))
-    out = {"train": [], "heldout": []}
+    if PARTIAL.exists():
+        out = json.load(open(PARTIAL))
+        print(f"resume train {len(out['train'])}/{len(src['train'])} "
+              f"heldout {len(out['heldout'])}/{len(src['heldout'])}", flush=True)
+    else:
+        out = {"train": [], "heldout": []}
     t0 = time.time()
     for split in ("train", "heldout"):
         rows = src[split]
-        for i in range(0, len(rows), BS):
+        done = len(out[split])
+        for i in range(done, len(rows), BS):
             b = rows[i:i + BS]
             ps = [FMT.format(r["instruction"]) for r in b]
             enc = tok(ps, return_tensors="pt", padding=True)
@@ -53,8 +66,10 @@ def main():
                                        alpaca=r["alpaca"]))
             print(f"{split} {len(out[split])}/{len(rows)} {time.time() - t0:.0f}s",
                   flush=True)
-            if len(out[split]) % 256 < BS or len(out[split]) == len(rows):
-                json.dump(out, open(OUT, "w"), ensure_ascii=False, indent=0)
+            tmp = PARTIAL.with_suffix(".json.tmp")
+            json.dump(out, open(tmp, "w"), ensure_ascii=False)
+            os.replace(tmp, PARTIAL)
+    os.replace(PARTIAL, OUT)
     print("teacher data done", OUT, flush=True)
 
 

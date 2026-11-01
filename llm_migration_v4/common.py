@@ -18,7 +18,7 @@ import gc
 import sys
 from pathlib import Path
 import numpy as np, torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
 
 H = Path(__file__).resolve().parent
 ROOT = H.parent
@@ -41,7 +41,9 @@ LLAMA32_CHAT_TEMPLATE = (
 
 
 def load_tok(mid):
-    tok = AutoTokenizer.from_pretrained(mid)
+    # internlm2 ships a custom tokenizer; sentencepiece models need protobuf
+    # (installed in diffip-llm) or transformers falls back to tiktoken and crashes.
+    tok = AutoTokenizer.from_pretrained(mid, trust_remote_code=True)
     if not getattr(tok, "chat_template", None):
         tok.chat_template = LLAMA32_CHAT_TEMPLATE
     return tok
@@ -131,9 +133,30 @@ def prune_spec(total):
     return [round(i * (total - 1) / (n_drop + 1)) for i in range(1, n_drop + 1)]
 
 
+# internlm2-7b's custom modeling eager-attention path diverges to NaN from
+# layer 2 under transformers 5.20 on CPU (bf16 and fp32, clean forward,
+# weights verified finite); SDPA is stable with identical activation
+# magnitudes (diag_internlm2_attn.log, 2026-11-01).
+ATTN_IMPL = {"internlm2-7b": "sdpa"}
+
+
 def load(mid):
     tok = load_tok(mid)
-    m = AutoModelForCausalLM.from_pretrained(mid, torch_dtype=torch.bfloat16,
+    cfg = AutoConfig.from_pretrained(mid, trust_remote_code=True)
+    # transformers 5 rewrites rope_scaling=null into {rope_type: default}.
+    # InternLM2's custom modeling file only accepts null or {type, factor}, so
+    # null the patch back — but ONLY for trust_remote_code configs. Nulling a
+    # standard Llama config (Sheared-LLaMA, Llama-2) wipes rope_parameters and
+    # crashes LlamaRotaryEmbedding ('NoneType' not subscriptable).
+    rs = getattr(cfg, "rope_scaling", None)
+    if (isinstance(rs, dict) and "type" not in rs
+            and rs.get("rope_type", "default") == "default"
+            and not type(cfg).__module__.startswith("transformers.")):
+        cfg.rope_scaling = None
+    impl = ATTN_IMPL.get(Path(mid).name)
+    if impl:
+        cfg.attn_implementation = impl
+    m = AutoModelForCausalLM.from_pretrained(mid, config=cfg, torch_dtype=torch.bfloat16,
                                              trust_remote_code=True).eval()
     return m, tok
 

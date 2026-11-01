@@ -20,6 +20,21 @@ from pathlib import Path
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
     os.environ[_v] = "1"
 
+# The 7B feature arrays are 0.8-1.6GB each. Repeatedly allocating/freeing
+# 16MB PCA temporaries made glibc mmap/munmap them, which under 16 concurrent
+# workers drove kcompactd to 100% (compact_stall +450k, sys time ~46%): the
+# whole box stalled for 10+ min with zero jobs finished. Keep malloc on the
+# heap (no mmap/trim churn) and disable THP for this process.
+try:
+    import ctypes
+    _libc = ctypes.CDLL("libc.so.6")
+    _libc.mallopt(-3, 1 << 30)   # M_MMAP_THRESHOLD: 1 GiB
+    _libc.mallopt(-1, 1 << 30)   # M_TRIM_THRESHOLD: 1 GiB
+    _libc.mallopt(-2, 1 << 28)   # M_TOP_PAD: 256 MiB
+    _libc.prctl(41, 1, 0, 0, 0)  # PR_SET_THP_DISABLE
+except Exception:
+    pass
+
 import numpy as np
 
 from common import (H, MAIN, DISTILL, DIMS, N_GRID, PROMPTS, SEED_SETS)
@@ -31,7 +46,62 @@ F = H / "feats"
 
 
 def ld(line, n):
-    return np.load(F / f"{line}_{n}.npz")["pert"].astype(np.float64)
+    # Keep the cache in float32 (half the RSS); diffip's validators convert
+    # the per-job slice to float64 anyway.
+    return np.load(F / f"{line}_{n}.npz")["pert"]
+
+
+_CACHE = collections.OrderedDict()
+_CACHE_MAX = 3
+
+
+def _ld_cached(line, n):
+    """Per-worker LRU cache for full npz arrays.
+
+    _job runs 1152 (prompt, seed, N, d) jobs per suspect; without this each
+    job np.loads the whole 400-800MB file and re-converts it to float64
+    (~20s/job under memory-bandwidth contention). With it, each file is
+    loaded once per worker."""
+    key = (line, n)
+    if key in _CACHE:
+        _CACHE.move_to_end(key)
+        return _CACHE[key]
+    _CACHE[key] = ld(line, n)
+    while len(_CACHE) > _CACHE_MAX:
+        _CACHE.popitem(last=False)
+    return _CACHE[key]
+
+
+_DERIVED = {}
+
+
+def _derived(line, name):
+    """Feature-space disguises (rep_perm / scale) derived from fine_tune features.
+
+    Computed once per worker process (fork inherits sys.path); the derived
+    models have no npz on disk, so _job must not call ld() for them."""
+    if (line, name) in _DERIVED:
+        return _DERIVED[(line, name)]
+    base = _ld_cached(line, "fine_tune")
+    if name == "rep_perm":
+        from llm_migration_v2.transforms import make_permutation
+        perm = make_permutation(base.shape[-1], seed=1).argmax(0).numpy()
+        arr = base[..., perm]
+    elif name == "scale":
+        from llm_migration_v2.transforms import make_anisotropic_scale
+        s = np.diag(make_anisotropic_scale(base.shape[-1], seed=0).numpy())
+        arr = base * s
+    else:
+        raise KeyError(name)
+    _DERIVED[(line, name)] = arr
+    return arr
+
+
+def load_sus(line, name):
+    f = F / f"{line}_{name}.npz"
+    if f.exists():
+        return _ld_cached(line, name)
+    return _derived(line, name)
 
 
 def als(sus, vic, d):
@@ -44,29 +114,26 @@ def als(sus, vic, d):
 def _job(a):
     line, name, pi, ki, n, d = a
     assert d <= 4 * n - 1
-    sus = ld(line, name)
-    vic = ld(line, "victim")
+    sus = load_sus(line, name)
+    vic = _ld_cached(line, "victim")
     dm, sim, _ = als(sus[pi, ki, :, :n], vic[pi, ki, :, :n], d)
     return dict(pair=name, prompt=pi, seed_set=ki, N=n, dims=d,
                 distance_mean=dm, similarity=sim)
 
 
 def suspects_for(line, names):
-    """Return {name: feat array}, deriving rep_perm/scale from fine_tune."""
+    """Validate names without loading arrays (the parent process keeps no
+    feature memory; workers load/derive on demand). Real npz files must
+    exist; rep_perm/scale need only fine_tune (derived in the workers)."""
     SUS = {}
     for name in names:
         f = F / f"{line}_{name}.npz"
         if f.exists():
-            SUS[name] = ld(line, name)
+            SUS[name] = True
             continue
-        if line == "main" and name == "rep_perm" and "fine_tune" in SUS:
-            from llm_migration_v2.transforms import make_permutation
-            perm = make_permutation(SUS["fine_tune"].shape[-1], seed=1).argmax(0).numpy()
-            SUS[name] = SUS["fine_tune"][..., perm]
-        elif line == "main" and name == "scale" and "fine_tune" in SUS:
-            from llm_migration_v2.transforms import make_anisotropic_scale
-            s = np.diag(make_anisotropic_scale(SUS["fine_tune"].shape[-1], seed=0).numpy())
-            SUS[name] = SUS["fine_tune"] * s
+        if line == "main" and name in ("rep_perm", "scale") and \
+                (F / f"{line}_fine_tune.npz").exists():
+            SUS[name] = True
     return SUS
 
 
@@ -83,8 +150,9 @@ def summarize(rows, names, groups=None):
         for name in names:
             line = f"{name:<22}"
             for n in N_GRID:
-                per_seed = [np.mean(v) for (p, nn, dd), v in agg.items()
-                            if p == name and nn == n and dd == dims]
+                entry = agg.get((name, n, dims))
+                per_seed = ([np.mean(v) for v in entry.values()]
+                            if entry else [])
                 if per_seed:
                     line += f"{np.mean(per_seed):>9.3f}±{np.std(per_seed):<4.3f}"
                     out["by_nd"].setdefault(str(dims), {}).setdefault(
@@ -136,7 +204,9 @@ def score(line, names):
     scores_dir = H / "scores"
     scores_dir.mkdir(exist_ok=True)
     per_pair = collections.defaultdict(list)
-    with Pool(8) as pool:
+    nworkers = int(os.environ.get("V4_SCORE_WORKERS", "8"))
+    print(f"score workers={nworkers}", flush=True)
+    with Pool(nworkers) as pool:
         for i, row in enumerate(pool.imap_unordered(_job, jobs, chunksize=16)):
             per_pair[row["pair"]].append(row)
             if (i + 1) % 500 == 0:
@@ -154,7 +224,7 @@ def score(line, names):
                   "cross-family (easy negs)":
                   [n for n in names if n.startswith("neg_") and not n.startswith("neg_pruned")]}
     summary = summarize(rows, names, groups)
-    (H / f"summary_{line}.json").write_text(json.dumps(summary, indent=1))
+    (scores_dir / f"summary_{line}.json").write_text(json.dumps(summary, indent=1))
     print("done", line, len(rows), "rows", flush=True)
 
 
