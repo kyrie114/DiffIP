@@ -197,32 +197,13 @@ def new_slide():
     return s
 
 
-# ================================================================= 1 cover
-s = new_slide()
-rect(s, 0, 0, SW, SH, NAVY)
-rect(s, 0, Inches(6.62), SW, Inches(0.10), ORANGE)
-rect(s, Inches(0.9), Inches(1.72), Inches(0.14), Inches(2.3), ORANGE)
-tf = tb(s, Inches(1.32), Inches(1.62), Inches(11.2), Inches(3.6))
-para(tf, "7B 规模下的迁移指纹检测", 46, True, CARD, first=True)
-para(tf, "——把 v3 扰动采样协议放大到 Llama-2-7b 家族与蒸馏线", 22, False,
-     RGBColor(0xC9, 0xD8, 0xEC), before=14)
-para(tf, "llm_migration_v4 · 导师汇报", 16, False,
-     RGBColor(0x8F, 0xA8, 0xC9), before=30)
-pill = circle(s, Inches(1.32), Inches(5.30), Inches(0.30), ORANGE, "", 12)
-tf = tb(s, Inches(1.80), Inches(5.18), Inches(10.8), Inches(0.62),
-        anchor=MSO_ANCHOR.MIDDLE)
-para(tf, "全部 CPU（48 核） · 本地模型库 · 21888 个评分格 · 结果可复现（scores/*.json）",
-     15, False, RGBColor(0xC9, 0xD8, 0xEC), first=True)
-tf = tb(s, Inches(0.9), Inches(6.95), Inches(11.5), Inches(0.4))
-para(tf, "2026-11-02", 13, False, RGBColor(0x6C, 0x84, 0xA6), first=True)
-
 # ================================================================= 2 agenda
 s = new_slide()
 header(s, "汇报提纲")
 items = [
     ("01", "背景与问题", "v3（0.5B）站在哪，两个待回答的问题"),
     ("02", "实验设计", "主线谱系面板 + 蒸馏对照线，统一协议"),
-    ("03", "主线结果", "谱系排序 / 伪装隐形 / 跨规模规律 / 难负例警示"),
+    ("03", "主线结果", "谱系排序 / 伪装被看穿 / 跨规模规律 / 结构变体口径"),
     ("04", "蒸馏线与结论", "负结果复现 · 可迁移什么、不可迁移什么"),
 ]
 x = Inches(0.72)
@@ -248,7 +229,7 @@ tf = tb(s, Inches(0.95), Inches(2.05), Inches(5.2), Inches(3.0))
 para(tf, "v3 已得结论", 18, True, NAVY, first=True, after=10)
 bullet(tf, "全场可分", "正例 margin 0.52，逐 prompt 32/32 全胜", 17, 15.5)
 bullet(tf, "指纹有效", "线性伪装（白盒/置换）在特征空间不可见", 17, 15.5)
-bullet(tf, "但面板太小", "victim 仅 0.5B，负例大多是更小模型，无“难负例”")
+bullet(tf, "但面板太小", "victim 仅 0.5B，负例大多是更小模型，无“同底座结构变体”")
 bullet(tf, "遗留问题", "ROC 发现距离绝对尺度家族依赖——全局阈值存疑")
 
 for i, (bg, edge, tag, q) in enumerate([
@@ -276,7 +257,7 @@ rows = [
     ("正例", "derivative_cn：Chinese-Llama-2-7b（独立衍生）", PURPLE),
     ("正例", "prune_dpoff：chat 剪 4 层（结构变换）", ORANGE),
     ("伪装", "chat + 3 种线性伪装（白盒置换/特征置换/缩放）", RED),
-    ("难负例", "同底座剪枝 ×3（SparseGPT / Wanda / GBLM）", TEAL),
+    ("正例", "同底座结构变体（正例，稀疏剪枝）×3（SparseGPT / Wanda / GBLM）", TEAL),
     ("易负例", "跨家族 ×2（Qwen2.5-7B / Llama-3-8B）", GREEN),
 ]
 for role, name, c in rows:
@@ -333,8 +314,8 @@ footer(s)
 s = new_slide()
 header(s, "主线结果 ①：谱系排序在 7B 上保持，且多出新维度", "N=128，dims=8（dims=20 排序一致）· similarity 越高越像 victim")
 pic(s, "c1_genealogy.png", Inches(1.05), Inches(1.30), h=Inches(4.65))
-takeaway(s, "同底座剪枝副本(0.54) > SFT 簇(0.36) > 独立衍生(0.31) > 跨家族地板(0.25)——"
-            "“剪 4 层”与 SFT 都算温和扰动，但剪枝比 SFT 更像基座（v3 面板没有这一层）。",
+takeaway(s, "同底座结构变体（正例，稀疏剪枝）(0.54) > SFT 簇(0.36) > 独立衍生(0.31) > 跨家族地板(0.25)——"
+            "三者是非结构化稀疏剪枝（只有 prune_dpoff 是整层删 4 层）：base 上稀疏剪枝比 SFT 更像基座（v3 面板没有这一层）。",
          y=Inches(6.10), h=Inches(0.80))
 footer(s)
 
@@ -348,7 +329,7 @@ footer(s)
 
 # ================================================================= 8 c3 disguise
 s = new_slide()
-header(s, "主线结果 ③：三种伪装全部隐形，prune_dpoff 归 SFT 簇", "指纹跟着“基座 + 是否 SFT”走，结构变换与线性伪装都不是模拟障碍")
+header(s, "主线结果 ③：三种伪装被看穿（分数≡fine_tune），prune_dpoff 归 SFT 簇", "指纹跟着“基座 + 是否 SFT”走，线性伪装对检测无效，谱系照样被认出")
 pic(s, "c3_disguise.png", Inches(0.85), Inches(1.42), h=Inches(4.55))
 takeaway(s, "weight_perm / rep_perm / scale 三种伪装与 official fine_tune 噪声级一致（0.363–0.365）；"
             "chat+剪4层(0.357)落 SFT 簇而非剪枝簇（0.54）。",
@@ -366,10 +347,10 @@ footer(s)
 
 # ================================================================= 10 c5
 s = new_slide()
-header(s, "主线结果 ⑤：难负例的警示（诚实记录）", "同底座剪枝副本既“像正例”又可以“扮负例”")
+header(s, "主线结果 ⑤：结构变体（正例）分数高于 SFT 正例", "不是检测失败：胜负/AUC 主口径只对跨家族负例计")
 pic(s, "c5_hardneg.png", Inches(1.15), Inches(1.42), h=Inches(4.55))
-takeaway(s, "加入同源难负例后“逐 prompt 全胜”不复为 32/32：谱系判别靠的是跨家族地板 vs 同源高位的相对 gap，"
-            "不是理想化的完美分离。",
+takeaway(s, "新口径下所有正例对跨家族负例逐 prompt 比较（见左图）；结构变体高于 SFT 只说明“正例 A 比正例 B 更像基座”。"
+            "旧口径（若把结构变体当负例）下 SFT 只有 0–1/32，已弃用。",
          y=Inches(6.10), h=Inches(0.78))
 footer(s)
 
@@ -386,8 +367,8 @@ footer(s)
 s = new_slide()
 header(s, "结论")
 items = [
-    ("协议可迁移", "v3 结论在 7B 上方向性成立：同源高、跨家族低、伪装隐形；收敛行为一致。", TEAL),
-    ("谱系有新秩序", "同底座剪枝副本(0.54) > SFT(0.36) > 独立衍生(0.31)；"
+    ("协议可迁移", "v3 结论在 7B 上方向性成立：同源高、跨家族低、线性伪装被看穿（对检测无效）；收敛行为一致。", TEAL),
+    ("谱系有新秩序", "同底座结构变体（正例，稀疏剪枝）(0.54) > SFT(0.36) > 独立衍生(0.31)；"
                     "指纹 ≈ 基座 + 是否 SFT。", NAVY),
     ("只有排序可迁移", "绝对阈值随规模带漂移（0.76→0.36），地板不动（~0.25）——"
                       "部署需按家族重标定。", ORANGE),
@@ -411,8 +392,8 @@ header(s, "局限与下一步")
 rect(s, Inches(0.55), Inches(1.62), Inches(5.95), Inches(4.5), CARD, LINEC, round_=True)
 tf = tb(s, Inches(0.95), Inches(1.88), Inches(5.2), Inches(4.0))
 para(tf, "局限（复核过的）", 18, True, RED, first=True, after=10)
-bullet(tf, "难负例反超", "同源剪枝副本逐 prompt 高出 fine_tune 平均 +0.216——纯负例规则不可用", 15.5, 14)
-bullet(tf, "AUC 只有 0.63", "跨家族二分类 576:192 行 AUC=0.634/0.638", 15.5, 14)
+bullet(tf, "结构变体高于 SFT", "同底座结构变体（正例，稀疏剪枝）逐 prompt 高出 fine_tune 平均 +0.216——家族内排序需注明剪法", 15.5, 14)
+bullet(tf, "混池 AUC 仅 0.63", "正例 vs 跨家族、跨 prompt 混池 576:192 行 AUC=0.634/0.638（次要指标）；逐 prompt 胜负是主口径", 15.5, 14)
 bullet(tf, "internlm2 未判", "本环境深层 NaN 发散（生态问题）而非“指纹无关”", 15.5, 14)
 bullet(tf, "面板仍小", "7B 级仅一个家族的全谱系；蒸馏线仅一组教师-学生", 15.5, 14)
 
@@ -420,9 +401,9 @@ rect(s, Inches(6.85), Inches(1.62), Inches(5.93), Inches(4.5), CARD, LINEC, roun
 tf = tb(s, Inches(7.25), Inches(1.88), Inches(5.2), Inches(4.0))
 para(tf, "下一步", 18, True, TEAL, first=True, after=10)
 bullet(tf, "家族标定", "绝对阈值改为逐家族 ROC 标定 + 相对分位数排序", 15.5, 14, mark_color=TEAL)
-bullet(tf, "办法升级", "伪装检测（置换/缩放）需换协议——当前 PCA+ALS 有盲区", 15.5, 14, mark_color=TEAL)
+bullet(tf, "伪装扩展", "置换/缩放已被看穿；下一步测非线性等更强伪装", 15.5, 14, mark_color=TEAL)
 bullet(tf, "蒸馏定量", "放开教师数据量/token 预算，找指纹消失的定量边界", 15.5, 14, mark_color=TEAL)
-bullet(tf, "难负例正用", "把同源剪枝副本拿去做“变体归因”（哪个层被剪决定了相似度衰减）", 15.5, 14, mark_color=TEAL)
+bullet(tf, "结构变体正用", "把同底座结构变体（稀疏剪枝）拿去做“变体归因”（哪个层被剪决定了相似度衰减）", 15.5, 14, mark_color=TEAL)
 takeaway(s, "负例告诉我们：＋协议底线在哪，✗ 哪些“看似可分”的结论要在强对照下重说。",
          y=Inches(6.35), h=Inches(0.66))
 footer(s)

@@ -74,7 +74,7 @@ def c1():
     N, d = 128, 8
     groups = [
         ("victim（基座自身）", ["victim"], NAVY),
-        ("同底座剪枝变体", ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"], TEAL),
+        ("同底座结构变体（正例，稀疏剪枝）", ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"], TEAL),
         ("官方 SFT（chat）", ["fine_tune"], ORANGE),
         ("chat+剪4层", ["prune_dpoff"], ORANGE),
         ("白盒伪装×3", ["weight_perm", "rep_perm", "scale"], ORANGE),
@@ -118,7 +118,7 @@ def c2():
     Ns = [8, 16, 20, 32, 64, 128]
     d = 8
     series = [
-        ("同底座剪枝（3 个难负例）", ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"], TEAL),
+        ("同底座结构变体（正例，稀疏剪枝）×3", ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"], TEAL),
         ("SFT 簇（chat+3 伪装+剪4层）", ["fine_tune", "weight_perm", "rep_perm", "scale", "prune_dpoff"], ORANGE),
         ("独立衍生", ["derivative_cn"], PURPLE),
         ("跨家族（2 个易负例）", ["neg_qwen2_5_7b", "neg_llama3_8b"], RED),
@@ -167,11 +167,11 @@ def c3():
     xs_all = list(xs) + [4.35, 6.1]
     ax.set_xticks(xs_all)
     ax.set_xticklabels(["fine_tune\n(官方SFT)", "weight_perm\n(白盒置换)",
-                        "rep_perm\n(特征置换)", "scale\n(特征缩放)", "同底座剪枝\n(对照上下文)",
+                        "rep_perm\n(特征置换)", "scale\n(特征缩放)", "同底座结构变体\n(正例，稀疏剪枝)",
                         "跨家族\n(对照上下文)"], fontsize=13)
     lo, hi = 0.365, 0.0365
     ax.axhspan(min(vals) - 0.004, max(vals) + 0.004, color=ORANGE, alpha=0.12, zorder=1)
-    ax.annotate("三种伪装与官方 SFT 完全一致（噪声内）\nPCA+ALS 指纹对其不可见",
+    ax.annotate("三种伪装与官方 SFT 完全一致（噪声内）\n伪装对检测无效——谱系被看穿",
                 xy=(1.5, 0.364), xytext=(1.5, 0.475), fontsize=14, ha="center",
                 color="#7C480B",
                 arrowprops=dict(arrowstyle="-", color=ORANGE, lw=1.2))
@@ -216,56 +216,68 @@ def c4():
     plt.close(fig)
 
 
-# ---------------------------------------------------------------- c5 hard negs+auc
+# ---------------------------------------------------------------- c5 structural variants (positives) vs SFT; wins/AUC vs cross-family
+def _auc(pos, neg):
+    # tie-aware Mann-Whitney AUC
+    pos, neg = np.asarray(pos), np.asarray(neg)
+    gt = (pos[:, None] > neg[None, :]).sum()
+    eq = (pos[:, None] == neg[None, :]).sum()
+    return (gt + 0.5 * eq) / (len(pos) * len(neg))
+
+
 def c5():
     N, d = 128, 8
-    hard = ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"]
-    ft = {(r["prompt"], r["seed_set"]): r["similarity"] for r in MAIN["fine_tune"]
-          if r["N"] == N and r["dims"] == d}
-    hp = [{(r["prompt"], r["seed_set"]): r["similarity"] for r in MAIN[h]
-           if r["N"] == N and r["dims"] == d} for h in hard]
-    diffs = [min(max(h[p, s] for h in hp) - ft[p, s], 0.35) for s in (0,)
-             for p in range(32)]
-    diffs = np.array(diffs)
+    struct = ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"]
+    sft_like = ["fine_tune", "weight_perm", "rep_perm", "scale", "prune_dpoff", "derivative_cn"]
+    cross = ["neg_qwen2_5_7b", "neg_llama3_8b"]
+
+    def grid(name, d_=d):
+        return {(r["prompt"], r["seed_set"]): r["similarity"] for r in MAIN[name]
+                if r["N"] == N and r["dims"] == d_}
+
+    ft = grid("fine_tune")
+    cg = [grid(n) for n in cross]
+    keys = sorted(k for k in ft if all(k in g for g in cg))
+    # primary: per-prompt margin of fine_tune over the best cross-family negative
+    margin = np.array([ft[k] - max(g[k] for g in cg) for k in keys])
+    wins = int((margin > 0).sum())
+    sg = [grid(n) for n in struct]
+    sv_minus_ft = np.array([max(g[k] for g in sg) - ft[k] for k in keys if all(k in g for g in sg)])
 
     fig, axes = plt.subplots(1, 2, figsize=(9.6, 4.6), dpi=200,
                              gridspec_kw={"width_ratios": [1.35, 1]})
     ax = axes[0]
-    colors = [RED if x > 0 else GREEN for x in diffs]
-    bars = ax.bar(range(32), diffs, width=0.8, color=colors, zorder=3)
+    ax.bar(range(len(margin)), margin, width=0.8,
+           color=[GREEN if x > 0 else RED for x in margin], zorder=3)
     ax.axhline(0, color="#334155", lw=1.2)
-    ax.set_xlabel("prompt 序号（32 个探针）", fontsize=13)
-    ax.set_ylabel("最优难负例 − fine_tune", fontsize=13)
-    ax.set_ylim(-0.05, 0.43)
-    ax.set_title("同底座剪枝负例在 31/32 个 prompt 上压过官方 SFT",
-                 fontsize=13.5, color="#7C2D2A", pad=10)
-    ax.text(-1.5, 0.392, "平均高出 +0.216（仅 prompt #12 反超）", fontsize=13.5,
-            color=RED, fontweight="bold", ha="left")
+    ax.set_xlabel("prompt × seed_set（逐格）", fontsize=13)
+    ax.set_ylabel("fine_tune − 最优跨家族负例", fontsize=13)
+    ax.set_title(f"主口径：SFT 正例对跨家族负例 {wins}/{len(margin)} 胜",
+                 fontsize=13.5, color=NAVY, pad=10)
+    ax.text(0.01, 0.97, f"附：结构变体（正例）比 fine_tune 平均高 {sv_minus_ft.mean():+.3f}\n"
+            "——正例 A 比正例 B 更像基座，不是检测失败",
+            transform=ax.transAxes, fontsize=11.5, color=TEAL, va="top")
     style_ax(ax)
 
     ax = axes[1]
-    # AUC bars
-    main_pos = ["fine_tune", "weight_perm", "rep_perm", "scale", "prune_dpoff", "derivative_cn"]
-    easy = ["neg_qwen2_5_7b", "neg_llama3_8b"]
-    for k, d_ in enumerate([8, 20]):
-        pos = [r["similarity"] for n in main_pos for r in MAIN[n]
-               if r["N"] == N and r["dims"] == d_]
-        neg = [r["similarity"] for n in easy for r in MAIN[n]
-               if r["N"] == N and r["dims"] == d_]
-        # tie-aware AUC
-        allv = np.array(pos + neg)
-        ranks = np.argsort(np.argsort(allv)) + 1
-        r_pos = ranks[:len(pos)].sum()
-        auc = (r_pos - len(pos) * (len(pos) + 1) / 2) / (len(pos) * len(neg))
-        b = ax.bar(k, auc, 0.5, color=NAVY, zorder=3)
-        ax.text(k, auc + 0.015, f"{auc:.3f}", ha="center", fontsize=16,
-                fontweight="bold", color=NAVY)
-    ax.bar([2], [1.0], 0.5, color=GREEN, zorder=3)
-    ax.text(2, 1.015, "理想 1.0", ha="center", fontsize=13.5, color=GREEN, fontweight="bold")
-    ax.set_xticks([0, 1, 2])
-    ax.set_xticklabels(["AUC\n(dims=8)", "AUC\n(dims=20)", "理想"], fontsize=12.5)
+    pos_new = sft_like + struct
+    vals, labels = [], []
+    for d_ in (8, 20):
+        pos = [v for n in pos_new for v in grid(n, d_).values()]
+        neg = [v for n in cross for v in grid(n, d_).values()]
+        vals.append(_auc(pos, neg)); labels.append(f"全部正例\nvs 跨家族\n(dims={d_})")
+    # secondary, old 口径: structural variants treated as negatives
+    pos = [v for n in sft_like for v in grid(n).values()]
+    neg = [v for n in cross + struct for v in grid(n).values()]
+    vals.append(_auc(pos, neg)); labels.append("旧口径\n(结构变体\n当负例)")
+    cols = [NAVY, NAVY, "#94A3B8"]
+    for k, (v, c) in enumerate(zip(vals, cols)):
+        ax.bar(k, v, 0.5, color=c, zorder=3)
+        ax.text(k, v + 0.015, f"{v:.3f}", ha="center", fontsize=15, fontweight="bold", color=c)
+    ax.set_xticks(range(len(vals)))
+    ax.set_xticklabels(labels, fontsize=11)
     ax.set_ylim(0, 1.15)
-    ax.set_title("跨家族判别 AUC ≈ 0.63", fontsize=13.5, color=NAVY, pad=10)
+    ax.set_title("混池 AUC（主：vs 跨家族；灰：旧口径，次要）", fontsize=12.5, color=NAVY, pad=10)
     style_ax(ax)
     fig.tight_layout()
     fig.savefig(A / "c5_hardneg.png")
