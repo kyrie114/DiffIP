@@ -29,6 +29,10 @@ llm_migration_v2/**/__pycache__/
 llm_migration_v4/feats/
 llm_migration_v4/ckpt/
 llm_migration_v4/**/__pycache__/
+
+# llm_migration_v4 deck assets (regenerable via make_charts.py / build_ppt.py)
+llm_migration_v4/ppt_assets/
+llm_migration_v4/汇报PPT/
 llm_migration_v3/feats/
 llm_migration_v3/reef_baseline/acts/
 llm_migration_v3/**/__pycache__/
