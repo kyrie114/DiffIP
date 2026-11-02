@@ -9,15 +9,25 @@ Extra views that score.py's summarize does not print:
 import collections
 import json
 import math
+import os
+import sys
 from pathlib import Path
 
 import numpy as np
 
 H = Path(__file__).resolve().parent
-S = H / "scores"
+# V4_LAYER_SUBSET=mid2 or --mid2 -> read scores_mid2/ (middle 2 of 4 stored layers)
+if "--mid2" in sys.argv:
+    os.environ["V4_LAYER_SUBSET"] = "mid2"
+_SUB = os.environ.get("V4_LAYER_SUBSET", "all")
+S = H / ("scores" if _SUB == "all" else f"scores_{_SUB}")
 
 MAIN_POS = ["fine_tune", "weight_perm", "rep_perm", "scale", "prune_dpoff", "derivative_cn"]
+# Same-base structural variants (unstructured sparse pruning): lineage POSITIVES.
+# Keys keep the historical neg_ prefix for file compatibility only.
 MAIN_HARD = ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"]
+MAIN_STRUCT = MAIN_HARD
+DISPLAY = {k: "结构变体_" + k.split("_")[-1] for k in MAIN_STRUCT}
 MAIN_EASY = ["neg_qwen2_5_7b", "neg_llama3_8b"]
 DISTILL_NAMES = ["student_distill", "student_control", "neg_llama3_2_3b",
                  "neg_sheared_1_3b", "neg_qwen2_5_7b", "neg_llama2_7b"]
@@ -70,7 +80,7 @@ def main():
             wh = wins(M, MAIN_POS, MAIN_HARD, n, d)
             print(f"[wins vs easy-only]  N={n} d={d}: " +
                   " ".join(f"{k}={v}/32" for k, v in we.items()))
-            print(f"[wins vs hard-only]  N={n} d={d}: " +
+            print(f"[struct-variant(正例) vs positives, 非胜负口径]  N={n} d={d}: " +
                   " ".join(f"{k}={v}/32" for k, v in wh.items()))
             # per-prompt best hard neg vs fine_tune
             ft = sim_grid(M["fine_tune"])
@@ -79,7 +89,10 @@ def main():
             hng = {k: sim_grid(M[k]) for k in MAIN_HARD}
             beats = sum(max(v[(n, d, p, 0)] for v in hng.values()) > ft[(n, d, p, 0)]
                         for p in range(32))
-            print(f"[hard-negs beat fine_tune on prompts] N={n} d={d}: {beats}/32")
+            ws = wins(M, MAIN_STRUCT, MAIN_EASY, n, d)
+            print(f"[结构变体(正例) wins vs cross-family] N={n} d={d}: " +
+                  " ".join(f"{DISPLAY[k]}={v}/32" for k, v in ws.items()))
+            print(f"[结构变体 above fine_tune on prompts] N={n} d={d}: {beats}/32")
 
     # distance table at N=128
     for d in (8, 20):
@@ -87,7 +100,7 @@ def main():
                             if r["N"] == 128 and r["dims"] == d])
                 for k, v in M.items()}
         print(f"[distance_mean N=128 d={d}] " +
-              " ".join(f"{k}={vals[k]:.3f}" for k in sorted(vals)))
+              " ".join(f"{DISPLAY.get(k, k)}={vals[k]:.3f}" for k in sorted(vals)))
 
     # pooled AUC: same-origin vs cross-family (N=128, d=8)
     for d in (8, 20):
@@ -97,6 +110,10 @@ def main():
                if r["N"] == 128 and r["dims"] == d]
         print(f"[AUC same-origin vs cross-family] d={d}: {auc(pos, neg):.3f} "
               f"({len(pos)} vs {len(neg)} rows)")
+        pos2 = pos + [r["similarity"] for k in MAIN_STRUCT if k in M for r in M[k]
+                      if r["N"] == 128 and r["dims"] == d]
+        print(f"[AUC same-origin incl. 结构变体 vs cross-family] d={d}: "
+              f"{auc(pos2, neg):.3f} ({len(pos2)} vs {len(neg)} rows)")
 
     print("=" * 20, "DISTILL")
     for n in (20, 128):

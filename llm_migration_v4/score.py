@@ -44,6 +44,35 @@ from diffip.reversion import fit_step_alignment  # noqa: E402
 
 F = H / "feats"
 
+# Layer subset over the 4 stored even layers (npz `pert` is [32,3,4,128,D]).
+# V4_LAYER_SUBSET=mid2 (or CLI flag --mid2) keeps only stored indices 1,2.
+# NOTE: this is "middle 2 of 4 even layers", NOT v3's "middle 2 of all layers".
+if "--mid2" in sys.argv:
+    sys.argv.remove("--mid2")
+    os.environ["V4_LAYER_SUBSET"] = "mid2"
+LAYER_SUBSET = os.environ.get("V4_LAYER_SUBSET", "all")
+LAYER_IDX = {"all": None, "mid2": [1, 2]}[LAYER_SUBSET]
+SCORES_DIR = H / ("scores" if LAYER_IDX is None else f"scores_{LAYER_SUBSET}")
+
+# Display names: neg_pruned_* keys are kept for file compatibility but are
+# lineage POSITIVES (same-base structural variants), not negatives.
+DISPLAY = {"neg_pruned_sparsegpt": "结构变体_sparsegpt",
+           "neg_pruned_wanda": "结构变体_wanda",
+           "neg_pruned_gblm": "结构变体_gblm"}
+
+
+def is_struct_variant(k):
+    return k.startswith("neg_pruned")
+
+
+def is_neg(k):
+    """True negatives = cross-family only."""
+    return k.startswith("neg_") and not is_struct_variant(k)
+
+
+def dn(k):
+    return DISPLAY.get(k, k)
+
 
 def ld(line, n):
     # Keep the cache in float32 (half the RSS); diffip's validators convert
@@ -116,7 +145,10 @@ def _job(a):
     assert d <= 4 * n - 1
     sus = load_sus(line, name)
     vic = _ld_cached(line, "victim")
-    dm, sim, _ = als(sus[pi, ki, :, :n], vic[pi, ki, :, :n], d)
+    s_, v_ = sus[pi, ki, :, :n], vic[pi, ki, :, :n]
+    if LAYER_IDX is not None:
+        s_, v_ = s_[LAYER_IDX], v_[LAYER_IDX]
+    dm, sim, _ = als(s_, v_, d)
     return dict(pair=name, prompt=pi, seed_set=ki, N=n, dims=d,
                 distance_mean=dm, similarity=sim)
 
@@ -148,7 +180,7 @@ def summarize(rows, names, groups=None):
         print(f"\n-- dims={dims} --")
         print(f"{'pair':<22}" + "".join(f"{n:>13}" for n in N_GRID))
         for name in names:
-            line = f"{name:<22}"
+            line = f"{dn(name):<22}"
             for n in N_GRID:
                 entry = agg.get((name, n, dims))
                 per_seed = ([np.mean(v) for v in entry.values()]
@@ -164,19 +196,19 @@ def summarize(rows, names, groups=None):
     for n in (20, max(N_GRID)):
         for dims in DIMS:
             print(f"\n== 逐 prompt 胜负（N={n}, dims={dims}, seed set 0）："
-                  f"高于全部负例的 prompt 数 / 32 ==")
+                  f"高于全部跨家族负例的 prompt 数 / 32（结构变体为正例，不计入负例）==")
             by = collections.defaultdict(lambda: np.zeros(len(PROMPTS)))
             for r in rows:
                 if r["seed_set"] == 0 and r["N"] == n and r["dims"] == dims:
                     by[r["pair"]][r["prompt"]] = r["similarity"]
-            negs = [k for k in by if k.startswith("neg_")]
+            negs = [k for k in by if is_neg(k)]
             if negs:
                 best = np.max(np.stack([by[k] for k in negs]), axis=0)
                 for pair in names:
-                    if pair.startswith("neg_"):
+                    if is_neg(pair):
                         continue
                     wins = int((by[pair] > best).sum())
-                    print(f"  {pair}: {wins}/32   "
+                    print(f"  {dn(pair)}: {wins}/32   "
                           f"sim mean={by[pair].mean():.3f} min={by[pair].min():.3f}")
     if groups:
         for gname, gmembers in groups.items():
@@ -201,7 +233,8 @@ def score(line, names):
     names = list(SUS)
     jobs = list(itertools.product([line], [n for n in names], range(len(PROMPTS)),
                                   range(len(SEED_SETS)), N_GRID, DIMS))
-    scores_dir = H / "scores"
+    scores_dir = SCORES_DIR
+    print(f"layer subset={LAYER_SUBSET} -> {scores_dir}", flush=True)
     scores_dir.mkdir(exist_ok=True)
     per_pair = collections.defaultdict(list)
     nworkers = int(os.environ.get("V4_SCORE_WORKERS", "8"))
@@ -219,10 +252,10 @@ def score(line, names):
         print("scored", name, len(per_pair[name]), flush=True)
     groups = None
     if line == "main":
-        groups = {"same-base pruned (hard negs)":
+        groups = {"同底座结构变体（正例）":
                   [n for n in names if n.startswith("neg_pruned")],
-                  "cross-family (easy negs)":
-                  [n for n in names if n.startswith("neg_") and not n.startswith("neg_pruned")]}
+                  "跨家族负例":
+                  [n for n in names if is_neg(n)]}
     summary = summarize(rows, names, groups)
     (scores_dir / f"summary_{line}.json").write_text(json.dumps(summary, indent=1))
     print("done", line, len(rows), "rows", flush=True)

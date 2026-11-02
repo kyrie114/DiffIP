@@ -11,7 +11,7 @@
 | **最终报告** | `实验报告.md` | 设计 / 执行记录（含全部事故）/ 两线结果表 / v3 对照 / 小结 / 复现命令 |
 | 过程记录 | `PROGRESS.md` | 时间线、事故与修复、关键决策 |
 | 执行计划 | `PLAN.md` | 审批决策 + 风险表（internlm2 隔离即依据其中风险行） |
-| 管外视角分析 | `analysis.py` | 难负例、蒸馏对照等补充视角（读 `scores/*.json`） |
+| 管外视角分析 | `analysis.py` | 结构变体、蒸馏对照等补充视角（读 `scores/*.json`；`V4_LAYER_SUBSET=mid2` 读 `scores_mid2/`） |
 | 评分明细 | `scores/{main,distill}_<pair>.json` | 每模型 1152 行（32 prompt × 3 seed set × 6 N × 2 dims），含 `similarity` / `distance_mean` |
 | 汇总表 | `scores/summary_{main,distill}.json` | `by_nd: dims→N→pair→[3 个 seed set 的均值]` |
 | 特征 | `feats/*.npz` | 17 个（主线 10 + 蒸馏线 7），~11GB，`.gitignore` 不入库；每个含 `pert [32,3,4,128,D]` + `layers4` |
@@ -69,7 +69,7 @@ python score.py distill victim student_distill student_control \
 
 | 谱系位置 | similarity | 结论 |
 |---|---|---|
-| 同底座剪枝（3 个难负例） | 0.53–0.56 | 剪 4/32 层比 SFT 更像基座（**与 v3 排序反转**） |
+| 同底座结构变体（3 个，正例；稀疏权重剪枝） | 0.53–0.56 | 稀疏剪枝比 SFT 更像基座（与 v3 层剪枝排序反转，但剪法/比例/规模因素不可分离） |
 | SFT + weight/rep/scale 伪装 + chat剪枝 | 0.357–0.365 | 三种线性伪装全部隐形（互相噪声级不可分） |
 | 独立衍生 Chinese-llama | 0.311 | 小 N 下与负例地板重叠更大（N=20 仅 20/32 胜跨家族） |
 | 跨家族（Qwen2.5-7B / Llama-3-8B） | 0.254 | 地板稳定（v3 的 0.235–0.24 几乎不变） |
@@ -79,6 +79,10 @@ python score.py distill victim student_distill student_control \
 
 **核心结论**：协议可迁移到 7B、相对谱系排序可靠；绝对 similarity 随规模压缩（fine_tune 0.76→0.36，margin 0.52→0.11），
 **跨规模可迁移排序、不可迁移阈值**，实用判定必须家族内 + 规模内标定。
+
+**口径更新**：sparsegpt/wanda/gblm 改归正例"同底座结构变体"（代码键名仍是 `neg_pruned_*`，输出显示名为"结构变体_*"）；胜负只对跨家族负例计。prune_dpoff 是整层删除，三个结构变体是非结构化稀疏剪枝，两者不同。
+
+**中间 2 层重评分（待跑）**：`V4_LAYER_SUBSET=mid2 python score.py main`（及 distill），输出 `scores_mid2/`。mid2 = 4 个存储层中的第 1、2 个，不等于 v3 的全层中间 2 层。结果尚未运行。
 
 ## 5. 后续可做（按性价比排序）
 

@@ -186,7 +186,7 @@ def fig3():
     rbox(ax, 36, 34.4, 28, 5.4, "victim — Llama-2-7b-hf（32 层 / D=4096）", "#1F3864", "#1F3864", 11, "white", True)
     rbox(ax, 1.5, 26.2, 26, 5.4, "fine_tune — Llama-2-7b-chat\n（官方 SFT 正例）", LBLUE, BLUE, 10.5, BLUE, True)
     rbox(ax, 37, 26.2, 26, 5.4, "derivative_cn — Chinese-llama-2-7b\n（独立衍生正例）", "#E8E2F2", PURPLE, 10.5, "#5D4B8B")
-    rbox(ax, 72.5, 26.2, 26, 5.4, "同底座剪枝难负例 ×3\nsparsegpt / wanda / gblm", LORANGE, ORANGE, 10.5, "#A34E1E", True)
+    rbox(ax, 72.5, 26.2, 26, 5.4, "同底座结构变体（正例）×3\nsparsegpt / wanda / gblm 稀疏剪枝", LORANGE, ORANGE, 10.5, "#A34E1E", True)
     arr(ax, 46, 34.4, 14.5, 31.8, GREY, 1.6, rad=0.22)
     arr(ax, 50, 34.4, 50, 31.8, GREY, 1.6)
     arr(ax, 54, 34.4, 85.5, 31.8, GREY, 1.6, rad=-0.22)
@@ -194,7 +194,7 @@ def fig3():
     rbox(ax, 72.5, 17.4, 26, 5.2, "第三方真实剪枝：保留同底座几何\n→ 预期更靠近 victim（关键新维度）", "#FDF0E6", ORANGE, 10, "#A34E1E", ls=(0, (4, 2.5)))
     arr(ax, 14.5, 26.2, 14.5, 22.8, "#B8960C", 1.4, ls=(0, (4, 2.5)))
     arr(ax, 85.5, 26.2, 85.5, 22.8, ORANGE, 1.4, ls=(0, (4, 2.5)))
-    rbox(ax, 1.5, 10.4, 97, 4.6, "易负例（跨家族）：Qwen2.5-7B ｜ Meta-Llama-3-8B ｜ internlm2-7b（数值发散 → 已隔离）", "#E2EFDA", GREEN, 10.5, DGREEN)
+    rbox(ax, 1.5, 10.4, 97, 4.6, "负例（跨家族）：Qwen2.5-7B ｜ Meta-Llama-3-8B ｜ internlm2-7b（数值发散 → 已隔离）", "#E2EFDA", GREEN, 10.5, DGREEN)
     # 蒸馏线（全直线布局，避免连线穿插）
     ax.text(1.5, 9.7, "蒸馏线 — 蒸馏指纹检测（双臂对照）", fontsize=13, fontweight="bold",
             color="#B05A1E", ha="left")
