@@ -55,16 +55,16 @@ def slide_base(prs, title, subtitle=None):
     tf = bar.text_frame; tf.clear()
     p = tf.paragraphs[0]; p.alignment = PP_ALIGN.LEFT
     r = p.add_run(); r.text = title
-    r.font.size = Pt(24); r.font.bold = True; r.font.color.rgb = WHITE
+    r.font.size = Pt(26); r.font.bold = True; r.font.color.rgb = WHITE
     if subtitle:
         tb = s.shapes.add_textbox(Inches(0.45), Inches(0.80), Inches(12.4), Inches(0.4))
         p = tb.text_frame.paragraphs[0]
         r = p.add_run(); r.text = subtitle
-        r.font.size = Pt(13); r.font.color.rgb = RGBColor(0x60, 0x60, 0x60)
+        r.font.size = Pt(15); r.font.color.rgb = RGBColor(0x60, 0x60, 0x60)
     return s
 
 
-def bullets(slide, items, left=0.5, top=1.25, width=12.3, height=5.8, size=16):
+def bullets(slide, items, left=0.5, top=1.25, width=12.3, height=5.8, size=18):
     tb = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
     tf = tb.text_frame; tf.word_wrap = True
     first = True
@@ -107,6 +107,9 @@ def result_table(slide, line, order, row_fill, left=0.45, top=1.30, width=12.45,
 
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
 from pptx.enum.dml import MSO_LINE_DASH_STYLE
+
+import figures as _figs
+FIGS = _figs.make_all()   # (fig1, fig2, fig3) 300 dpi 论文级图
 
 
 def box(slide, x, y, w, h, text, fill, size=11, bold=False, color=None,
@@ -170,14 +173,14 @@ bar.fill.solid(); bar.fill.fore_color.rgb = DARK; bar.line.fill.background()
 tf = bar.text_frame; tf.clear()
 p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
 r = p.add_run(); r.text = "LLM 谱系指纹协议放大到 7B 规模"
-r.font.size = Pt(38); r.font.bold = True; r.font.color.rgb = WHITE
+r.font.size = Pt(40); r.font.bold = True; r.font.color.rgb = WHITE
 p2 = tf.add_paragraph(); p2.alignment = PP_ALIGN.CENTER
 r = p2.add_run(); r.text = "llm_migration_v4 ｜ 主线：Llama-2-7b 真实谱系　·　蒸馏线：Llama-3.2 1B→3B"
-r.font.size = Pt(17); r.font.color.rgb = RGBColor(0xCF, 0xDC, 0xF0)
+r.font.size = Pt(18); r.font.color.rgb = RGBColor(0xCF, 0xDC, 0xF0)
 tb = s.shapes.add_textbox(Inches(0), Inches(4.6), prs.slide_width, Inches(0.8))
 p = tb.text_frame.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
 r = p.add_run(); r.text = "组会汇报 · 2026-11"
-r.font.size = Pt(15); r.font.color.rgb = RGBColor(0x80, 0x80, 0x80)
+r.font.size = Pt(16); r.font.color.rgb = RGBColor(0x80, 0x80, 0x80)
 
 # ── 2 背景与两个问题 ────────────────────────────────────────────────────
 s = slide_base(prs, "背景与要回答的两个问题")
@@ -189,102 +192,24 @@ bullets(s, [
     (0, "问题 2：序列级蒸馏（1B 学生 ← 3B 教师，同家族同词表）在 hidden 几何里留下的指纹能否被认出？"),
     (0, "方法：v3 协议原封不动 —— 配对种子 embedding 扰动采样 + 逐 prompt 指纹 + PCA→逐层 ALS（DP 关闭）"),
     (1, "主指标 distance_mean（逐层 ALS 平均 L2）；similarity = exp(−Σd/L)"),
-], top=1.35, size=17)
+], top=1.35, size=19)
 
-# ── 3 方法原理 ①：配对种子扰动采样 ─────────────────────────────────────
-s = slide_base(prs, "方法原理 ①：配对种子扰动采样 —— 差异只来自模型",
-               "SCALE=2e-3 ｜ SEED_SETS=[123, 1123, 2123]，每组 128 样本 ｜ victim 与 suspect 同 seed 严格配对")
-box(s, 0.55, 1.50, 2.0, 0.85, "探针 prompt × 32\n英/中/代码/数学/问答", RGBColor(0xE8, 0xEE, 0xF7), 11)
-arrow(s, 2.62, 1.80)
-box(s, 3.02, 1.50, 1.95, 0.85, "输入 embedding\n[1, T, D]", RGBColor(0xE8, 0xEE, 0xF7), 11)
-arrow(s, 5.04, 1.80)
-box(s, 5.44, 1.50, 2.5, 0.85, "+ 高斯噪声 ε\nSCALE = 2e-3", DARK, 12, True, WHITE)
-arrow(s, 8.01, 1.80)
-box(s, 8.41, 1.50, 2.3, 0.85, "同一扰动复制两份\n（逐位相同）", RGBColor(0xFF, 0xF2, 0xCC), 11, True)
-link(s, 9.56, 2.35, 3.40, 3.08)
-link(s, 9.56, 2.35, 9.70, 4.24)
-# victim 泳道
-box(s, 0.55, 3.10, 1.5, 0.72, "victim\nLlama-2-7b", RGBColor(0xCF, 0xDD, 0xF2), 11, True)
-box(s, 2.35, 3.10, 2.05, 0.72, "7B 模型前向\noutput_hidden_states", RGBColor(0xE8, 0xEE, 0xF7), 10)
-arrow(s, 4.46, 3.33)
-box(s, 4.86, 3.10, 2.2, 0.72, "取 4 均匀层\nmask 均值池化", RGBColor(0xE8, 0xEE, 0xF7), 10)
-arrow(s, 7.12, 3.33)
-box(s, 7.52, 3.10, 1.9, 0.72, "特征 F_v\n[128, D=4096]", DARK, 11, True, WHITE)
-# suspect 泳道
-box(s, 0.55, 4.26, 1.5, 0.72, "suspect\n待检模型", RGBColor(0xFB, 0xDD, 0xC8), 11, True)
-box(s, 2.35, 4.26, 2.05, 0.72, "7B 模型前向\noutput_hidden_states", RGBColor(0xFB, 0xE9, 0xDE), 10)
-arrow(s, 4.46, 4.49)
-box(s, 4.86, 4.26, 2.2, 0.72, "取 4 均匀层\nmask 均值池化", RGBColor(0xFB, 0xE9, 0xDE), 10)
-arrow(s, 7.12, 4.49)
-box(s, 7.52, 4.26, 1.9, 0.72, "特征 F_s\n[128, D]", RGBColor(0xA6, 0x4B, 0x1F), 11, True, WHITE)
-note(s, 6.30, 3.98, 3.0, 0.26, "同 seed ⇒ 两边输入逐位相同", 10.5, True, RGBColor(0xB0, 0x5A, 0x20))
-box(s, 0.55, 5.42, 12.25, 0.95,
-    "配对种子 ⇒ 输入差异为零 ⇒ 特征差异 100% 归因于模型参数本身（指纹可比性的基础）\n"
-    "rep_perm / scale 两个白盒伪装就是在 F_s 上做特征空间线性变换派生 —— 免采集",
-    DARK, 13, True, WHITE)
-note(s, 0.55, 6.55, 12.25, 0.4,
-     "逐 (prompt, seed set) 独立成指纹：32 prompt × 3 seed set × 128 样本 × 4 层；两线共 17 个 npz、11GB、评分 21888 行", 11)
+# ── 3 方法原理 ①：配对种子扰动采样（论文级图） ─────────────────────────
+def figure_slide(prs, title, img, subtitle=None):
+    s = slide_base(prs, title, subtitle)
+    s.shapes.add_picture(img, Inches(0.47), Inches(1.30), Inches(12.4), Inches(5.5))
 
-# ── 4 方法原理 ②：PCA + 逐层 ALS 对齐 ──────────────────────────────────
-s = slide_base(prs, "方法原理 ②：PCA 降维 + 逐层 ALS 对齐 —— 距离即指纹",
-               "diffip.preprocessing.project_sequences ＋ diffip.reversion.fit_step_alignment ｜ DP 关闭（v3 已验证 on/off 接近）")
-box(s, 0.55, 1.45, 1.8, 0.8, "F_v [N, D]\nvictim 特征", RGBColor(0xCF, 0xDD, 0xF2), 11)
-arrow(s, 2.42, 1.72)
-box(s, 2.82, 1.45, 1.9, 0.8, "PCA 降维\nd ∈ {8, 20}", RGBColor(0xE8, 0xEE, 0xF7), 11)
-box(s, 10.95, 1.45, 1.8, 0.8, "F_s [N, D]\nsuspect 特征", RGBColor(0xFB, 0xDD, 0xC8), 11)
-arrow(s, 10.52, 1.72, "left")
-box(s, 8.42, 1.45, 1.9, 0.8, "PCA 降维\nd ∈ {8, 20}", RGBColor(0xFB, 0xE9, 0xDE), 11)
-link(s, 4.72, 1.85, 5.05, 1.85)
-link(s, 8.42, 1.85, 8.25, 1.85)
-box(s, 5.05, 1.40, 3.2, 1.30, "逐层 ALS 线性对齐\nW* = argmin Σ‖F_s − W·F_v‖²\n（每层独立拟合）", DARK, 11.5, True, WHITE)
-arrow(s, 6.55, 2.78, "down", 0.26, 0.3)
-box(s, 4.30, 3.15, 4.7, 0.68, "逐层残差 d₁ … d_L  →  distance_mean = (1/L)·Σ d_l", RGBColor(0xFF, 0xF2, 0xCC), 12)
-arrow(s, 6.55, 3.90, "down", 0.26, 0.3)
-box(s, 4.85, 4.27, 3.6, 0.62, "similarity = exp(−distance_mean)", DARK, 13, True, WHITE)
-arrow(s, 6.55, 4.96, "down", 0.26, 0.3)
-box(s, 4.30, 5.33, 2.25, 0.6, "→ 1 ≈ 同源\n（只差线性映射）", RGBColor(0xE2, 0xEF, 0xDA), 11, True, RGBColor(0x1E, 0x6B, 0x2E))
-box(s, 6.75, 5.33, 2.25, 0.6, "→ ≈ 0.25 异源地板\n（跨家族实测）", RGBColor(0xF6, 0xD5, 0xD0), 11, True, RGBColor(0x9C, 0x1F, 0x1F))
-box(s, 0.55, 6.02, 6.3, 1.32,
-    "核心假设：同源模型的层表示云只差一个线性映射\n"
-    "同源 → ALS 可对齐 → 距离小 ｜ 异源 → 云形状本质不同 → 对不齐 → 距离大\n"
-    "置换 P / 各向异性缩放 S 都是线性变换 ⇒ 三种白盒伪装必然隐形",
-    RGBColor(0xFF, 0xF6, 0xDE), 11.5)
-note(s, 7.15, 5.72, 5.6, 0.3, "主线实测 similarity 谱（N=128, d=8）", 11.5, True, RGBColor(0x40, 0x40, 0x40))
-lg = s.shapes.add_textbox(Inches(7.15), Inches(6.32), Inches(5.65), Inches(0.3))
-pf = lg.text_frame.paragraphs[0]
-for v, lab, cc in [(0.254, "跨家族", "1E7A34"), (0.311, "独立衍生", "8A6D3B"),
-                   (0.36, "SFT/伪装", "8A6D00"), (0.54, "剪枝副本", "B4531F"),
-                   (1.0, "victim", "1F3864")]:
-    r = pf.add_run(); r.text = f"●{v:.3f} {lab}  "
-    r.font.size = Pt(10); r.font.color.rgb = RGBColor.from_string(cc)
-box(s, 7.15, 6.78, 5.6, 0.24, "", RGBColor(0xE0, 0xE4, 0xEA), 1)
-for v, lab, cc in [(0.254, "", "1E7A34"), (0.311, "", "8A6D3B"), (0.36, "", "8A6D00"),
-                   (0.54, "", "B4531F"), (1.0, "", "1F3864")]:
-    x = 7.15 + v / 1.06 * 5.6
-    link(s, x, 6.66, x, 6.90, RGBColor.from_string(cc), pt=1.8)
 
-# ── 5 实验设计：两线谱系面板 ────────────────────────────────────────────
-s = slide_base(prs, "实验设计：两线谱系面板",
-               "主线 13 位（含隔离 1）＋ 蒸馏线 7 位（2 位复用主线 npz）｜ 全程 CPU 48 核 · 特征 11GB · 评分 21888 行 · 协议与 v3 逐位一致")
-box(s, 5.25, 1.18, 2.85, 0.62, "victim：Llama-2-7b-hf（32 层 / D=4096）", DARK, 11.5, True, WHITE)
-link(s, 6.67, 1.80, 2.45, 2.34); link(s, 6.67, 1.80, 6.67, 2.34); link(s, 6.67, 1.80, 10.92, 2.34)
-box(s, 0.70, 2.34, 3.5, 0.66, "fine_tune：Llama-2-7b-chat（官方 SFT）", YEL, 11.5, True)
-box(s, 4.95, 2.34, 3.45, 0.66, "derivative_cn：Chinese-llama-2-7b\n（独立衍生）", YEL, 10.5)
-box(s, 9.15, 2.34, 3.55, 0.66, "难负例：同底座剪枝 ×3\nsparsegpt / wanda / gblm", ORNG, 11, True)
-link(s, 2.45, 3.00, 2.45, 3.38)
-box(s, 0.70, 3.38, 3.5, 0.94, "白盒伪装 ×3（免采集）\nweight_perm / rep_perm / scale\n＋ prune_dpoff（chat 剪 4 层）", RGBColor(0xFF, 0xF8, 0xE1), 10, dashed=True)
-link(s, 10.92, 3.00, 10.92, 3.38)
-box(s, 9.15, 3.38, 3.55, 0.94, "第三方真实剪枝变体\n保留同底座几何 ⇒ 预期更靠近 victim\n—— 本实验新增的关键对照维度", RGBColor(0xFD, 0xF0, 0xE6), 10, dashed=True)
-box(s, 0.70, 4.52, 12.0, 0.52, "易负例（跨家族）：Qwen2.5-7B（28 层 / D=3584） ｜ Meta-Llama-3-8B ｜ internlm2-7b（本环境数值发散 → 已隔离）", GRN, 11)
-# 蒸馏线
-box(s, 0.55, 5.30, 2.0, 1.25, "蒸馏线\nvictim = Llama-3.2-1B\n（16 层 / D=2048）", DARK, 11, True, WHITE)
-box(s, 3.00, 5.30, 3.3, 0.92, "student_distill\n3B 教师回答上序列级 CE 蒸馏\n1600 指令 × 3 epoch", RGBColor(0xFB, 0xE0, 0xC9), 10, True)
-box(s, 6.75, 5.30, 3.3, 0.92, "student_control\n同指令 / 同预算\nAlpaca 原始回答（关键对照）", RGBColor(0xFF, 0xF2, 0xCC), 10, True)
-box(s, 10.50, 5.30, 2.3, 0.92, "Llama-3.2-3B 教师（base）\n生成 1600 条回答", RGBColor(0xE8, 0xEE, 0xF7), 10)
-link(s, 11.65, 6.22, 11.65, 6.40); link(s, 11.65, 6.40, 4.65, 6.40); link(s, 4.65, 6.40, 4.65, 6.26)
-arrow(s, 4.56, 6.09, "down", 0.18, 0.16)
-note(s, 7.6, 6.44, 1.4, 0.26, "教师回答", 9.5, True, RGBColor(0x40, 0x60, 0xA0))
-box(s, 3.00, 6.72, 9.8, 0.52, "蒸馏线负例：教师 3B 本身 ｜ Sheared-LLaMA-1.3B ｜ Qwen2.5-7B（复用主线 npz）｜ Llama-2-7b（4096 维跨维度，复用主线 victim npz）", GRN, 10)
+figure_slide(prs, "方法原理 ①：配对种子扰动采样 —— 差异只来自模型", FIGS[0],
+             "SCALE=2e-3 ｜ SEED_SETS=[123, 1123, 2123]，每组 128 样本 ｜ victim 与 suspect 同 seed 严格配对")
+
+# ── 4 方法原理 ②：PCA + 逐层 ALS 对齐（论文级图） ──────────────────────
+figure_slide(prs, "方法原理 ②：PCA 降维 + 逐层 ALS 对齐 —— 距离即指纹", FIGS[1],
+             "diffip.preprocessing.project_sequences ＋ diffip.reversion.fit_step_alignment ｜ DP 关闭")
+
+# ── 5 实验设计：两线谱系面板（论文级图） ────────────────────────────────
+figure_slide(prs, "实验设计：两线谱系面板", FIGS[2],
+             "主线 13 位（含隔离 1）＋ 蒸馏线 7 位（2 位复用主线 npz）｜ 协议与 v3 逐位一致")
 
 # ── 4 主线结果表 ────────────────────────────────────────────────────────
 s = slide_base(prs, "主线结果（dims=8）：谱系排序完整保持",
@@ -299,12 +224,12 @@ for n in ["neg_pruned_sparsegpt", "neg_pruned_wanda", "neg_pruned_gblm"]:
     fillmap[n] = ORNG
 for n in ["neg_qwen2_5_7b", "neg_llama3_8b"]:
     fillmap[n] = GRN
-result_table(s, "main", order, fillmap, size=11, height=5.4)
-tb = s.shapes.add_textbox(Inches(0.45), Inches(6.85), Inches(12.4), Inches(0.5))
+result_table(s, "main", order, fillmap, size=13, height=5.5)
+tb = s.shapes.add_textbox(Inches(0.45), Inches(6.92), Inches(12.4), Inches(0.5))
 p = tb.text_frame.paragraphs[0]
 r = p.add_run()
 r.text = "黄=SFT/伪装簇　橙=同底座剪枝（难负例）　绿=跨家族（易负例）｜N=128 时 SFT 簇 vs 跨家族 margin ≈ 0.11"
-r.font.size = Pt(12); r.font.color.rgb = RGBColor(0x60, 0x60, 0x60)
+r.font.size = Pt(13); r.font.color.rgb = RGBColor(0x60, 0x60, 0x60)
 
 # ── 5 主线解读 ──────────────────────────────────────────────────────────
 s = slide_base(prs, "主线解读：五条结论")
@@ -314,13 +239,13 @@ bullets(s, [
     "【3 难负例是最大新维度】 同底座剪枝副本比官方 SFT 更像基座（0.53 vs 0.36）—— 与 v3 排序反转；按\"是否源自基座 X\"判定时应归入同底座一侧",
     "【4 绝对值随规模压缩】 fine_tune 0.76(0.5B)→0.36(7B)，margin 0.52→0.11，跨家族地板不动（0.25）—— 跨规模可迁移排序、不可迁移阈值",
     "【5 收敛行为一致】 N≥64 后 std ≤0.013；N=128 时全部 SFT 类 suspect 32/32 高于跨家族负例（N=20 为 27–29/32）",
-], top=1.35, size=17)
+], top=1.35, size=19)
 
 # ── 6 v3 对照 ───────────────────────────────────────────────────────────
 s = slide_base(prs, "与 v3（0.5B）对照：什么保持、什么变化")
-tbl = s.shapes.add_table(8, 3, Inches(0.7), Inches(1.3), Inches(11.9), Inches(3.9)).table
+tbl = s.shapes.add_table(8, 3, Inches(0.7), Inches(1.3), Inches(11.9), Inches(4.1)).table
 for j, h in enumerate(["指标（N=128, d=8）", "v3（Qwen2.5-0.5B）", "v4（Llama-2-7b）"]):
-    cell_fmt(tbl.cell(0, j), h, size=13, bold=True, fill=HEAD)
+    cell_fmt(tbl.cell(0, j), h, size=15, bold=True, fill=HEAD)
 rows = [
     ("fine_tune（官方 SFT）", "0.760", "0.363"),
     ("三种线性伪装", "≈ fine_tune", "≈ fine_tune（0.363–0.365）"),
@@ -331,13 +256,13 @@ rows = [
     ("逐 prompt 胜负（N=20）", "32/32", "28/32（对跨家族负例）"),
 ]
 for i, (a, b, c) in enumerate(rows, start=1):
-    cell_fmt(tbl.cell(i, 0), a, size=12, align=PP_ALIGN.LEFT)
-    cell_fmt(tbl.cell(i, 1), b, size=12)
-    cell_fmt(tbl.cell(i, 2), c, size=12)
+    cell_fmt(tbl.cell(i, 0), a, size=13.5, align=PP_ALIGN.LEFT)
+    cell_fmt(tbl.cell(i, 1), b, size=13.5)
+    cell_fmt(tbl.cell(i, 2), c, size=13.5)
 bullets(s, [
     "保持：相对谱系排序 / 伪装隐形 / 负例地板 / 随 N 收敛行为",
     "变化：绝对值整体压缩 —— 实用部署必须家族内 + 规模内相对标定（与 v2 ROC 结论互相印证）",
-], top=5.5, height=1.6, size=16)
+], top=5.5, height=1.6, size=17)
 
 # ── 7 蒸馏线结果 ────────────────────────────────────────────────────────
 s = slide_base(prs, "蒸馏线结果（dims=8）：负结果",
@@ -348,13 +273,13 @@ dfill = {n: GREY for n in dorder}
 dfill["student_distill"] = YEL; dfill["student_control"] = YEL
 dfill["neg_llama3_2_3b"] = GRN; dfill["neg_sheared_1_3b"] = GRN
 dfill["neg_qwen2_5_7b"] = GRN; dfill["neg_llama2_7b"] = GRN
-result_table(s, "distill", dorder, dfill, size=12, height=3.4)
+result_table(s, "distill", dorder, dfill, size=14, height=3.7)
 bullets(s, [
     "蒸馏信号不可区分：distill vs control 全部 N/d 差异 ≤0.003，在 seed set std（0.002–0.003）之内，方向不稳定",
     "教师本身（3B）得分 0.591 与无关负例无差别 —— 学生几何里没有可辨认的教师印记",
     "两学生高于负例的 ~0.03 是\"同基座被微调\"的共性效应（两臂共享），不是蒸馏贡献",
     "结论：\"被蒸馏过\"这一属性在 N≤128 预算下不可检测（比 v1 的\"认不出教师\"更进一步）",
-], top=5.0, height=2.3, size=15)
+], top=5.1, height=2.2, size=16)
 
 # ── 8 internlm2 隔离 ────────────────────────────────────────────────────
 s = slide_base(prs, "插曲：internlm2-7b 的数值发散与隔离")
@@ -378,7 +303,7 @@ bullets(s, [
     "distill−control 差 ~0.003 ≈ 1σ：更大 N 不排除出现微弱可分性，但论文设置（N=20）下是明确负结论",
     "跨家族负例剩 2 个（internlm2 隔离）；两版剪枝比例不同（16.7% vs 12.5%），\"剪枝 vs SFT 反转\"无法完全分离因素",
     "跨维度负例（4096 vs 2048）走各自独立 PCA，分数可比较但 PCA 基不同",
-], top=1.35, size=17)
+], top=1.35, size=19)
 
 # ── 10 小结 ─────────────────────────────────────────────────────────────
 s = slide_base(prs, "小结与后续工作")
@@ -392,7 +317,7 @@ bullets(s, [
     (1, "蒸馏线大 N 复核（N=256 或第 4 个 seed set，验证 ~1σ 差异是否真实）"),
     (1, "7B 蒸馏学生 + 跨机复跑（论文级声明需要）"),
     (1, "7B 面板 ROC 标定（v2 方法重做，给出家族内定量阈值）"),
-], top=1.3, size=17)
+], top=1.3, size=19)
 
 # ── 每页演讲者备注（讲稿） ──────────────────────────────────────────────
 NOTES = [
