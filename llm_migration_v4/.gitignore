@@ -3,5 +3,10 @@ feats/
 ckpt/
 data/
 scores/
+scores_mid2/
+scores_nl/
+scores_break/
+scores_rms/
+.audit/
 *.log
 __pycache__/

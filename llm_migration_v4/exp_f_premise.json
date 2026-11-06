@@ -1,0 +1,217 @@
+{
+ "prompt_perm_seed": 42,
+ "fixed_points": 0,
+ "perm": [
+  31,
+  19,
+  7,
+  27,
+  26,
+  18,
+  5,
+  22,
+  28,
+  10,
+  24,
+  23,
+  20,
+  9,
+  6,
+  16,
+  3,
+  0,
+  15,
+  17,
+  25,
+  12,
+  21,
+  11,
+  14,
+  30,
+  2,
+  4,
+  29,
+  1,
+  13,
+  8
+ ],
+ "length": {
+  "n_prompts": 32,
+  "length_vs_ft": 0.021630644367008307,
+  "length_vs_qwen": 0.02811315642525209,
+  "length_vs_llama": 0.024579313152926975,
+  "ft_vs_qwen": 0.9555905338115025,
+  "ft_vs_qwen_after_length": 0.9555836146105587,
+  "ft_vs_llama_after_length": 0.955937739233291
+ },
+ "rows": [
+  {
+   "mode": "aligned",
+   "anchor": "neg_qwen2_5_7b",
+   "test": "neg_llama3_8b",
+   "t_fpr0": 0.016085863066372663,
+   "heldout_pass": true,
+   "auc_deploy": 0.9998101128472222,
+   "auc_hard": 0.8279079861111112,
+   "held_sft_tpr": [
+    1.0,
+    0.96875
+   ],
+   "held_strong_tpr": [
+    1.0,
+    1.0
+   ],
+   "held_fpr": [
+    0.0,
+    0.0
+   ],
+   "held_hard_tpr": [
+    0.53125,
+    0.46875
+   ],
+   "sft_margin_median": 0.09479289976906052,
+   "hard_margin_median": 0.018743989506174546,
+   "neg_margin_median": 1.1112065657294002e-10
+  },
+  {
+   "mode": "aligned",
+   "anchor": "neg_llama3_8b",
+   "test": "neg_qwen2_5_7b",
+   "t_fpr0": 0.013566225875955462,
+   "heldout_pass": true,
+   "auc_deploy": 0.999755859375,
+   "auc_hard": 0.8327907986111112,
+   "held_sft_tpr": [
+    1.0,
+    0.975
+   ],
+   "held_strong_tpr": [
+    1.0,
+    1.0
+   ],
+   "held_fpr": [
+    0.03125,
+    0.0
+   ],
+   "held_hard_tpr": [
+    0.53125,
+    0.5
+   ],
+   "sft_margin_median": 0.09599317369295746,
+   "hard_margin_median": 0.018152672038789522,
+   "neg_margin_median": -1.1112065657294002e-10
+  },
+  {
+   "mode": "misaligned",
+   "anchor": "neg_qwen2_5_7b",
+   "test": "neg_llama3_8b",
+   "t_fpr0": 0.6654895134588127,
+   "heldout_pass": false,
+   "auc_deploy": 0.6435004340277778,
+   "auc_hard": 0.5424262152777778,
+   "held_sft_tpr": [
+    0.1125,
+    0.0625
+   ],
+   "held_strong_tpr": [
+    0.13541666666666666,
+    0.125
+   ],
+   "held_fpr": [
+    0.0,
+    0.0625
+   ],
+   "held_hard_tpr": [
+    0.09375,
+    0.125
+   ],
+   "sft_margin_median": 0.09222969941210636,
+   "hard_margin_median": -5.016686029327533e-05,
+   "neg_margin_median": -0.0017549577397072775
+  },
+  {
+   "mode": "misaligned",
+   "anchor": "neg_llama3_8b",
+   "test": "neg_qwen2_5_7b",
+   "t_fpr0": 0.667208226695309,
+   "heldout_pass": false,
+   "auc_deploy": 0.6440158420138888,
+   "auc_hard": 0.5415581597222222,
+   "held_sft_tpr": [
+    0.10625,
+    0.0625
+   ],
+   "held_strong_tpr": [
+    0.13541666666666666,
+    0.125
+   ],
+   "held_fpr": [
+    0.0,
+    0.0625
+   ],
+   "held_hard_tpr": [
+    0.09375,
+    0.125
+   ],
+   "sft_margin_median": 0.09199629997008339,
+   "hard_margin_median": -9.860991042543246e-05,
+   "neg_margin_median": -0.006102725739597872
+  },
+  {
+   "mode": "constant",
+   "anchor": "neg_qwen2_5_7b",
+   "test": "neg_llama3_8b",
+   "t_fpr0": 0.5363550151648357,
+   "heldout_pass": false,
+   "auc_deploy": 0.7017957899305556,
+   "auc_hard": 0.5572916666666666,
+   "held_sft_tpr": [
+    0.0625,
+    0.0625
+   ],
+   "held_strong_tpr": [
+    0.1875,
+    0.1875
+   ],
+   "held_fpr": [
+    0.0,
+    0.03125
+   ],
+   "held_hard_tpr": [
+    0.09375,
+    0.0625
+   ],
+   "sft_margin_median": 0.06164210809786616,
+   "hard_margin_median": -0.026897323990601144,
+   "neg_margin_median": -0.05804964051459138
+  },
+  {
+   "mode": "constant",
+   "anchor": "neg_llama3_8b",
+   "test": "neg_qwen2_5_7b",
+   "t_fpr0": 0.5422146291934689,
+   "heldout_pass": false,
+   "auc_deploy": 0.7017957899305556,
+   "auc_hard": 0.5574001736111112,
+   "held_sft_tpr": [
+    0.0625,
+    0.03125
+   ],
+   "held_strong_tpr": [
+    0.1875,
+    0.1875
+   ],
+   "held_fpr": [
+    0.0,
+    0.03125
+   ],
+   "held_hard_tpr": [
+    0.09375,
+    0.0625
+   ],
+   "sft_margin_median": 0.061898141674850554,
+   "hard_margin_median": -0.027072720350678314,
+   "neg_margin_median": -0.06146778514259228
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "raw_ft_qwen": 0.9555905338115025,
+ "raw_ft_llama": 0.9559570076654417,
+ "partial_ft_qwen": 0.9485124973208123,
+ "partial_ft_llama": 0.9485122190726377,
+ "verdict": "category does not explain the shared prompt effect",
+ "by_category": {
+  "en": {
+   "n": 7,
+   "ft_mean": 0.3293907649410142,
+   "qwen_mean": 0.2441783711617285,
+   "within_ft_qwen": 0.988792238780628
+  },
+  "zh": {
+   "n": 6,
+   "ft_mean": 0.4594205368114168,
+   "qwen_mean": 0.34060184319318937,
+   "within_ft_qwen": 0.9995528686411606
+  },
+  "code": {
+   "n": 6,
+   "ft_mean": 0.4719305478009757,
+   "qwen_mean": 0.28710001348986475,
+   "within_ft_qwen": 0.8942827969471161
+  },
+  "math": {
+   "n": 6,
+   "ft_mean": 0.5325073889345476,
+   "qwen_mean": 0.4400830475208757,
+   "within_ft_qwen": 0.9894292307480107
+  },
+  "qa": {
+   "n": 7,
+   "ft_mean": 0.07721347435848173,
+   "qwen_mean": 1.224982169616383e-05,
+   "within_ft_qwen": 0.49797814040526606
+  }
+ }
+}
