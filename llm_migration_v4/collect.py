@@ -67,7 +67,7 @@ def collect(line, names):
         # All-layer dumps keep absolute decoder indices. The 4-layer path
         # stays on even_layers, which is what the judged feats/ files used.
         L4 = list(range(total)) if ALL_LAYERS else even_layers(total, N_LAYERS)
-        D_ = m.config.hidden_size
+        D_ = m.get_input_embeddings().weight.shape[1]
         shape = (len(PROMPTS), len(SEED_SETS), len(L4), N_MAX, D_)
         feats = np.zeros(shape, dtype=np.float32)
         start_p = 0

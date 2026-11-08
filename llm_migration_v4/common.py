@@ -170,10 +170,34 @@ def _shim_removed_llama_rope():
             setattr(llama, name, type(name, (), {}))
 
 
+def _shim_mpt_remote_class(mid, cfg):
+    """Old MPT remote code predates transformers 5's tied-weight API.
+
+    MPTForCausalLM never calls post_init(), so `all_tied_weights_keys` is
+    missing, and its tie_weights() takes no keyword arguments while
+    transformers 5 calls it with missing_keys=/recompute_mapping=.
+    """
+    if getattr(cfg, "model_type", "") != "mpt":
+        return
+    if type(cfg).__module__.startswith("transformers."):
+        return
+    from transformers.dynamic_module_utils import get_class_from_dynamic_module
+    import inspect
+    cls = get_class_from_dynamic_module("modeling_mpt.MPTForCausalLM", mid)
+    if not hasattr(cls, "all_tied_weights_keys"):
+        cls.all_tied_weights_keys = {}
+    orig = cls.tie_weights
+    if "missing_keys" not in inspect.signature(orig).parameters:
+        def tie_weights(self, *args, **kwargs):
+            return orig(self)
+        cls.tie_weights = tie_weights
+
+
 def load(mid):
     _shim_removed_llama_rope()
     tok = load_tok(mid)
     cfg = AutoConfig.from_pretrained(mid, trust_remote_code=True)
+    _shim_mpt_remote_class(mid, cfg)
     # transformers 5 rewrites rope_scaling=null into {rope_type: default}.
     # InternLM2's custom modeling file only accepts null or {type, factor}, so
     # null the patch back — but ONLY for trust_remote_code configs. Nulling a
