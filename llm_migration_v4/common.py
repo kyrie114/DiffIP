@@ -112,6 +112,22 @@ MAIN = {
 }
 # rep_perm / scale are derived from fine_tune features in score.py (no collection)
 
+# Experiment-3 unrelated models. Not part of the default MAIN collect/score
+# roster: `collect.py main` with no names does not pick them up.
+UNRELATED_ROUND = {
+    "neg_llama1_7b": f"{MODELS}/llama-7b-hf",
+    "neg_baichuan_7b": f"{MODELS}/Baichuan-7B",
+    "neg_mpt_7b": f"{MODELS}/mpt-7b",
+}
+
+
+def model_path(name):
+    if name in MAIN:
+        return MAIN[name]
+    if name in UNRELATED_ROUND:
+        return UNRELATED_ROUND[name]
+    raise KeyError(name)
+
 # ---- distill line (Llama-3.2) ----
 DISTILL = {
     "victim": f"{MODELS}/Llama-3.2-1B",
@@ -140,7 +156,22 @@ def prune_spec(total):
 ATTN_IMPL = {"internlm2-7b": "sdpa"}
 
 
+def _shim_removed_llama_rope():
+    """MPT's bundled modeling imports RoPE classes transformers 5 removed.
+
+    This checkpoint uses ALiBi, so the classes are never constructed. The
+    names only have to exist at import time.
+    """
+    import transformers.models.llama.modeling_llama as llama
+    for name in ("LlamaRotaryEmbedding",
+                 "LlamaLinearScalingRotaryEmbedding",
+                 "LlamaDynamicNTKScalingRotaryEmbedding"):
+        if not hasattr(llama, name):
+            setattr(llama, name, type(name, (), {}))
+
+
 def load(mid):
+    _shim_removed_llama_rope()
     tok = load_tok(mid)
     cfg = AutoConfig.from_pretrained(mid, trust_remote_code=True)
     # transformers 5 rewrites rope_scaling=null into {rope_type: default}.
@@ -217,6 +248,6 @@ def build_main(name):
         prune_layers(m, prune_spec(m.config.num_hidden_layers))
         E = m.get_input_embeddings()
         return m, t, (lambda ids: E(ids)), None
-    m, t = load(MAIN[name])
+    m, t = load(model_path(name))
     E = m.get_input_embeddings()
     return m, t, (lambda ids: E(ids)), None

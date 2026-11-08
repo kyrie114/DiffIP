@@ -7,6 +7,11 @@ scores_mid2/
 scores_nl/
 scores_break/
 scores_rms/
+scores_dim/
+scores_layers/
+scores_unrel/
+feats_all/
 .audit/
 *.log
+*_stdout.txt
 __pycache__/
