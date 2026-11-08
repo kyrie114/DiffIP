@@ -273,6 +273,7 @@ def fig_absolute():
     p = np.asarray(pos)[:, None]
     q = np.asarray(neg)[None, :]
     auc = float(((p > q).sum() + 0.5 * (p == q).sum()) / (len(pos) * len(neg)))
+    t_mid = 0.49853575967743075  # v3 两类均值中点（报告写作 t≈0.499）
 
     fig, axes = plt.subplots(1, 2, figsize=(11.0, 5.2), dpi=200,
                              gridspec_kw={"width_ratios": [1.1, 1]})
@@ -281,7 +282,7 @@ def fig_absolute():
     ax.plot([0, 1], [0, 1], color=GRAY, ls="--", lw=1.2, zorder=1)
     for t, c, lab, tx, ty in [
             (0.786037998868464, RED, "t=0.786\nSFT 召回 0.06", 0.52, 0.16),
-            (0.499, ORANGE, "t=0.499\nSFT 32% / 负例 23%", 0.34, 0.80)]:
+            (t_mid, ORANGE, "t≈0.499\nSFT 32% / 负例 23%", 0.34, 0.80)]:
         fp = np.mean(np.asarray(neg) >= t)
         tp = np.mean(np.asarray(pos) >= t)
         ax.scatter([fp], [tp], s=90, color=c, zorder=5, edgecolor="white")
@@ -300,11 +301,17 @@ def fig_absolute():
 
     ax = axes[1]
     groups = ["SFT 簇", "结构变体", "独立衍生", "跨家族\n负例"]
-    vals = [0.3208, 0.5764, 0.2500, 0.2240]
+    sft_vals = [r["similarity"] for n in SFT for r in load_rows("scores", n)]
+    strong_vals = [r["similarity"] for n in STRONG for r in load_rows("scores", n)]
+    hard_vals = [r["similarity"] for n in ["derivative_cn"] for r in load_rows("scores", n)]
+    vals = [np.mean(np.asarray(sft_vals) >= t_mid),
+            np.mean(np.asarray(strong_vals) >= t_mid),
+            np.mean(np.asarray(hard_vals) >= t_mid),
+            np.mean(np.asarray(neg) >= t_mid)]
     cols = [ORANGE, TEAL, PURPLE, RED]
     ax.bar(range(4), vals, width=0.58, color=cols, alpha=0.9, zorder=3)
     for i, v in enumerate(vals):
-        ax.text(i, v + 0.018, f"{v:.0%}", ha="center", fontsize=13,
+        ax.text(i, v + 0.018, f"{v:.1%}", ha="center", fontsize=12.5,
                 fontweight="bold", color="#334155")
     ax.axhline(0.90, color=GREEN, ls="--", lw=1.3)
     ax.text(-0.48, 0.925, "正例目标 ≥90%", ha="left", fontsize=10.5,
@@ -318,7 +325,7 @@ def fig_absolute():
     ax.set_xticklabels(groups, fontsize=11.5)
     ax.set_xlim(-0.6, 3.55)
     ax.set_ylim(0, 1.02)
-    ax.set_ylabel("阈值 t=0.499 下的接受比例", fontsize=12)
+    ax.set_ylabel("阈值 t≈0.499 下的接受比例", fontsize=12)
     ax.set_title("把 0.5B 阈值搬到 7B：既漏正例，又误接负例",
                  fontsize=13.5, color=NAVY, pad=9)
     style_ax(ax)
