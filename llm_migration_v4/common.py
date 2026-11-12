@@ -121,11 +121,38 @@ UNRELATED_ROUND = {
 }
 
 
+# 2026-11-12 优点验证轮（实验方案.md「七条优点与验证实验」）。全部是
+# Llama-2-7B 的谱系正例或压力测试，不进无关参照集、不参与阈值校准。
+ADV_ROUND = {
+    "pos_vicuna": f"{MODELS}/vicuna-7b-v1.5",
+    "pos_sheared_1_3b_pruned": f"{MODELS}/Sheared-LLaMA-1.3B-Pruned",
+    "pos_sheared_1_3b": f"{MODELS}/Sheared-LLaMA-1.3B",
+    "pos_sheared_1_3b_sharegpt": f"{MODELS}/Sheared-LLaMA-1.3B-ShareGPT",
+    "pos_sheared_2_7b_pruned": f"{MODELS}/Sheared-LLaMA-2.7B-Pruned",
+    "pos_sheared_2_7b": f"{MODELS}/Sheared-LLaMA-2.7B",
+    "pos_sheared_2_7b_sharegpt": f"{MODELS}/Sheared-LLaMA-2.7B-ShareGPT",
+    "cpt_codellama": f"{MODELS}/CodeLlama-7b-hf",
+    "cpt_wizardmath": f"{MODELS}/WizardMath-7B-V1.0",
+    "cpt_llemma": f"{MODELS}/llemma_7b",
+    # 删层：由对话版删去 k 层（均匀分布，不删首尾层），无单独权重目录
+    "drop2_chat": f"{MODELS}/Llama-2-7b-chat-hf",
+    "drop8_chat": f"{MODELS}/Llama-2-7b-chat-hf",
+    "drop12_chat": f"{MODELS}/Llama-2-7b-chat-hf",
+}
+
+
+def drop_spec(total, n_drop):
+    """Evenly spread n_drop interior layers (same rule as prune_spec)."""
+    return [round(i * (total - 1) / (n_drop + 1)) for i in range(1, n_drop + 1)]
+
+
 def model_path(name):
     if name in MAIN:
         return MAIN[name]
     if name in UNRELATED_ROUND:
         return UNRELATED_ROUND[name]
+    if name in ADV_ROUND:
+        return ADV_ROUND[name]
     raise KeyError(name)
 
 # ---- distill line (Llama-3.2) ----
@@ -270,6 +297,12 @@ def build_main(name):
     if name == "prune_dpoff":
         m, t = load(MAIN[name])
         prune_layers(m, prune_spec(m.config.num_hidden_layers))
+        E = m.get_input_embeddings()
+        return m, t, (lambda ids: E(ids)), None
+    if name.startswith("drop") and name.endswith("_chat"):
+        k = int(name[len("drop"):-len("_chat")])
+        m, t = load(ADV_ROUND[name])
+        prune_layers(m, drop_spec(m.config.num_hidden_layers, k))
         E = m.get_input_embeddings()
         return m, t, (lambda ids: E(ids)), None
     m, t = load(model_path(name))

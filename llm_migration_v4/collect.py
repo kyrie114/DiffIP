@@ -22,7 +22,7 @@ import time
 import numpy as np
 
 from common import (H, MAIN, DISTILL, N_LAYERS, N_MAX, PROMPTS, SEED_SETS,
-                    UNRELATED_ROUND, build_main, even_layers, load, pooled_layers,
+                    UNRELATED_ROUND, ADV_ROUND, build_main, even_layers, load, pooled_layers,
                     perturb_batch)
 
 ALL_LAYERS = os.environ.get("V4_ALL_LAYERS", "0") == "1"
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     reg = MAIN if line == "main" else DISTILL
     names = sys.argv[2:] or list(reg)
     if line == "main":
-        known = set(MAIN) | set(UNRELATED_ROUND)
+        known = set(MAIN) | set(UNRELATED_ROUND) | set(ADV_ROUND)
         unknown = [n for n in names if n not in known]
         if unknown:
             raise SystemExit(f"unknown main-line names: {unknown}")
