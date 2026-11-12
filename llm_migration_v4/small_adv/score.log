@@ -1,0 +1,42 @@
+dist instruct
+dist instruct_wperm
+dist rep_perm
+dist scale
+dist instruct_prune
+dist drop2
+dist drop6
+dist drop8
+dist drop12
+dist width75
+dist width50
+dist width75h
+dist width50h
+dist vocab_ext
+dist vocab_swap
+dist neg_smollm2_135m
+dist neg_smollm2_360m
+dist neg_gpt2
+dist neg_pythia_160m
+dist neg_qwen2_0.5b
+max_neg {'ours': 0.2375159922524159, 'reef': 0.9103468844022522}
+instruct           ours 0.7602  reef 0.9852  wc {'status': 'ok', 'mean_cos': 0.9974476306929733, 'min_cos': 0.9939060338280327, 'matched': 169, 'total': 169, 'embed_cos': 0.9939060338280327}
+instruct_wperm     ours 0.7602  reef 0.9852  wc {'status': 'ok', 'mean_cos': -0.0006046298058094716, 'min_cos': -0.010903015211463791, 'matched': 169, 'total': 169, 'embed_cos': -0.0005948279210523526}
+rep_perm           ours 0.7602  reef 0.9852  wc None
+scale              ours 0.7545  reef 0.9852  wc None
+instruct_prune     ours 0.6450  reef 0.8747  wc {'status': 'ok', 'mean_cos': 0.25483358413062507, 'min_cos': -0.014074180322483037, 'matched': 141, 'total': 169, 'embed_cos': 0.9939060338280327}
+drop2              ours 0.7095  reef 0.9139  wc {'status': 'ok', 'mean_cos': 0.367577197940703, 'min_cos': -0.011673549328879942, 'matched': 155, 'total': 169, 'embed_cos': 0.9939060338280327}
+drop6              ours 0.6196  reef 0.7821  wc {'status': 'ok', 'mean_cos': 0.17292999844907397, 'min_cos': -0.013385457466706422, 'matched': 127, 'total': 169, 'embed_cos': 0.9939060338280327}
+drop8              ours 0.6110  reef 0.6935  wc {'status': 'ok', 'mean_cos': 0.19542966391798083, 'min_cos': -0.004851888069268266, 'matched': 113, 'total': 169, 'embed_cos': 0.9939060338280327}
+drop12             ours 0.3048  reef 0.5968  wc {'status': 'ok', 'mean_cos': 0.17652753019397632, 'min_cos': -0.0079161709896731, 'matched': 85, 'total': 169, 'embed_cos': 0.9939060338280327}
+width75            ours 0.2354  reef 0.7006  wc {'status': 'not_comparable', 'matched': 0, 'total': 169}
+width50            ours 0.2360  reef 0.4249  wc {'status': 'not_comparable', 'matched': 0, 'total': 169}
+width75h           ours 0.2352  reef 0.8451  wc {'status': 'not_comparable', 'matched': 0, 'total': 169}
+width50h           ours 0.2367  reef 0.6517  wc {'status': 'not_comparable', 'matched': 0, 'total': 169}
+vocab_ext          ours 0.4165  reef 0.9384  wc {'status': 'ok', 'mean_cos': 0.9974687116266933, 'min_cos': 0.9945007652288859, 'matched': 168, 'total': 169, 'embed_cos': None}
+vocab_swap         ours 0.3068  reef 0.9576  wc {'status': 'ok', 'mean_cos': 0.9974687116266933, 'min_cos': 0.9945007652288859, 'matched': 168, 'total': 169, 'embed_cos': None}
+neg_smollm2_135m   ours 0.2371  reef 0.8615  wc {'status': 'not_comparable', 'matched': 0, 'total': 169}
+neg_smollm2_360m   ours 0.2358  reef 0.8954  wc None
+neg_gpt2           ours 0.2371  reef 0.8399  wc None
+neg_pythia_160m    ours 0.2367  reef 0.7303  wc None
+neg_qwen2_0.5b     ours 0.2375  reef 0.9103  wc {'status': 'ok', 'mean_cos': 0.00014684505606117637, 'min_cos': -0.009897022153463527, 'matched': 169, 'total': 169, 'embed_cos': -0.009897022153463527}
+fixed-threshold directions passing (core): 15 / 20

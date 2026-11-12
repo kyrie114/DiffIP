@@ -1,0 +1,47 @@
+corpus: en 590 段, zh 3405 段
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:45,  2.74it/s]Loading weights:  58%|█████▊    | 167/290 [00:00<00:00, 464.37it/s]Loading weights:  90%|█████████ | 262/290 [00:00<00:00, 518.63it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 436.58it/s]
+    step 0 loss 8.451
+    step 25 loss 6.920
+    step 50 loss 5.060
+    step 75 loss 5.722
+    step 100 loss 5.704
+    step 125 loss 4.562
+    step 150 loss 4.090
+    step 175 loss 5.323
+    step 200 loss 4.411
+    step 225 loss 4.316
+    step 250 loss 4.680
+    step 275 loss 4.621
+    step 299 loss 3.127
+width50h {'kept': 448, 'of': 896, 'calib': 'TruthfulQA 第 200 条后 64 条', 'train_steps': 300} 890s
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<03:02,  1.58it/s]Loading weights:  49%|████▉     | 143/290 [00:00<00:00, 262.84it/s]Loading weights:  78%|███████▊  | 227/290 [00:00<00:00, 380.89it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 320.67it/s]
+    step 0 loss 6.385
+    step 25 loss 5.438
+    step 50 loss 5.733
+    step 75 loss 5.475
+    step 100 loss 5.081
+    step 125 loss 5.195
+    step 150 loss 5.187
+    step 175 loss 5.205
+    step 200 loss 4.060
+    step 225 loss 5.316
+    step 250 loss 4.022
+    step 275 loss 4.574
+    step 299 loss 4.768
+vocab_ext {'old_vocab': 151936, 'new_vocab': 153665, 'added': 2000, 'prompts_retokenized': 13, 'train_steps': 300} 754s
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<04:18,  1.12it/s]Loading weights:  80%|████████  | 233/290 [00:00<00:00, 319.79it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 271.89it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+    step 0 loss 5.390
+    step 25 loss 4.972
+    step 50 loss 4.690
+    step 75 loss 4.097
+    step 100 loss 4.261
+    step 125 loss 4.175
+    step 150 loss 3.309
+    step 175 loss 3.680
+    step 200 loss 3.720
+    step 225 loss 3.753
+    step 250 loss 2.991
+    step 275 loss 3.052
+    step 299 loss 2.343
+vocab_swap {'old_vocab': 151936, 'new_vocab': 49152, 'same_string_copied': 39237, 'subword_mean_init': 9915, 'fallback': 0, 'train_steps': 300} 652s

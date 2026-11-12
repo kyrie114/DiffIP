@@ -1,0 +1,4 @@
+feats/
+acts/
+ckpt/*/recipe.pt
+*.box-store-snap-*

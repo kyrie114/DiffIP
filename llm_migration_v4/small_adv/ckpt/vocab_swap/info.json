@@ -1,0 +1,8 @@
+{
+ "old_vocab": 151936,
+ "new_vocab": 49152,
+ "same_string_copied": 39237,
+ "subword_mean_init": 9915,
+ "fallback": 0,
+ "train_steps": 300
+}
