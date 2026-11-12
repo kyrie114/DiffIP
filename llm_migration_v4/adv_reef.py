@@ -1,5 +1,5 @@
-"""REEF 同组模型对照（官方设定）：TruthfulQA 前 200 条（random.Random(2024) 打乱后取
-前 200，语句 = 问题 + 空格 + 最佳答案，与 0.5B 对照相同），逐条输入、不加聊天模板、
+"""REEF 同组模型对照（官方设定）：TruthfulQA 前 200 条（按 csv 原顺序，语句 = 问题 +
+空格 + 最佳答案；设 REEF_SHUFFLE=1 则改用 0.5B 对照的 random.Random(2024) 打乱顺序），逐条输入、不加聊天模板、
 不截断；取每层最后一个 token 的隐藏状态；中心化 + 逐特征标准化后算线性中心化核对齐。
 主指标：受害模型第 18 层 vs 嫌疑模型第 18 层；嫌疑模型不足 19 层时取它各层与受害
 模型第 18 层的最大值，并记 layer_rule="max"。
@@ -8,7 +8,7 @@ Usage:
   python adv_reef.py collect <name> [name...]   # 写 reef_acts/{name}.npz（各层末 token）
   python adv_reef.py score   <name> [name...]   # 写 adv_scores/reef.json
 受害模型请先 collect victim。"""
-import csv, gc, json, math, random, sys
+import csv, gc, json, math, os, random, sys
 import numpy as np, torch
 from common import H, build_main
 
@@ -20,7 +20,8 @@ LAYER = 18
 
 def tqa200():
     rows = list(csv.DictReader(open(TQA_CSV, encoding="utf-8")))
-    random.Random(2024).shuffle(rows)
+    if os.environ.get("REEF_SHUFFLE", "0") == "1":
+        random.Random(2024).shuffle(rows)
     return [r["Question"].strip() + " " + r["Best Answer"].strip() for r in rows[:200]]
 
 
