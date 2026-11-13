@@ -52,7 +52,12 @@ if "--mid2" in sys.argv:
     os.environ["V4_LAYER_SUBSET"] = "mid2"
 LAYER_SUBSET = os.environ.get("V4_LAYER_SUBSET", "all")
 LAYER_IDX = {"all": None, "mid2": [1, 2]}[LAYER_SUBSET]
-SCORES_DIR = H / ("scores" if LAYER_IDX is None else f"scores_{LAYER_SUBSET}")
+# V4_SCORES_DIR keeps an extra round off scores/, whose roster lineage.py
+# checks exactly. Unset, scoring still writes scores/ or scores_mid2/.
+if os.environ.get("V4_SCORES_DIR"):
+    SCORES_DIR = H / os.environ["V4_SCORES_DIR"]
+else:
+    SCORES_DIR = H / ("scores" if LAYER_IDX is None else f"scores_{LAYER_SUBSET}")
 
 # Display names: neg_pruned_* keys are kept for file compatibility but are
 # lineage POSITIVES (same-base structural variants), not negatives.
@@ -222,7 +227,7 @@ def summarize(rows, names, groups=None):
     return out
 
 
-def score(line, names):
+def score(line, names, summary_name=None):
     from common import MAIN as M, DISTILL as D
     if not (F / f"{line}_victim.npz").exists():
         raise SystemExit(f"missing feats/{line}_victim.npz — run collect.py first")
@@ -257,8 +262,9 @@ def score(line, names):
                   "跨家族负例":
                   [n for n in names if is_neg(n)]}
     summary = summarize(rows, names, groups)
-    (scores_dir / f"summary_{line}.json").write_text(json.dumps(summary, indent=1))
-    print("done", line, len(rows), "rows", flush=True)
+    summary_name = summary_name or f"summary_{line}.json"
+    (scores_dir / summary_name).write_text(json.dumps(summary, indent=1))
+    print("done", line, len(rows), "rows", "summary", summary_name, flush=True)
 
 
 if __name__ == "__main__":
@@ -272,4 +278,9 @@ if __name__ == "__main__":
                + [k for k in reg if k.startswith("neg_")
                   and k != "neg_internlm2_7b"])
     names = sys.argv[2:] or reg
-    score(line, names)
+    # An explicit subset must not replace scores/summary_main.json.
+    # A separate V4_SCORES_DIR is that round's own summary.
+    summary_name = None
+    if sys.argv[2:] and not os.environ.get("V4_SCORES_DIR"):
+        summary_name = f"summary_{line}_subset.json"
+    score(line, names, summary_name)

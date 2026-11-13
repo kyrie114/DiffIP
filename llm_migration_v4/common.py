@@ -40,10 +40,39 @@ LLAMA32_CHAT_TEMPLATE = (
 )
 
 
+def _repair_slow_llama_tokenizer(mid, tok):
+    """AutoTokenizer can return a slow LlamaTokenizer that drops CJK.
+
+    DeepSeek-R1-0528-Qwen3-8B's tokenizer.json is the Qwen byte-level BPE.
+    The slow fallback encodes that poem as zero tokens, so the forward sees
+    shape [batch, 0, hidden]. Use the json tokenizer only in that case.
+    """
+    path = Path(mid) / "tokenizer.json"
+    if type(tok).__name__ != "LlamaTokenizer" or not path.is_file():
+        return tok
+    probe = "床前明月光"
+    try:
+        if len(tok.encode(probe)) > 0:
+            return tok
+    except Exception:
+        return tok
+    from transformers import PreTrainedTokenizerFast
+    fast = PreTrainedTokenizerFast(tokenizer_file=str(path))
+    if len(fast.encode(probe)) == 0:
+        return tok
+    tmpl = getattr(tok, "chat_template", None)
+    if tmpl and not getattr(fast, "chat_template", None):
+        fast.chat_template = tmpl
+    print(f"tokenizer: {Path(mid).name} slow LlamaTokenizer dropped CJK; "
+          f"using tokenizer.json", flush=True)
+    return fast
+
+
 def load_tok(mid):
     # internlm2 ships a custom tokenizer; sentencepiece models need protobuf
     # (installed in diffip-llm) or transformers falls back to tiktoken and crashes.
     tok = AutoTokenizer.from_pretrained(mid, trust_remote_code=True)
+    tok = _repair_slow_llama_tokenizer(mid, tok)
     if not getattr(tok, "chat_template", None):
         tok.chat_template = LLAMA32_CHAT_TEMPLATE
     return tok
@@ -120,6 +149,28 @@ UNRELATED_ROUND = {
     "neg_mpt_7b": f"{MODELS}/mpt-7b",
 }
 
+# Second base. Not on the default MAIN roster.
+QWEN3_ROUND = {
+    "qwen3_victim": f"{MODELS}/Qwen3-8B-Base",
+    "qwen3_instruct": f"{MODELS}/Qwen3-8B",
+    "qwen3_hard": f"{MODELS}/DeepSeek-R1-0528-Qwen3-8B",
+}
+
+# 2026-11-11 validity/robustness panel. Not on the default MAIN roster.
+# Sheared is a Llama-2 lineage positive. Do not reuse distill's neg_sheared_1_3b.
+PANEL = {
+    "pos_vicuna": f"{MODELS}/vicuna-7b-v1.5",
+    "pos_sheared_1_3b_pruned": f"{MODELS}/Sheared-LLaMA-1.3B-Pruned",
+    "pos_sheared_1_3b": f"{MODELS}/Sheared-LLaMA-1.3B",
+    "pos_sheared_1_3b_sharegpt": f"{MODELS}/Sheared-LLaMA-1.3B-ShareGPT",
+    "pos_sheared_2_7b_pruned": f"{MODELS}/Sheared-LLaMA-2.7B-Pruned",
+    "pos_sheared_2_7b": f"{MODELS}/Sheared-LLaMA-2.7B",
+    "pos_sheared_2_7b_sharegpt": f"{MODELS}/Sheared-LLaMA-2.7B-ShareGPT",
+    "cpt_codellama": f"{MODELS}/CodeLlama-7b-hf",
+    "cpt_wizardmath": f"{MODELS}/WizardMath-7B-V1.0",
+    "cpt_llemma": f"{MODELS}/llemma_7b",
+}
+
 
 # 2026-11-12 优点验证轮（实验方案.md「七条优点与验证实验」）。全部是
 # Llama-2-7B 的谱系正例或压力测试，不进无关参照集、不参与阈值校准。
@@ -151,6 +202,10 @@ def model_path(name):
         return MAIN[name]
     if name in UNRELATED_ROUND:
         return UNRELATED_ROUND[name]
+    if name in QWEN3_ROUND:
+        return QWEN3_ROUND[name]
+    if name in PANEL:
+        return PANEL[name]
     if name in ADV_ROUND:
         return ADV_ROUND[name]
     raise KeyError(name)

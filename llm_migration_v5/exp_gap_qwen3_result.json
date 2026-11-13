@@ -1,0 +1,244 @@
+{
+ "means": {
+  "qwen3_instruct": 0.0008813072385390726,
+  "qwen3_hard": 0.0008288463245878954,
+  "llama2": 0.0007172746322786904,
+  "neg_llama3_8b": 0.000793661873285737,
+  "neg_baichuan_7b": 0.0007534338822364184,
+  "neg_mpt_7b": 0.000726595914438058
+ },
+ "n_failed": 12,
+ "failed": [
+  "llama2->neg_llama3_8b",
+  "llama2->neg_baichuan_7b",
+  "llama2->neg_mpt_7b",
+  "neg_llama3_8b->llama2",
+  "neg_llama3_8b->neg_baichuan_7b",
+  "neg_llama3_8b->neg_mpt_7b",
+  "neg_baichuan_7b->llama2",
+  "neg_baichuan_7b->neg_llama3_8b",
+  "neg_baichuan_7b->neg_mpt_7b",
+  "neg_mpt_7b->llama2",
+  "neg_mpt_7b->neg_llama3_8b",
+  "neg_mpt_7b->neg_baichuan_7b"
+ ],
+ "claim_holds": false,
+ "directions": [
+  {
+   "anchor": "llama2",
+   "test": "neg_llama3_8b",
+   "t": 0.0003094459601024912,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.0625,
+     "fpr": 0.0625
+    },
+    {
+     "tpr": 0.09375,
+     "fpr": 0.03125
+    }
+   ],
+   "hard_tpr": 0.0625,
+   "auc": 0.5315212673611112
+  },
+  {
+   "anchor": "llama2",
+   "test": "neg_baichuan_7b",
+   "t": 0.00010506445938742934,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.0625,
+     "fpr": 0.03125
+    },
+    {
+     "tpr": 0.09375,
+     "fpr": 0.0625
+    }
+   ],
+   "hard_tpr": 0.078125,
+   "auc": 0.5788302951388888
+  },
+  {
+   "anchor": "llama2",
+   "test": "neg_mpt_7b",
+   "t": 0.001650416135653178,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.0625,
+     "fpr": 0.0
+    },
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    }
+   ],
+   "hard_tpr": 0.015625,
+   "auc": 0.5944552951388888
+  },
+  {
+   "anchor": "neg_llama3_8b",
+   "test": "llama2",
+   "t": 5.340492899872165e-05,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    },
+    {
+     "tpr": 0.0625,
+     "fpr": 0.03125
+    }
+   ],
+   "hard_tpr": 0.03125,
+   "auc": 0.6776801215277778
+  },
+  {
+   "anchor": "neg_llama3_8b",
+   "test": "neg_baichuan_7b",
+   "t": 0.000158469388386151,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    },
+    {
+     "tpr": 0.0625,
+     "fpr": 0.03125
+    }
+   ],
+   "hard_tpr": 0.03125,
+   "auc": 0.5926106770833334
+  },
+  {
+   "anchor": "neg_llama3_8b",
+   "test": "neg_mpt_7b",
+   "t": 0.0017038210646518996,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    },
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    }
+   ],
+   "hard_tpr": 0.0,
+   "auc": 0.6658528645833334
+  },
+  {
+   "anchor": "neg_baichuan_7b",
+   "test": "llama2",
+   "t": 8.616312596364524e-07,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.1875,
+     "fpr": 0.0625
+    },
+    {
+     "tpr": 0.15625,
+     "fpr": 0.03125
+    }
+   ],
+   "hard_tpr": 0.140625,
+   "auc": 0.6853841145833334
+  },
+  {
+   "anchor": "neg_baichuan_7b",
+   "test": "neg_llama3_8b",
+   "t": 0.0002308778713721077,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.0625,
+     "fpr": 0.0625
+    },
+    {
+     "tpr": 0.0625,
+     "fpr": 0.03125
+    }
+   ],
+   "hard_tpr": 0.0625,
+   "auc": 0.6012912326388888
+  },
+  {
+   "anchor": "neg_baichuan_7b",
+   "test": "neg_mpt_7b",
+   "t": 0.0015453516762657486,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    },
+    {
+     "tpr": 0.03125,
+     "fpr": 0.0
+    }
+   ],
+   "hard_tpr": 0.015625,
+   "auc": 0.6399197048611112
+  },
+  {
+   "anchor": "neg_mpt_7b",
+   "test": "llama2",
+   "t": 2.877800382687255e-05,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.125,
+     "fpr": 0.0625
+    },
+    {
+     "tpr": 0.125,
+     "fpr": 0.0625
+    }
+   ],
+   "hard_tpr": 0.09375,
+   "auc": 0.65087890625
+  },
+  {
+   "anchor": "neg_mpt_7b",
+   "test": "neg_llama3_8b",
+   "t": 0.0001231257843555477,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.09375,
+     "fpr": 0.09375
+    },
+    {
+     "tpr": 0.09375,
+     "fpr": 0.0625
+    }
+   ],
+   "hard_tpr": 0.078125,
+   "auc": 0.51025390625
+  },
+  {
+   "anchor": "neg_mpt_7b",
+   "test": "neg_baichuan_7b",
+   "t": 6.757232212120548e-05,
+   "pass": false,
+   "held": [
+    {
+     "tpr": 0.09375,
+     "fpr": 0.09375
+    },
+    {
+     "tpr": 0.125,
+     "fpr": 0.0625
+    }
+   ],
+   "hard_tpr": 0.078125,
+   "auc": 0.5875108506944444
+  }
+ ]
+}

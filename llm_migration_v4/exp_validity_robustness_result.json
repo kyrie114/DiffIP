@@ -1,0 +1,325 @@
+{
+ "cell": "N=128 dims=8",
+ "directions": [
+  {
+   "anchor": "Qwen2.5-7B",
+   "held_out_negative": "Meta-Llama-3-8B",
+   "t": 0.016085824234329638
+  },
+  {
+   "anchor": "Meta-Llama-3-8B",
+   "held_out_negative": "Qwen2.5-7B",
+   "t": 0.013566189850468174
+  }
+ ],
+ "threshold_source": "exp_unrel_result.json seed-0 max, unchanged",
+ "expanded_pairs": 20,
+ "expanded_failed": [
+  "neg_qwen2_5_7b->neg_mpt_7b",
+  "neg_llama3_8b->neg_mpt_7b"
+ ],
+ "layers": {
+  "Qwen2.5-7B": [
+   0,
+   9,
+   18,
+   27
+  ],
+  "vicuna-7b-v1.5": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "Sheared-LLaMA-1.3B-Pruned": [
+   0,
+   8,
+   15,
+   23
+  ],
+  "Sheared-LLaMA-1.3B": [
+   0,
+   8,
+   15,
+   23
+  ],
+  "Sheared-LLaMA-1.3B-ShareGPT": [
+   0,
+   8,
+   15,
+   23
+  ],
+  "Sheared-LLaMA-2.7B-Pruned": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "Sheared-LLaMA-2.7B": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "Sheared-LLaMA-2.7B-ShareGPT": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "CodeLlama-7b-hf": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "WizardMath-7B-V1.0": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "llemma_7b": [
+   0,
+   10,
+   21,
+   31
+  ],
+  "Llama-2-7b-chat-hf": [
+   0,
+   10,
+   21,
+   31
+  ]
+ },
+ "min_heldout_rate_over_20_pairs": {
+  "Llama-2-7b-chat-hf": 0.96875,
+  "Chinese-llama-2-7b": 0.46875,
+  "vicuna-7b-v1.5": 0.6875,
+  "Sheared-LLaMA-1.3B-Pruned": 0.0,
+  "Sheared-LLaMA-1.3B": 0.0,
+  "Sheared-LLaMA-1.3B-ShareGPT": 0.0,
+  "Sheared-LLaMA-2.7B-Pruned": 0.0,
+  "Sheared-LLaMA-2.7B": 0.0,
+  "Sheared-LLaMA-2.7B-ShareGPT": 0.0,
+  "CodeLlama-7b-hf": 0.125,
+  "WizardMath-7B-V1.0": 0.78125,
+  "llemma_7b": 0.09375,
+  "llama2-7B-pruned-sparsegpt": 0.96875,
+  "wanda_pruned_llama_2_7B": 1.0,
+  "GBLM-Pruner-LLaMA-2-7B": 1.0
+ },
+ "table_a": [
+  {
+   "dir": "Llama-2-7b-hf",
+   "role": "受害模型",
+   "sim": "—",
+   "held": "—",
+   "reef18": "1.0000",
+   "source": "REEF 本轮新跑"
+  },
+  {
+   "dir": "Llama-2-7b-chat-hf",
+   "role": "官方对话微调",
+   "sim": "0.363",
+   "held": "1.00/0.97；1.00/0.97",
+   "reef18": "0.9707",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "Chinese-llama-2-7b",
+   "role": "中文衍生，不参与通过判定",
+   "sim": "0.311",
+   "held": "0.53/0.47；0.53/0.50",
+   "reef18": "0.9674",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "vicuna-7b-v1.5",
+   "role": "第三方微调",
+   "sim": "0.324",
+   "held": "0.81/0.88；0.84/0.91",
+   "reef18": "0.9769",
+   "source": "本轮新跑"
+  },
+  {
+   "dir": "Qwen2.5-7B",
+   "role": "无关模型",
+   "sim": "0.254",
+   "held": "0.00/0.00；0.03/0.00",
+   "reef18": "0.9204",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "Meta-Llama-3-8B",
+   "role": "无关模型",
+   "sim": "0.254",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9596",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "llama-7b-hf",
+   "role": "无关模型",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9688",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "Baichuan-7B",
+   "role": "无关模型",
+   "sim": "0.252",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.1813",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "dir": "mpt-7b",
+   "role": "无关模型",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.03/0.00",
+   "reef18": "0.9326",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  }
+ ],
+ "table_b": [
+  {
+   "kind": "官方对话微调",
+   "dir": "Llama-2-7b-chat-hf",
+   "sim": "0.363",
+   "held": "1.00/0.97；1.00/0.97",
+   "reef18": "0.9707",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "kind": "同底座稀疏剪枝",
+   "dir": "llama2-7B-pruned-sparsegpt",
+   "sim": "0.559",
+   "held": "1.00/1.00；1.00/1.00",
+   "reef18": "0.9818",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "kind": "同底座稀疏剪枝",
+   "dir": "wanda_pruned_llama_2_7B",
+   "sim": "0.528",
+   "held": "1.00/1.00；1.00/1.00",
+   "reef18": "0.9825",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "kind": "同底座稀疏剪枝",
+   "dir": "GBLM-Pruner-LLaMA-2-7B",
+   "sim": "0.538",
+   "held": "1.00/1.00；1.00/1.00",
+   "reef18": "0.9838",
+   "source": "DiffIP 主实验已有；REEF 本轮新跑"
+  },
+  {
+   "kind": "对话版上删除 4 层",
+   "dir": "由 Llama-2-7b-chat-hf 派生，删除 4 层",
+   "sim": "0.357",
+   "held": "1.00/0.97；1.00/0.97",
+   "reef18": "—",
+   "source": "DiffIP 主实验已有"
+  },
+  {
+   "kind": "权重置换",
+   "dir": "打分时由 Llama-2-7b-chat-hf 变出",
+   "sim": "0.364",
+   "held": "1.00/0.97；1.00/0.97",
+   "reef18": "—",
+   "source": "DiffIP 主实验已有"
+  },
+  {
+   "kind": "表示置换",
+   "dir": "由官方微调特征变出",
+   "sim": "0.363",
+   "held": "1.00/0.97；1.00/0.97",
+   "reef18": "—",
+   "source": "DiffIP 主实验已有"
+  },
+  {
+   "kind": "缩放",
+   "dir": "由官方微调特征变出",
+   "sim": "0.365",
+   "held": "1.00/0.97；1.00/1.00",
+   "reef18": "—",
+   "source": "DiffIP 主实验已有"
+  },
+  {
+   "kind": "结构化剪枝",
+   "dir": "Sheared-LLaMA-1.3B-Pruned",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.8961",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "结构化剪枝后继续训练",
+   "dir": "Sheared-LLaMA-1.3B",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9266",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "结构化剪枝后指令微调",
+   "dir": "Sheared-LLaMA-1.3B-ShareGPT",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9232",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "结构化剪枝",
+   "dir": "Sheared-LLaMA-2.7B-Pruned",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9340",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "结构化剪枝后继续训练",
+   "dir": "Sheared-LLaMA-2.7B",
+   "sim": "0.253",
+   "held": "0.00/0.00；0.00/0.00",
+   "reef18": "0.9648",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "结构化剪枝后指令微调",
+   "dir": "Sheared-LLaMA-2.7B-ShareGPT",
+   "sim": "0.253",
+   "held": "0.00/0.03；0.03/0.03",
+   "reef18": "0.9593",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "继续预训练（代码）",
+   "dir": "CodeLlama-7b-hf",
+   "sim": "0.268",
+   "held": "0.38/0.22；0.41/0.34",
+   "reef18": "0.9588",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "继续预训练（数学）",
+   "dir": "WizardMath-7B-V1.0",
+   "sim": "0.353",
+   "held": "0.97/0.84；0.97/0.91",
+   "reef18": "0.9839",
+   "source": "本轮新跑"
+  },
+  {
+   "kind": "继续预训练（定理）",
+   "dir": "llemma_7b",
+   "sim": "0.263",
+   "held": "0.25/0.16；0.25/0.25",
+   "reef18": "0.9491",
+   "source": "本轮新跑"
+  }
+ ],
+ "reef_rule_exceptions": []
+}

@@ -1,0 +1,705 @@
+{
+ "args": {
+  "neg": [
+   "neg_qwen2_5_7b",
+   "neg_llama3_8b",
+   "neg_llama1_7b",
+   "neg_baichuan_7b",
+   "neg_mpt_7b"
+  ],
+  "pos": [
+   "fine_tune",
+   "neg_pruned_sparsegpt",
+   "neg_pruned_wanda",
+   "neg_pruned_gblm",
+   "prune_dpoff",
+   "weight_perm",
+   "rep_perm",
+   "scale"
+  ],
+  "n": 128,
+  "dims": 8
+ },
+ "directions": [
+  {
+   "reference": "neg_qwen2_5_7b",
+   "heldout_negative": "neg_llama3_8b",
+   "threshold": 0.016085863066372663,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_qwen2_5_7b",
+   "heldout_negative": "neg_llama1_7b",
+   "threshold": 0.011239945541442836,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_qwen2_5_7b",
+   "heldout_negative": "neg_baichuan_7b",
+   "threshold": 0.009333541111874177,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 0.96875,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_qwen2_5_7b",
+   "heldout_negative": "neg_mpt_7b",
+   "threshold": 0.007383739476241324,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": false
+  },
+  {
+   "reference": "neg_llama3_8b",
+   "heldout_negative": "neg_qwen2_5_7b",
+   "threshold": 0.013566225875955462,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama3_8b",
+   "heldout_negative": "neg_llama1_7b",
+   "threshold": 0.0248061714173983,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 0.96875,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 0.96875,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama3_8b",
+   "heldout_negative": "neg_baichuan_7b",
+   "threshold": 0.0034043375151689703,
+   "seeds": {
+    "1": {
+     "fpr": 0.09375,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama3_8b",
+   "heldout_negative": "neg_mpt_7b",
+   "threshold": 0.00391488633614695,
+   "seeds": {
+    "1": {
+     "fpr": 0.09375,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.1875,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": false
+  },
+  {
+   "reference": "neg_llama1_7b",
+   "heldout_negative": "neg_qwen2_5_7b",
+   "threshold": 0.013622214610173267,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama1_7b",
+   "heldout_negative": "neg_llama3_8b",
+   "threshold": 0.01823085077456088,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama1_7b",
+   "heldout_negative": "neg_baichuan_7b",
+   "threshold": 0.009470551046255327,
+   "seeds": {
+    "1": {
+     "fpr": 0.0625,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 0.96875,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_llama1_7b",
+   "heldout_negative": "neg_mpt_7b",
+   "threshold": 0.009794879871988016,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0625,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 0.96875,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_baichuan_7b",
+   "heldout_negative": "neg_qwen2_5_7b",
+   "threshold": 0.01929046045914523,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_baichuan_7b",
+   "heldout_negative": "neg_llama3_8b",
+   "threshold": 0.012928034404157795,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_baichuan_7b",
+   "heldout_negative": "neg_llama1_7b",
+   "threshold": 0.021401833902229328,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_baichuan_7b",
+   "heldout_negative": "neg_mpt_7b",
+   "threshold": 0.010727077662888385,
+   "seeds": {
+    "1": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0625,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_mpt_7b",
+   "heldout_negative": "neg_qwen2_5_7b",
+   "threshold": 0.014985752914526529,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.03125,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_mpt_7b",
+   "heldout_negative": "neg_llama3_8b",
+   "threshold": 0.014827313501046158,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_mpt_7b",
+   "heldout_negative": "neg_llama1_7b",
+   "threshold": 0.025700615766183627,
+   "seeds": {
+    "1": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 0.96875,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 0.96875,
+      "neg_pruned_sparsegpt": 0.96875,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 0.96875,
+      "weight_perm": 0.96875,
+      "rep_perm": 0.96875,
+      "scale": 0.96875
+     }
+    }
+   },
+   "pass": true
+  },
+  {
+   "reference": "neg_mpt_7b",
+   "heldout_negative": "neg_baichuan_7b",
+   "threshold": 0.009070424492297058,
+   "seeds": {
+    "1": {
+     "fpr": 0.0625,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 1.0,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    },
+    "2": {
+     "fpr": 0.0,
+     "tpr": {
+      "fine_tune": 1.0,
+      "neg_pruned_sparsegpt": 1.0,
+      "neg_pruned_wanda": 1.0,
+      "neg_pruned_gblm": 1.0,
+      "prune_dpoff": 1.0,
+      "weight_perm": 0.96875,
+      "rep_perm": 1.0,
+      "scale": 1.0
+     }
+    }
+   },
+   "pass": true
+  }
+ ]
+}

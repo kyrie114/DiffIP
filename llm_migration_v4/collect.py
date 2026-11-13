@@ -22,12 +22,19 @@ import time
 import numpy as np
 
 from common import (H, MAIN, DISTILL, N_LAYERS, N_MAX, PROMPTS, SEED_SETS,
-                    UNRELATED_ROUND, ADV_ROUND, build_main, even_layers, load, pooled_layers,
-                    perturb_batch)
+                    ADV_ROUND, PANEL, QWEN3_ROUND, UNRELATED_ROUND, build_main,
+                    even_layers, load, pooled_layers, perturb_batch)
 
 ALL_LAYERS = os.environ.get("V4_ALL_LAYERS", "0") == "1"
-OUT = H / ("feats_all" if ALL_LAYERS else "feats")
+# V4_FEAT_DIR and V4_SEED_SETS keep extra rounds off feats/ and off the
+# original three seeds. Unset, collection is unchanged.
+if os.environ.get("V4_FEAT_DIR"):
+    OUT = H / os.environ["V4_FEAT_DIR"]
+else:
+    OUT = H / ("feats_all" if ALL_LAYERS else "feats")
 OUT.mkdir(exist_ok=True)
+if os.environ.get("V4_SEED_SETS"):
+    SEED_SETS = [int(x) for x in os.environ["V4_SEED_SETS"].split(",")]
 
 
 def n_decoder_layers(model):
@@ -92,9 +99,12 @@ def collect(line, names):
                     x = x[..., perm_idx]
                 feats[p, k] = pooled_layers(m, x, L4)
                 if not np.isfinite(feats[p, k]).all():
+                    bad = feats[p, k]
                     raise SystemExit(
                         f"{line}/{name} prompt {p + 1} seed set {k}: non-finite "
-                        f"features — aborting (see PLAN risk table: isolate model)")
+                        f"features nan={int(np.isnan(bad).sum())} "
+                        f"inf={int(np.isinf(bad).sum())} "
+                        f"— aborting (see PLAN risk table: isolate model)")
             _save_partial(partial, feats, L4, total, p + 1)
             print(f"  {line}/{name} prompt {p + 1}/{len(PROMPTS)} "
                   f"({time.time() - t0:.0f}s)", flush=True)
@@ -112,7 +122,8 @@ if __name__ == "__main__":
     reg = MAIN if line == "main" else DISTILL
     names = sys.argv[2:] or list(reg)
     if line == "main":
-        known = set(MAIN) | set(UNRELATED_ROUND) | set(ADV_ROUND)
+        known = (set(MAIN) | set(UNRELATED_ROUND) | set(QWEN3_ROUND)
+                 | set(PANEL) | set(ADV_ROUND))
         unknown = [n for n in names if n not in known]
         if unknown:
             raise SystemExit(f"unknown main-line names: {unknown}")

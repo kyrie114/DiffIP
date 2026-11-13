@@ -1,0 +1,7 @@
+logs/
+*.log
+__pycache__/
+*.pyc
+feats_newseed/
+feats_qwen3/
+acts_reef/

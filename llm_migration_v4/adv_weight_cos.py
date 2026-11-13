@@ -38,6 +38,9 @@ if __name__ == "__main__":
     vm, _ = load(MAIN["victim"]); vsd = {k: v.detach().clone() for k, v in vm.state_dict().items()}
     del vm
     for name in sys.argv[1:]:
+        if name in res and res[name].get("status") in ("ok", "not_comparable"):
+            print("skip", name, flush=True)
+            continue
         m, _t, _e, _p = build_main(name)
         res[name] = cos_table(vsd, m.state_dict()); del m
         print(name, res[name], flush=True)

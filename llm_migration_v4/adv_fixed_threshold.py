@@ -12,10 +12,23 @@ import numpy as np
 from common import H
 
 S = H / "scores"; OUT = H / "adv_scores"; OUT.mkdir(exist_ok=True)
+# scores/ is the original roster. The three expanded negatives live in
+# scores_unrel/, and this round's new names live in scores_panel/.
+# The margin formula below is unchanged. lineage.py requires the scores/
+# stems to match its roster exactly, so new rows are not copied in.
+_SCORE_DIRS = (S, H / "scores_unrel", H / "scores_panel")
+
+
+def score_file(name):
+    for d in _SCORE_DIRS:
+        p = d / f"main_{name}.json"
+        if p.is_file():
+            return p
+    raise SystemExit(f"missing main_{name}.json in scores, scores_unrel, or scores_panel")
 
 
 def grid(name, n, d):
-    rows = json.loads((S / f"main_{name}.json").read_text())
+    rows = json.loads(score_file(name).read_text())
     return {(r["prompt"], r["seed_set"]): r["similarity"] for r in rows if r["N"] == n and r["dims"] == d}
 
 

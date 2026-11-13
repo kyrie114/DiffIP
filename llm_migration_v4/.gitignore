@@ -7,6 +7,9 @@ __pycache__/
 .ipynb_checkpoints/
 feats/
 feats_all/
+feats_even4/
+acts_reef_tqa/
+reef_acts/
 ckpt/
 data/
 scores*/
