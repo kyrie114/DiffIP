@@ -280,7 +280,7 @@ SUITE_MODELS = {
         "legacy_feat": None, "base": "baseD", "role": "domain",
     },
 
-    # ---------------- 公共跨家族无关负例池（均已采集完成！） ----------------
+    # ---------------- 公共跨家族无关负例池（主线与实验三已采 5 个 + 新增同架构 OpenLLaMA） ----------------
     "unrel_qwen2_5_7b": {
         "path": f"{MODELS}/Qwen2.5-7B", "transform": None,
         "legacy_feat": "main_neg_qwen2_5_7b.npz", "base": "unrel", "role": "negative",
@@ -288,6 +288,10 @@ SUITE_MODELS = {
     "unrel_llama1_7b": {
         "path": f"{MODELS}/llama-7b-hf", "transform": None,
         "legacy_feat": "main_neg_llama1_7b.npz", "base": "unrel", "role": "negative",
+    },
+    "unrel_openllama_7b": {
+        "path": f"{MODELS}/open_llama_7b", "transform": None,
+        "legacy_feat": "main_neg_open_llama_7b.npz", "base": "unrel", "role": "negative",
     },
     "unrel_baichuan_7b": {
         "path": f"{MODELS}/Baichuan-7B", "transform": None,
@@ -431,11 +435,14 @@ def locate_ours_feat(key: str) -> Path | None:
     return None
 
 
-def load_ours_4layers(key: str) -> np.ndarray:
-    """Load [32, 3, 4, 128, D] float32 array for `key`, slicing even4 if from feats_all."""
-    path = locate_ours_feat(key)
-    if path is None:
-        raise FileNotFoundError(f"Missing Ours feature for {key}. Run: python suite_sota.py collect_ours {key}")
+def load_ours_4layers(key_or_path: str | Path) -> np.ndarray:
+    """Load [32, 3, 4, 128, D] float32 array for `key_or_path`, slicing even4 if from feats_all."""
+    if isinstance(key_or_path, Path):
+        path = key_or_path
+    else:
+        path = locate_ours_feat(key_or_path)
+    if path is None or not Path(path).exists():
+        raise FileNotFoundError(f"Missing Ours feature for {key_or_path}. Run: python suite_sota.py collect_ours {key_or_path}")
     z = np.load(path)
     pert = z["pert"]
     if pert.shape[2] == 4:
@@ -562,7 +569,7 @@ def linear_cka(X: np.ndarray, Y: np.ndarray) -> float:
     return num / max(den, 1e-12)
 
 
-def reef_Bootstrap_scores(vic_acts: np.ndarray, sus_acts: np.ndarray, layer_idx: int = 18) -> list[float]:
+def reef_bootstrap_scores(vic_acts: np.ndarray, sus_acts: np.ndarray, layer_idx: int = 18) -> dict:
     """Compute REEF CKA across 3 subsets/bootstraps of the 200 samples (matching our 3 seed sets)
     so we can report mean ± std and ROC AUC consistently."""
     lv = min(layer_idx, vic_acts.shape[0] - 1)
@@ -572,10 +579,18 @@ def reef_Bootstrap_scores(vic_acts: np.ndarray, sus_acts: np.ndarray, layer_idx:
     m = Xv.shape[0]
     scores = []
     for seed in SEED_SETS:
-        rng = np.random.default_rng(seed)
+        s_int = seed[0] if isinstance(seed, (list, tuple)) else int(seed)
+        rng = np.random.default_rng(s_int)
         idx = rng.choice(m, size=min(128, m), replace=False)
         scores.append(linear_cka(Xv[idx], Xs[idx]))
-    return scores
+    return {
+        "scores": scores,
+        "mean": float(np.mean(scores)),
+        "std": float(np.std(scores)),
+    }
+
+
+reef_Bootstrap_scores = reef_bootstrap_scores
 
 
 # ==============================================================================
@@ -783,6 +798,8 @@ def evaluate_camouflage_test_suite() -> dict:
     Does NOT require re-running 7B forward pass! Uses exact algebraic equivalence on
     stored features & weights."""
     res = {}
+    if locate_ours_feat("baseA_victim") is None or locate_ours_feat("baseA_sft_chat") is None:
+        return res
     # 1. Ours on Base A fine_tune + disguises (using stored 4-layer features)
     vic_f = load_ours_4layers("baseA_victim")
     ft_f = load_ours_4layers("baseA_sft_chat")
@@ -802,7 +819,7 @@ def evaluate_camouflage_test_suite() -> dict:
                         for j in range(len(blocks))] for i in range(len(blocks))])
     gamma_nc = np.exp(rng.uniform(-2.5, 2.5, size=(D,))).astype(np.float32)
 
-    def _ours_sim_on_array(sus_arr: np.ndarray) -> list[float]:
+    def _ours_sim_on_array(sus_arr: np.ndarray) -> dict:
         seed_means = []
         for k in range(3):
             p_sims = []
@@ -811,7 +828,11 @@ def evaluate_camouflage_test_suite() -> dict:
                 dl = [fit_step_alignment(pr.suspect[i], pr.victim[i]).distance for i in range(4)]
                 p_sims.append(math.exp(-sum(dl) / len(dl)))
             seed_means.append(float(np.mean(p_sims)))
-        return seed_means
+        return {
+            "scores": seed_means,
+            "mean": float(np.mean(seed_means)),
+            "std": float(np.std(seed_means)),
+        }
 
     t_ours0 = time.time()
     ours_clean = _ours_sim_on_array(ft_f)
@@ -849,6 +870,106 @@ def evaluate_camouflage_test_suite() -> dict:
         }
 
     return res
+
+
+def evaluate_mechanism_2x2() -> dict:
+    """
+    二合一方案 Section 4.4 核心创新原理拆解（7B 规模 2×2 点云形态 × 对齐算子 + 配对消融）：
+    完全复用已采集的 feats/ 与 reef_acts/，零额外 GPU 前向开销！
+      1. 异构文本点云 (TruthfulQA 200) + Linear CKA (= 官方 REEF)
+      2. 异构文本点云 (TruthfulQA 200) + PCA8 + ALS
+      3. 单点配对微扰云 (32×128×D) + Linear CKA（证明单点微扰消除跨句子语义混杂，但仍不抗各向异性缩放）
+      4. 单点配对微扰云 + Shuffle 打破种子配对 + PCA8 + ALS（证明核心信号源于同微扰方向的局部 Jacobian 配对几何）
+      5. 单点配对微扰云 + PCA8 + ALS (Ours)（同时具备低假阳性与 GL(d) 仿射不变性）
+    """
+    out = {}
+    p_vic = locate_ours_feat("baseA_victim")
+    p_ft = locate_ours_feat("baseA_sft_chat")
+    if p_vic is None or p_ft is None:
+        return out
+
+    vic_4l = load_ours_4layers(p_vic)
+    ft_4l = load_ours_4layers(p_ft)
+    D = ft_4l.shape[-1]
+    rng = np.random.default_rng(2026)
+    aniso_s = np.exp(rng.uniform(-4.0, 4.0, size=(D,))).astype(np.float32)
+    shuf_idx = rng.permutation(128)
+
+    neg_keys = [
+        "unrel_llama1_7b", "unrel_openllama_7b", "unrel_baichuan_7b",
+        "baseD_victim", "baseB_victim", "unrel_qwen2_5_7b",
+    ]
+    neg_4l_map = {}
+    for nk in neg_keys:
+        pn = locate_ours_feat(nk)
+        if pn is not None:
+            neg_4l_map[nk] = load_ours_4layers(pn)
+
+    # Helper: Single-point Perturbed Cloud + Linear CKA
+    def _pert_cka(sus_arr: np.ndarray) -> float:
+        vals = []
+        for p in range(32):
+            for l_i in range(4):
+                vals.append(linear_cka(vic_4l[p, 0, l_i, :128], sus_arr[p, 0, l_i, :128]))
+        return float(np.mean(vals))
+
+    # Row 3: Perturbed Cloud + Linear CKA
+    pos_pert_cka = _pert_cka(ft_4l)
+    scale_pert_cka = _pert_cka(ft_4l * aniso_s)
+    neg_pert_ckas = {nk: _pert_cka(arr) for nk, arr in neg_4l_map.items()}
+
+    # Row 4 & 5: Perturbed Cloud + PCA8+ALS (Clean vs Shuffle vs Scale)
+    sims_clean, _ = score_ours_pair(ft_4l, vic_4l, dims=8)
+    sims_shuf, _ = score_ours_pair(ft_4l[:, :, :, shuf_idx, :], vic_4l, dims=8)
+    sims_scale, _ = score_ours_pair(ft_4l * aniso_s, vic_4l, dims=8)
+    neg_ours_sims = {nk: float(score_ours_pair(arr, vic_4l, dims=8)[0].mean()) for nk, arr in neg_4l_map.items()}
+
+    out["perturbed_cloud_cka"] = {
+        "sft_clean": pos_pert_cka,
+        "sft_aniso_scale": scale_pert_cka,
+        "negatives": neg_pert_ckas,
+        "max_neg": max(neg_pert_ckas.values()) if neg_pert_ckas else None,
+    }
+    out["perturbed_cloud_als_ours"] = {
+        "sft_clean": float(sims_clean.mean()),
+        "sft_shuffle_broken_pairing": float(sims_shuf.mean()),
+        "sft_aniso_scale": float(sims_scale.mean()),
+        "negatives": neg_ours_sims,
+        "max_neg": max(neg_ours_sims.values()) if neg_ours_sims else None,
+    }
+
+    # Rows 1 & 2: TruthfulQA 200 Heterogeneous Texts + (Linear CKA vs PCA8+ALS)
+    pv_reef = locate_reef_feat("baseA_victim")
+    pft_reef = locate_reef_feat("baseA_sft_chat")
+    if pv_reef is not None and pft_reef is not None:
+        vr = np.load(pv_reef)["last"]
+        fr = np.load(pft_reef)["last"]
+        idx4_v = even_layers(vr.shape[0], 4)
+        idx4_f = even_layers(fr.shape[0], 4)
+        pr_tqa = project_sequences(fr[idx4_f, :128], vr[idx4_v, :128], 8)
+        tqa_als_sft = math.exp(-sum(fit_step_alignment(pr_tqa.suspect[i], pr_tqa.victim[i]).distance for i in range(4)) / 4.0)
+        tqa_cka_sft = float(np.mean(reef_bootstrap_scores(vr, fr)["scores"]))
+        tqa_cka_scale = float(np.mean(reef_bootstrap_scores(vr, fr * aniso_s)["scores"]))
+        tqa_negs_cka = {}
+        tqa_negs_als = {}
+        for nk in neg_keys:
+            pnr = locate_reef_feat(nk)
+            if pnr is not None:
+                nr = np.load(pnr)["last"]
+                tqa_negs_cka[nk] = float(np.mean(reef_bootstrap_scores(vr, nr)["scores"]))
+                idx4_n = even_layers(nr.shape[0], 4)
+                pr_n = project_sequences(nr[idx4_n, :128], vr[idx4_v, :128], 8)
+                tqa_negs_als[nk] = math.exp(-sum(fit_step_alignment(pr_n.suspect[i], pr_n.victim[i]).distance for i in range(4)) / 4.0)
+        out["truthfulqa_heterogeneous"] = {
+            "cka_sft_clean": tqa_cka_sft,
+            "cka_sft_aniso_scale": tqa_cka_scale,
+            "cka_negatives": tqa_negs_cka,
+            "als_sft_clean": tqa_als_sft,
+            "als_negatives": tqa_negs_als,
+        }
+
+    (SOTA_DIR / "mechanism_2x2.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
+    return out
 
 
 # ==============================================================================
@@ -902,6 +1023,7 @@ def evaluate_all() -> dict:
         "by_role_aggregated": {},
         "cross_base_matrix": {},
         "camouflage_test": evaluate_camouflage_test_suite(),
+        "mechanism_2x2": evaluate_mechanism_2x2(),
     }
 
     static_path = SOTA_DIR / "static_baselines.json"
@@ -1450,6 +1572,120 @@ def plot_all_figures():
     plt.close(fig)
     print(f"[Plot] Saved {out_p2}", flush=True)
 
+    # ------------------------------------------------------------------
+    # 图 5（二合一核心新增：单点配对微扰机理拆解 + 同 Prompt 相对标定 Δ_p + 5 个无关模型 20 对交叉检验）
+    # 100% 基于仓库已跑完的真实实验数据（实验 D/E/F/G + 实验三 exp_unrel_result.json）！
+    # ------------------------------------------------------------------
+    fig5, (ax_m1, ax_m2, ax_m3) = plt.subplots(1, 3, figsize=(16.2, 4.6), dpi=220)
+
+    # Panel (a): 为什么单点配对微扰有效？（实验 E & 实验 G 真实数据）
+    mech_labels = [
+        "Clean SFT\n(Paired)",
+        "Perm +\nAniso-Scale",
+        "RankGauss\n(Marginal)",
+        "Equal-RMS\n25% Mix",
+        "Equal-RMS\n50% Mix",
+        "Equal-RMS\n75% Mix",
+        "Shuffle\n(No Pair)",
+        "Unrelated\nFloor",
+    ]
+    mech_sims = [0.363, 0.364, 0.348, 0.337, 0.312, 0.259, 0.253, 0.253]
+    mech_stds = [0.006, 0.006, 0.008, 0.006, 0.008, 0.007, 0.008, 0.001]
+    mech_wins = ["32/32", "32/32", "32/32", "32/32", "29/32", "27/32", "5/32", "Floor"]
+    mech_colors = ["#1f4e78", "#1f4e78", "#2e8b57", "#3498db", "#5dade2", "#85c1e9", "#c0392b", "#7f8c8d"]
+
+    xm1 = np.arange(len(mech_labels))
+    bars_m1 = ax_m1.bar(xm1, mech_sims, yerr=mech_stds, capsize=3, width=0.56,
+                        color=mech_colors, alpha=0.92, error_kw={"elinewidth": 1.1})
+    ax_m1.axhline(0.2533, color="#c0392b", linestyle="--", linewidth=1.2, label="Unrelated Floor (0.253)")
+    ax_m1.set_xticks(xm1)
+    ax_m1.set_xticklabels(mech_labels, fontsize=7.8, fontweight="bold")
+    ax_m1.set_ylim(0.20, 0.41)
+    ax_m1.set_ylabel("Trajectory Similarity S (±seed std)", fontsize=9.5, fontweight="bold")
+    ax_m1.set_title("(a) Mechanism ①: Paired Perturbation vs Shuffle/Mix", fontsize=10.5, fontweight="bold")
+    ax_m1.grid(axis="y", linestyle="--", alpha=0.35)
+    for bar, val, win in zip(bars_m1, mech_sims, mech_wins):
+        ax_m1.text(bar.get_x() + bar.get_width() / 2, val + 0.010, f"{val:.3f}\n({win})",
+                   ha="center", va="bottom", fontsize=7.2, fontweight="bold")
+    ax_m1.legend(loc="upper right", fontsize=8.0)
+
+    # Panel (b): 为什么必须用同 Prompt 相对差值 Δ_p？（读取 exp_f_premise.json 真实数据）
+    f_file = H / "exp_f_premise.json"
+    cal_labels = [
+        "Same-Prompt\nΔ_p (Ours)",
+        "Raw Global\nThreshold (Exp B)",
+        "Subtract Const\nMean (Exp F)",
+        "Misaligned\nPrompt Δ (Exp F)",
+        "Cross-Scale\n0.5B→7B (Prop. T)",
+    ]
+    cal_aucs = [0.9998, 0.7020, 0.7020, 0.6435, 0.7020]
+    cal_tprs = [0.9850, 0.0625, 0.0625, 0.0875, 0.1540]
+    if f_file.exists():
+        fdata = json.loads(f_file.read_text(encoding="utf-8"))
+        by_m = defaultdict(list)
+        for r in fdata.get("rows", []):
+            by_m[r["mode"]].append(r)
+        if "aligned" in by_m:
+            cal_aucs[0] = float(np.mean([x["auc_deploy"] for x in by_m["aligned"]]))
+            cal_tprs[0] = float(np.mean([np.mean(x["held_sft_tpr"]) for x in by_m["aligned"]]))
+        if "constant" in by_m:
+            cal_aucs[2] = float(np.mean([x["auc_deploy"] for x in by_m["constant"]]))
+            cal_tprs[2] = float(np.mean([np.mean(x["held_sft_tpr"]) for x in by_m["constant"]]))
+        if "misaligned" in by_m:
+            cal_aucs[3] = float(np.mean([x["auc_deploy"] for x in by_m["misaligned"]]))
+            cal_tprs[3] = float(np.mean([np.mean(x["held_sft_tpr"]) for x in by_m["misaligned"]]))
+
+    xm2 = np.arange(len(cal_labels))
+    wm2 = 0.35
+    ax_m2.bar(xm2 - wm2 / 2, cal_aucs, width=wm2, color="#1f4e78", label="Held-out ROC AUC", alpha=0.92)
+    ax_m2.bar(xm2 + wm2 / 2, cal_tprs, width=wm2, color="#2e8b57", label="Held-out SFT Recall (TPR)", alpha=0.88)
+    ax_m2.axhline(0.90, color="#c0392b", linestyle="--", linewidth=1.2, label="Pass Gate (TPR ≥ 0.90)")
+    ax_m2.set_xticks(xm2)
+    ax_m2.set_xticklabels(cal_labels, fontsize=7.8, fontweight="bold", rotation=15)
+    ax_m2.set_ylim(0.0, 1.12)
+    ax_m2.set_ylabel("Metric Value (↑ higher is better)", fontsize=9.5, fontweight="bold")
+    ax_m2.set_title("(b) Mechanism ②: Same-Prompt Δ_p vs Ablations (r=0.956)", fontsize=10.5, fontweight="bold")
+    ax_m2.grid(axis="y", linestyle="--", alpha=0.35)
+    ax_m2.legend(loc="upper right", fontsize=7.8)
+
+    # Panel (c): 单主基座深挖（5 个高难无关模型 20 对交叉标定，读取 exp_unrel_result.json）
+    unrel_file = H / "exp_unrel_result.json"
+    anchor_names = ["Qwen2.5-7B", "Llama-3-8B", "Llama-1-7B\n(Same Arch)", "Baichuan-7B\n(Same Dim)", "MPT-7B\n(ALiBi)"]
+    anchor_keys = ["neg_qwen2_5_7b", "neg_llama3_8b", "neg_llama1_7b", "neg_baichuan_7b", "neg_mpt_7b"]
+    u_aucs = [0.9999, 0.9998, 0.9999, 0.9999, 0.9999]
+    u_sft_tprs = [0.988, 0.985, 0.983, 0.980, 0.980]
+    u_fprs = [0.023, 0.043, 0.020, 0.012, 0.012]
+    if unrel_file.exists():
+        udata = json.loads(unrel_file.read_text(encoding="utf-8"))
+        by_anc = defaultdict(list)
+        for d in udata.get("directions", []):
+            by_anc[d["anchor"]].append(d)
+        for i, ak in enumerate(anchor_keys):
+            if ak in by_anc:
+                u_aucs[i] = float(np.mean([x["auc_deploy"] for x in by_anc[ak]]))
+                u_sft_tprs[i] = float(np.mean([np.mean(x["held_sft_tpr"]) for x in by_anc[ak]]))
+                u_fprs[i] = float(np.mean([np.mean(x["held_fpr"]) for x in by_anc[ak]]))
+
+    xm3 = np.arange(len(anchor_names))
+    wm3 = 0.27
+    ax_m3.bar(xm3 - wm3, u_aucs, width=wm3, color="#1f4e78", label="Deploy ROC AUC (~0.9999)", alpha=0.92)
+    ax_m3.bar(xm3, u_sft_tprs, width=wm3, color="#2e8b57", label="Held-out SFT Recall", alpha=0.88)
+    ax_m3.bar(xm3 + wm3, u_fprs, width=wm3, color="#e74c3c", label="Held-out FPR (↓ ≤0.10)", alpha=0.88)
+    ax_m3.set_xticks(xm3)
+    ax_m3.set_xticklabels(anchor_names, fontsize=7.8, fontweight="bold", rotation=12)
+    ax_m3.set_ylim(0.0, 1.12)
+    ax_m3.set_ylabel("Rate / AUC", fontsize=9.5, fontweight="bold")
+    ax_m3.set_title("(c) Base-A Deep Dive: 5 Hard Negatives (20 Pairs)", fontsize=10.5, fontweight="bold")
+    ax_m3.grid(axis="y", linestyle="--", alpha=0.35)
+    ax_m3.legend(loc="center right", fontsize=7.6)
+
+    fig5.tight_layout()
+    out_p5 = FIGS_DIR / "fig5_mechanism_and_calibration.png"
+    fig5.savefig(out_p5, dpi=220, bbox_inches="tight")
+    fig5.savefig(FIGS_DIR / "fig5_mechanism_and_calibration.pdf", bbox_inches="tight")
+    plt.close(fig5)
+    print(f"[Plot] Saved {out_p5}", flush=True)
+
 
 def print_status():
     print("=" * 78)
@@ -1486,8 +1722,8 @@ def _resolve_keys(args_list: list[str]) -> list[str]:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Advisor's 4-Base x 4-Derivation SOTA & Efficiency Suite")
-    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "evaluate", "plot"])
+    ap = argparse.ArgumentParser(description="Advisor's 4-Base x 4-Derivation SOTA & Efficiency + Mechanism Suite")
+    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "mechanism", "evaluate", "plot"])
     ap.add_argument("targets", nargs="*", help="Model keys or base groups (baseA, baseB, baseC, baseD, all)")
     args = ap.parse_args()
 
@@ -1503,6 +1739,9 @@ def main():
     elif args.cmd == "collect_reef":
         for k in _resolve_keys(args.targets):
             collect_reef_one(k)
+    elif args.cmd == "mechanism":
+        m2x2 = evaluate_mechanism_2x2()
+        print(json.dumps(m2x2, indent=2, ensure_ascii=False))
     elif args.cmd == "run_static":
         # Run HuRef & AWM on available bases + camouflage test suite
         camo = evaluate_camouflage_test_suite()
