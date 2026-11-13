@@ -62,7 +62,9 @@ except ImportError:
     linear_sum_assignment = None
 
 H = Path(__file__).resolve().parent
+V4_DIR = H.parent / "llm_migration_v4"
 sys.path.insert(0, str(H))
+sys.path.insert(0, str(V4_DIR))
 sys.path.insert(0, str(H.parent))
 
 try:
@@ -102,11 +104,15 @@ except ImportError:
     project_sequences = None
     fit_step_alignment = None
 
+# New outputs stay strictly inside llm_migration_v5/; legacy v4 files are read-only
 FEATS_4 = H / "feats"
 FEATS_ALL = H / "feats_all"
 REEF_DIR = H / "reef_acts"
 SOTA_DIR = H / "sota_scores"
 FIGS_DIR = H / "figs_sota"
+V4_FEATS_4 = V4_DIR / "feats"
+V4_FEATS_ALL = V4_DIR / "feats_all"
+V4_REEF_DIR = V4_DIR / "reef_acts"
 for _d in (FEATS_4, REEF_DIR, SOTA_DIR, FIGS_DIR):
     _d.mkdir(exist_ok=True)
 
@@ -420,18 +426,16 @@ def load_suite_model(key: str):
 # ==============================================================================
 
 def locate_ours_feat(key: str) -> Path | None:
-    """Return path to 4-layer feature file if already collected, else None."""
+    """Return path to 4-layer feature file if already collected (v5 or read-only v4), else None."""
     own = FEATS_4 / f"sota_{key}.npz"
     if own.exists():
         return own
     legacy = SUITE_MODELS[key].get("legacy_feat")
     if legacy:
-        p4 = FEATS_4 / legacy
-        if p4.exists():
-            return p4
-        pall = FEATS_ALL / legacy
-        if pall.exists():
-            return pall
+        for d in (FEATS_4, FEATS_ALL, V4_FEATS_4, V4_FEATS_ALL):
+            p = d / legacy
+            if p.exists():
+                return p
     return None
 
 
@@ -455,7 +459,7 @@ def load_ours_4layers(key_or_path: str | Path) -> np.ndarray:
 def collect_ours_one(key: str):
     existing = locate_ours_feat(key)
     if existing is not None:
-        print(f"[Ours] skip {key} (reusing {existing.relative_to(H)})", flush=True)
+        print(f"[Ours] skip {key} (reusing {existing.relative_to(H.parent)})", flush=True)
         return
     out = FEATS_4 / f"sota_{key}.npz"
     partial = FEATS_4 / f"sota_{key}.partial.npz"
@@ -521,9 +525,10 @@ def locate_reef_feat(key: str) -> Path | None:
     legacy = SUITE_MODELS[key].get("legacy_feat")
     if legacy and legacy.startswith("main_"):
         old_name = legacy[len("main_"):-len(".npz")]
-        old_reef = REEF_DIR / f"{old_name}.npz"
-        if old_reef.exists():
-            return old_reef
+        for d in (REEF_DIR, V4_REEF_DIR):
+            old_reef = d / f"{old_name}.npz"
+            if old_reef.exists():
+                return old_reef
     return None
 
 
@@ -531,7 +536,7 @@ def locate_reef_feat(key: str) -> Path | None:
 def collect_reef_one(key: str):
     existing = locate_reef_feat(key)
     if existing is not None:
-        print(f"[REEF] skip {key} (reusing {existing.relative_to(H)})", flush=True)
+        print(f"[REEF] skip {key} (reusing {existing.relative_to(H.parent)})", flush=True)
         return
     out = REEF_DIR / f"sota_{key}.npz"
     t0 = time.time()
@@ -1431,8 +1436,12 @@ def plot_all_figures():
     # ------------------------------------------------------------------
     # 图 3（Module C 消融实验：① PCA 维数 + ② 层间选择）—— 直接用真实已跑完数据！
     # ------------------------------------------------------------------
-    dim_file = H / "exp_dim_result.json"
-    lay_file = H / "exp_layers_result.json"
+    def _v4_or_v5(fname: str) -> Path:
+        p = H / fname
+        return p if p.exists() else (V4_DIR / fname)
+
+    dim_file = _v4_or_v5("exp_dim_result.json")
+    lay_file = _v4_or_v5("exp_layers_result.json")
     if dim_file.exists() and lay_file.exists():
         dim_data = json.loads(dim_file.read_text(encoding="utf-8"))
         lay_data = json.loads(lay_file.read_text(encoding="utf-8"))
@@ -1475,7 +1484,7 @@ def plot_all_figures():
         }
         rec_by_name = {r["subset"]: r for r in lay_data["records"]}
         # Insert mid2 from 实验A / exp_d_calib_mid2.json if available
-        mid2_calib = H / "exp_d_calib_mid2.json"
+        mid2_calib = _v4_or_v5("exp_d_calib_mid2.json")
         if mid2_calib.exists():
             m2 = json.loads(mid2_calib.read_text(encoding="utf-8"))
             d128 = [d for d in m2["directions"] if d["N"] == 128]
@@ -1610,7 +1619,7 @@ def plot_all_figures():
     ax_m1.legend(loc="upper right", fontsize=8.0)
 
     # Panel (b): 为什么必须用同 Prompt 相对差值 Δ_p？（读取 exp_f_premise.json 真实数据）
-    f_file = H / "exp_f_premise.json"
+    f_file = _v4_or_v5("exp_f_premise.json")
     cal_labels = [
         "Same-Prompt\nΔ_p (Ours)",
         "Raw Global\nThreshold (Exp B)",
@@ -1649,7 +1658,7 @@ def plot_all_figures():
     ax_m2.legend(loc="upper right", fontsize=7.8)
 
     # Panel (c): 单主基座深挖（5 个高难无关模型 20 对交叉标定，读取 exp_unrel_result.json）
-    unrel_file = H / "exp_unrel_result.json"
+    unrel_file = _v4_or_v5("exp_unrel_result.json")
     anchor_names = ["Qwen2.5-7B", "Llama-3-8B", "Llama-1-7B\n(Same Arch)", "Baichuan-7B\n(Same Dim)", "MPT-7B\n(ALiBi)"]
     anchor_keys = ["neg_qwen2_5_7b", "neg_llama3_8b", "neg_llama1_7b", "neg_baichuan_7b", "neg_mpt_7b"]
     u_aucs = [0.9999, 0.9998, 0.9999, 0.9999, 0.9999]
