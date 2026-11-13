@@ -1,0 +1,7 @@
+{
+ "old_vocab": 151936,
+ "new_vocab": 153665,
+ "added": 2000,
+ "prompts_retokenized": 13,
+ "train_steps": 300
+}

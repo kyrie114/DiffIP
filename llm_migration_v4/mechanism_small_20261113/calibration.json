@@ -1,0 +1,5348 @@
+{
+ "als": {
+  "absolute": {
+   "pass_count": 0,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.6108796178520476,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.5995213158174977,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.6166980834480954,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.6039674854754835,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.6020484794469676,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.5995213158174977,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.6166980834480954,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.6039674854754835,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.6020484794469676,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.6108796178520476,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.6166980834480954,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.6039674854754835,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.6020484794469676,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.6108796178520476,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.5995213158174977,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.6039674854754835,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.6020484794469676,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.6108796178520476,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.5995213158174977,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.6166980834480954,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    }
+   ]
+  },
+  "same_prompt": {
+   "pass_count": 15,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.010992086417403957,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.01003554991674574,
+     "seeds": {
+      "1": {
+       "fpr": 0.125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.014649604001127803,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.0064244791038785,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.21875,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.010685321180631424,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.00895432213333447,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.009003282902820486,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.008653139825058206,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.009875785264801165,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.011358302034549905,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.017176767630597722,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.006191065479396407,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.1875,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.010599400848198437,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.007324238024998542,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.00761616966701506,
+     "seeds": {
+      "1": {
+       "fpr": 0.125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.006940233595441853,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.1875,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.009634463881245947,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.01068279278617551,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.011952312541967075,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.01273059797261189,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "subtract_constant": {
+   "pass_count": 0,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.3754371207298457,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.3640788186952958,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.3812555863258935,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3685249883532816,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3672846339756384,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.36475747034616846,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.3819342379767662,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3692036400041543,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3677055687981473,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.3765367072032273,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.3823551727992751,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3696245748266632,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.36677383188753476,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.37560497029261475,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.36424666825806484,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3686928379160507,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3677935549352236,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.3766246933403036,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.36526639130575367,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.6875
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.3824431589363514,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.8125,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 0.84375,
+        "instruct_prune": 0.625
+       }
+      }
+     },
+     "passed": false
+    }
+   ]
+  },
+  "wrong_prompt": {
+   "pass_count": 0,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.36520620916345015,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.36509838971146213,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.36326381785612305,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.59375
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3660531690095554,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.36273016151934423,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.59375
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.3588612383777998,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.65625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.35702666652246073,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.65625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3598160176758931,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3675083428026932,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.3637472391131368,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.3618048478058097,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.59375
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.36459419895924206,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.364009989335422,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.59375
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.3602488856458656,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.3601410661938776,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.3610958454919709,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.36780067892719015,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.53125
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.36403957523763375,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.5625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.36393175578564574,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.5625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.36209718393030665,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.75,
+        "instruct_prune": 0.5625
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 0.78125,
+        "instruct_prune": 0.59375
+       }
+      }
+     },
+     "passed": false
+    }
+   ]
+  }
+ },
+ "cka": {
+  "absolute": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.12982643812413114,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.21277674437808258,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.19822120939282717,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.21863897680330918,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.18701684923176504,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.21277674437808258,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.19822120939282717,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.21863897680330918,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.18701684923176504,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.12982643812413114,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.19822120939282717,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.21863897680330918,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.18701684923176504,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.12982643812413114,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.21277674437808258,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.21863897680330918,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.18701684923176504,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.12982643812413114,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.21277674437808258,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.19822120939282717,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "same_prompt": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.02704506541457083,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.05473704212681087,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.053040340513608175,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.054044766520263354,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.09912384083760853,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.12482866006584836,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.10036967953231973,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.14036804301693218,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.039388041409612606,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.039386273358767016,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.026187628378777666,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.050076212465680614,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.02576601729351466,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.036472087712153156,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.039751703051153026,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.061071502074973166,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.03614488968408533,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.026977726451626424,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.06337471207354065,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.033625265127324167,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "subtract_constant": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.010793654887392506,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.07215665136655894,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.057601116381303524,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.07801888379178554,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.10775976531730465,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.13351966046362218,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.11896412547836678,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.13938189288884878,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.02769909571562562,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.029491315392008277,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.038903455876687754,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.059321223287169766,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.03512723236546256,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.02206317874217134,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.060887127511780104,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.0667493599370067,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.02274204180614592,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.03444836930148798,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.048501936952463465,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.03394640196720805,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "wrong_prompt": {
+   "pass_count": 19,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.015257039969207672,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.06759587549886359,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.04567907427328338,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.07362776978963545,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.11531238292931405,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.12326195665896827,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.1093378075581204,
+     "seeds": {
+      "1": {
+       "fpr": 0.15625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.15061786771077257,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.04752929922387508,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.036213412370634135,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.04160347377137677,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.08283478400533359,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.04463948298733986,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.02829905506053232,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.05223388164584475,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.07994496776879836,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.03856689893214574,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.00202185408756822,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.06027024011420036,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.048480125804017477,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  }
+ },
+ "cka_std": {
+  "absolute": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.2775813438293598,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.4265775852455902,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.40002157967486024,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.35890541226521905,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3427719283732051,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.4265775852455902,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.40002157967486024,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.35890541226521905,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3427719283732051,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.2775813438293598,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.40002157967486024,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.35890541226521905,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3427719283732051,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.2775813438293598,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.4265775852455902,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.35890541226521905,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.3427719283732051,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.2775813438293598,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.4265775852455902,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.40002157967486024,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "same_prompt": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.007806016551326456,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.10432105754533805,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.06505918929314586,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.09380263841120673,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.09500750724456794,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.1489962414162304,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.12364395643624171,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.16270210035027735,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.09225798628122753,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.010342324040248124,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.10184382773369391,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.1323439086645661,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.020235543225286867,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.03370768664410706,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.07995397453242914,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.07573449715794817,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.04932912364950032,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.028548464124122652,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.09311324777145036,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.06795830017176624,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "subtract_constant": {
+   "pass_count": 20,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.019854164674731445,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.16885040609096186,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.1422944005202319,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.10117823311059071,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.14169284880365582,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.22549850567604093,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.19894250010531098,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.15782633269566979,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.0617619047931256,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.0034286797507196987,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.11901155609478076,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.07789538868513957,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.058893764715994834,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.006296819827850464,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.14269942158837995,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.0750272486080088,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.04958289743546446,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.015607687108380841,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.13338855430784957,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.10683254873711961,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  },
+  "wrong_prompt": {
+   "pass_count": 19,
+   "directions": [
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.01071313529484888,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.14107636764073578,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.1124882425352815,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_135m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.1384818761634838,
+     "seeds": {
+      "1": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.12911683527625473,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.1879971329203401,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.15940900781488582,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_smollm2_360m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.1681225198962956,
+     "seeds": {
+      "1": {
+       "fpr": 0.125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": false
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.06975134976107514,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_smollm2_360m",
+     "threshold": 0.031093148253463848,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.10820095892495349,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_gpt2",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.1291034298583096,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.03688910270344184,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.004319448361678746,
+     "seeds": {
+      "1": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_gpt2",
+     "threshold": 0.10458249788070043,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0625,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_pythia_160m",
+     "heldout": "neg_qwen2_0.5b",
+     "threshold": 0.09803418580792977,
+     "seeds": {
+      "1": {
+       "fpr": 0.09375,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_135m",
+     "threshold": 0.06225900343428781,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_smollm2_360m",
+     "threshold": -0.010224800120999827,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_gpt2",
+     "threshold": 0.12679596571538448,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.03125,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    },
+    {
+     "reference": "neg_qwen2_0.5b",
+     "heldout": "neg_pythia_160m",
+     "threshold": 0.09820784060993021,
+     "seeds": {
+      "1": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      },
+      "2": {
+       "fpr": 0.0,
+       "tpr": {
+        "instruct": 1.0,
+        "instruct_prune": 1.0
+       }
+      }
+     },
+     "passed": true
+    }
+   ]
+  }
+ }
+}

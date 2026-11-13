@@ -1,0 +1,60 @@
+instruct 8 /32 5.1 s
+instruct 16 /32 8.6 s
+instruct 24 /32 11.7 s
+instruct 32 /32 15.0 s
+instruct_prune 8 /32 18.6 s
+instruct_prune 16 /32 21.7 s
+instruct_prune 24 /32 24.8 s
+instruct_prune 32 /32 27.8 s
+neg_smollm2_135m 8 /32 30.4 s
+neg_smollm2_135m 16 /32 32.5 s
+neg_smollm2_135m 24 /32 34.8 s
+neg_smollm2_135m 32 /32 37.0 s
+neg_smollm2_360m 8 /32 40.8 s
+neg_smollm2_360m 16 /32 43.6 s
+neg_smollm2_360m 24 /32 46.4 s
+neg_smollm2_360m 32 /32 49.4 s
+neg_gpt2 8 /32 52.7 s
+neg_gpt2 16 /32 55.3 s
+neg_gpt2 24 /32 57.8 s
+neg_gpt2 32 /32 60.2 s
+neg_pythia_160m 8 /32 63.3 s
+neg_pythia_160m 16 /32 65.9 s
+neg_pythia_160m 24 /32 68.6 s
+neg_pythia_160m 32 /32 71.1 s
+neg_qwen2_0.5b 8 /32 74.5 s
+neg_qwen2_0.5b 16 /32 77.1 s
+neg_qwen2_0.5b 24 /32 79.6 s
+neg_qwen2_0.5b 32 /32 82.1 s
+width75h 8 /32 85.3 s
+width75h 16 /32 88.1 s
+width75h 24 /32 90.7 s
+width75h 32 /32 93.4 s
+vocab_swap 8 /32 97.2 s
+vocab_swap 16 /32 100.1 s
+vocab_swap 24 /32 103.2 s
+vocab_swap 32 /32 105.8 s
+{
+ "als": {
+  "clean_auc": 0.9398220486111111,
+  "scaled_auc": 0.9233072916666667,
+  "max_negative_model_mean": 0.2375163041060346,
+  "pass_core_count": 15,
+  "pass_all_count": 0
+ },
+ "cka": {
+  "clean_auc": 1.0,
+  "scaled_auc": 1.0,
+  "max_negative_model_mean": 0.1672260341536894,
+  "pass_core_count": 20,
+  "pass_all_count": 0
+ },
+ "cka_std": {
+  "clean_auc": 1.0,
+  "scaled_auc": 1.0,
+  "max_negative_model_mean": 0.2972523253616898,
+  "pass_core_count": 20,
+  "pass_all_count": 0
+ }
+}
+{'restricted_als_distance': 1.5185145777832023, 'full_affine_mean_residual': 4.310375470955004e-15}

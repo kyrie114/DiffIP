@@ -1,0 +1,18 @@
+{
+ "vocab_ext": {
+  "n_same": 19,
+  "mean_same": 0.45283688530673927,
+  "mean_changed": 0.3633214827710054,
+  "wins_same": 57,
+  "wins_changed": 11,
+  "n_changed": 13
+ },
+ "vocab_swap": {
+  "n_same": 8,
+  "mean_same": 0.5231189483983912,
+  "mean_changed": 0.23474458416918795,
+  "wins_same": 24,
+  "wins_changed": 11,
+  "n_changed": 24
+ }
+}
