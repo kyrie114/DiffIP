@@ -8,14 +8,19 @@
    "neg_mpt_7b"
   ],
   "pos": [
-   "fine_tune",
-   "neg_pruned_sparsegpt",
-   "neg_pruned_wanda",
-   "neg_pruned_gblm",
-   "prune_dpoff",
-   "weight_perm",
-   "rep_perm",
-   "scale"
+   "pos_vicuna",
+   "pos_sheared_1_3b_pruned",
+   "pos_sheared_1_3b",
+   "pos_sheared_1_3b_sharegpt",
+   "pos_sheared_2_7b_pruned",
+   "pos_sheared_2_7b",
+   "pos_sheared_2_7b_sharegpt",
+   "cpt_codellama",
+   "cpt_wizardmath",
+   "cpt_llemma",
+   "drop2_chat",
+   "drop8_chat",
+   "drop12_chat"
   ],
   "n": 128,
   "dims": 8
@@ -29,31 +34,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.8125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.375,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.21875,
+      "cpt_wizardmath": 0.84375,
+      "cpt_llemma": 0.15625,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_qwen2_5_7b",
@@ -63,31 +78,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.90625,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.375,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.875,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_qwen2_5_7b",
@@ -97,31 +122,41 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0625,
+      "pos_sheared_2_7b_pruned": 0.03125,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.375,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 0.96875,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_qwen2_5_7b",
@@ -131,27 +166,37 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.96875,
+      "pos_sheared_1_3b_pruned": 0.03125,
+      "pos_sheared_1_3b": 0.125,
+      "pos_sheared_1_3b_sharegpt": 0.09375,
+      "pos_sheared_2_7b_pruned": 0.03125,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.4375,
+      "cpt_wizardmath": 1.0,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0625,
+      "cpt_codellama": 0.46875,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     }
    },
@@ -165,31 +210,41 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.84375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 1.0
+      "pos_vicuna": 0.90625,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.34375,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama3_8b",
@@ -199,31 +254,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 0.96875,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.6875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.1875,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.15625,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.9375,
+      "drop12_chat": 0.9375
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 0.96875,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.6875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.125,
+      "cpt_wizardmath": 0.78125,
+      "cpt_llemma": 0.09375,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.90625,
+      "drop12_chat": 0.875
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama3_8b",
@@ -233,31 +298,41 @@
     "1": {
      "fpr": 0.09375,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.96875,
+      "pos_sheared_1_3b_pruned": 0.09375,
+      "pos_sheared_1_3b": 0.21875,
+      "pos_sheared_1_3b_sharegpt": 0.1875,
+      "pos_sheared_2_7b_pruned": 0.1875,
+      "pos_sheared_2_7b": 0.125,
+      "pos_sheared_2_7b_sharegpt": 0.21875,
+      "cpt_codellama": 0.59375,
+      "cpt_wizardmath": 1.0,
+      "cpt_llemma": 0.46875,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 1.0,
+      "pos_sheared_1_3b_pruned": 0.0625,
+      "pos_sheared_1_3b": 0.09375,
+      "pos_sheared_1_3b_sharegpt": 0.03125,
+      "pos_sheared_2_7b_pruned": 0.15625,
+      "pos_sheared_2_7b": 0.125,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.5625,
+      "cpt_wizardmath": 1.0,
+      "cpt_llemma": 0.53125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama3_8b",
@@ -267,27 +342,37 @@
     "1": {
      "fpr": 0.09375,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.96875,
+      "pos_sheared_1_3b_pruned": 0.0625,
+      "pos_sheared_1_3b": 0.1875,
+      "pos_sheared_1_3b_sharegpt": 0.15625,
+      "pos_sheared_2_7b_pruned": 0.15625,
+      "pos_sheared_2_7b": 0.125,
+      "pos_sheared_2_7b_sharegpt": 0.21875,
+      "cpt_codellama": 0.59375,
+      "cpt_wizardmath": 1.0,
+      "cpt_llemma": 0.46875,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.1875,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 1.0,
+      "pos_sheared_1_3b_pruned": 0.0625,
+      "pos_sheared_1_3b": 0.09375,
+      "pos_sheared_1_3b_sharegpt": 0.03125,
+      "pos_sheared_2_7b_pruned": 0.0625,
+      "pos_sheared_2_7b": 0.125,
+      "pos_sheared_2_7b_sharegpt": 0.0625,
+      "cpt_codellama": 0.5625,
+      "cpt_wizardmath": 1.0,
+      "cpt_llemma": 0.53125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     }
    },
@@ -301,31 +386,41 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0625,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0625,
+      "cpt_codellama": 0.4375,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.28125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 1.0
+      "pos_vicuna": 0.84375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.3125,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.28125,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama1_7b",
@@ -335,31 +430,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.78125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.34375,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 1.0,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.78125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.21875,
+      "cpt_wizardmath": 0.875,
+      "cpt_llemma": 0.1875,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama1_7b",
@@ -369,31 +474,41 @@
     "1": {
      "fpr": 0.0625,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0625,
+      "pos_sheared_1_3b_sharegpt": 0.0625,
+      "pos_sheared_2_7b_pruned": 0.03125,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.53125,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 0.96875,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.5,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_llama1_7b",
@@ -403,31 +518,41 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0625,
+      "pos_sheared_1_3b_sharegpt": 0.03125,
+      "pos_sheared_2_7b_pruned": 0.03125,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.125,
+      "cpt_codellama": 0.53125,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0625,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 0.96875,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.9375,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.46875,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_baichuan_7b",
@@ -437,31 +562,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.75,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.3125,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.21875,
+      "drop2_chat": 1.0,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.8125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.1875,
+      "cpt_wizardmath": 0.875,
+      "cpt_llemma": 0.1875,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_baichuan_7b",
@@ -471,31 +606,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.09375,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.28125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 1.0
+      "pos_vicuna": 0.875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.4375,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_baichuan_7b",
@@ -505,31 +650,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.71875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.3125,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.1875,
+      "drop2_chat": 1.0,
+      "drop8_chat": 0.9375,
+      "drop12_chat": 0.9375
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.71875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.1875,
+      "cpt_wizardmath": 0.84375,
+      "cpt_llemma": 0.15625,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.9375,
+      "drop12_chat": 0.90625
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_baichuan_7b",
@@ -539,31 +694,41 @@
     "1": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.90625,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.09375,
+      "cpt_codellama": 0.4375,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0625,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 1.0
+      "pos_vicuna": 0.96875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.03125,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.46875,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_mpt_7b",
@@ -573,31 +738,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.78125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.03125,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.8125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.28125,
+      "cpt_wizardmath": 0.875,
+      "cpt_llemma": 0.28125,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_mpt_7b",
@@ -607,31 +782,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.78125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.03125,
+      "cpt_codellama": 0.40625,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.25,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.8125,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.28125,
+      "cpt_wizardmath": 0.875,
+      "cpt_llemma": 0.28125,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.96875,
+      "drop12_chat": 0.9375
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_mpt_7b",
@@ -641,31 +826,41 @@
     "1": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 0.96875,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.71875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.21875,
+      "cpt_wizardmath": 0.90625,
+      "cpt_llemma": 0.125,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.9375,
+      "drop12_chat": 0.90625
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 0.96875,
-      "neg_pruned_sparsegpt": 0.96875,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 0.96875,
-      "weight_perm": 0.96875,
-      "rep_perm": 0.96875,
-      "scale": 0.96875
+      "pos_vicuna": 0.6875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.0,
+      "cpt_codellama": 0.125,
+      "cpt_wizardmath": 0.78125,
+      "cpt_llemma": 0.09375,
+      "drop2_chat": 0.96875,
+      "drop8_chat": 0.90625,
+      "drop12_chat": 0.875
      }
     }
    },
-   "pass": true
+   "pass": false
   },
   {
    "reference": "neg_mpt_7b",
@@ -675,31 +870,41 @@
     "1": {
      "fpr": 0.0625,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 1.0,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.96875,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.03125,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.0625,
+      "pos_sheared_2_7b": 0.0,
+      "pos_sheared_2_7b_sharegpt": 0.09375,
+      "cpt_codellama": 0.5625,
+      "cpt_wizardmath": 0.96875,
+      "cpt_llemma": 0.34375,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 1.0
      }
     },
     "2": {
      "fpr": 0.0,
      "tpr": {
-      "fine_tune": 1.0,
-      "neg_pruned_sparsegpt": 1.0,
-      "neg_pruned_wanda": 1.0,
-      "neg_pruned_gblm": 1.0,
-      "prune_dpoff": 1.0,
-      "weight_perm": 0.96875,
-      "rep_perm": 1.0,
-      "scale": 1.0
+      "pos_vicuna": 0.90625,
+      "pos_sheared_1_3b_pruned": 0.0,
+      "pos_sheared_1_3b": 0.0,
+      "pos_sheared_1_3b_sharegpt": 0.0,
+      "pos_sheared_2_7b_pruned": 0.03125,
+      "pos_sheared_2_7b": 0.03125,
+      "pos_sheared_2_7b_sharegpt": 0.0625,
+      "cpt_codellama": 0.4375,
+      "cpt_wizardmath": 0.9375,
+      "cpt_llemma": 0.3125,
+      "drop2_chat": 1.0,
+      "drop8_chat": 1.0,
+      "drop12_chat": 0.96875
      }
     }
    },
-   "pass": true
+   "pass": false
   }
  ]
 }

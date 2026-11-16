@@ -177,5 +177,10 @@
   "matched": 128,
   "total": 226,
   "embed_cos": null
+ },
+ "neg_mpt_7b": {
+  "status": "not_comparable",
+  "matched": 0,
+  "total": 226
  }
 }

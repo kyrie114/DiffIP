@@ -874,6 +874,14 @@ def evaluate_camouflage_test_suite() -> dict:
             "online_pair_seconds": r_time,
         }
 
+    # Weight-space HuRef / AWM are filled by score_weight_camouflage.py.
+    # Keep them when this function recomputes the feature attacks.
+    camo_path = SOTA_DIR / "camouflage_test.json"
+    if camo_path.exists():
+        stored = json.loads(camo_path.read_text(encoding="utf-8"))
+        for key in ("HuRef", "AWM"):
+            if key in stored and "rot_rmsnorm" in stored[key]:
+                res[key] = stored[key]
     return res
 
 
@@ -1499,9 +1507,14 @@ def plot_all_figures():
         l_labels = [sub_map[k] for k in order_keys]
         l_margins = []
         l_recalls = []
+        measured_mid2 = None
+        measured_path = SOTA_DIR / "measured_fill.json"
+        if measured_path.exists():
+            measured_mid2 = json.loads(measured_path.read_text(encoding="utf-8")).get("mid2_margin")
         for k in order_keys:
             if k == "mid2":
-                l_margins.append(0.079)
+                # Experiment A: mean(fine_tune) − max mean(Qwen, Llama-3) at N=128, d=8.
+                l_margins.append(float(measured_mid2) if measured_mid2 is not None else 0.07906)
                 l_recalls.append(sft_rec)
             else:
                 r = rec_by_name[k]
@@ -1548,19 +1561,31 @@ def plot_all_figures():
         "AWM\n(4096-D LAP\n+ 32L UCKA)",
     ]
     colors = ["#1f4e78", "#3498db", "#e67e22", "#9b59b6"]
-    # Online pairwise verification time (seconds per suspect pair on CPU) & Fingerprint size (MB, log scale)
-    online_sec = [1.48, 4.85, 19.60, 42.30]
-    storage_mb = [0.016, 105.0, 384.0, 13500.0]  # 16 KB vs 105 MB vs 384 MB vs 13.5 GB
+    # Measured in measured_fill.json. The previous 1.48/4.85/19.60/42.30 and
+    # 16 KB/105 MB/384 MB/13.5 GB bars were constants and are not used.
+    online_sec = [13.29, 0.023, 3.44, 101.2]
+    storage_mb = [0.015625, 100.0, 12.0, 13500.0]
+    labels_sz = ["16 KB\n(4×128×8)", "stored acts", "ICS vector", "weights read"]
+    measured_path = SOTA_DIR / "measured_fill.json"
+    if measured_path.exists():
+        eff = json.loads(measured_path.read_text(encoding="utf-8")).get("efficiency", {})
+        if eff.get("online_sec"):
+            online_sec = [float(x) for x in eff["online_sec"]]
+        if eff.get("storage_mb"):
+            storage_mb = [float(x) for x in eff["storage_mb"]]
+        if eff.get("storage_labels"):
+            labels_sz = list(eff["storage_labels"])
 
     b1 = ax1.bar(methods, online_sec, color=colors, width=0.50, alpha=0.92)
-    ax1.set_ylabel("Online Pairwise Verification Time (s, ↓ lower is better)", fontsize=9.5, fontweight="bold")
-    ax1.set_title("(a) Module B: Online Verification Latency (CPU)", fontsize=11, fontweight="bold")
+    ax1.set_yscale("log")
+    ax1.set_ylabel("Online pair time (s, log, lower is faster)", fontsize=9.5, fontweight="bold")
+    ax1.set_title("(a) Module B: Measured online pair time (CPU)", fontsize=11, fontweight="bold")
     ax1.grid(axis="y", linestyle="--", alpha=0.35)
     ax1.tick_params(axis="x", labelsize=8.8)
     for bar, val in zip(b1, online_sec):
-        ax1.text(bar.get_x() + bar.get_width() / 2, val + 0.8, f"{val:.2f}s",
+        ax1.text(bar.get_x() + bar.get_width() / 2, val * 1.25, f"{val:.3g}s",
                  ha="center", va="bottom", fontsize=9, fontweight="bold")
-    ax1.set_ylim(0, max(online_sec) * 1.18)
+    ax1.set_ylim(min(online_sec) * 0.35, max(online_sec) * 4.0)
 
     b2 = ax2.bar(methods, storage_mb, color=colors, width=0.50, alpha=0.92)
     ax2.set_yscale("log")
@@ -1568,11 +1593,10 @@ def plot_all_figures():
     ax2.set_title("(b) Module B: Per-Model Fingerprint Storage Overhead", fontsize=11, fontweight="bold")
     ax2.grid(axis="y", linestyle="--", alpha=0.35)
     ax2.tick_params(axis="x", labelsize=8.8)
-    labels_sz = ["16 KB\n(4×128×8)", "105 MB\n(32×200×4096)", "384 MB\n(6×4096×4096)", "13.5 GB\n(Full Weights)"]
     for bar, val, lbl in zip(b2, storage_mb, labels_sz):
         ax2.text(bar.get_x() + bar.get_width() / 2, val * 1.38, lbl,
                  ha="center", va="bottom", fontsize=8.5, fontweight="bold")
-    ax2.set_ylim(0.005, 85000)
+    ax2.set_ylim(min(storage_mb) * 0.25, max(storage_mb) * 8.0)
 
     fig.tight_layout()
     out_p2 = FIGS_DIR / "fig2_efficiency_comparison.png"
@@ -1587,21 +1611,32 @@ def plot_all_figures():
     # ------------------------------------------------------------------
     fig5, (ax_m1, ax_m2, ax_m3) = plt.subplots(1, 3, figsize=(16.2, 4.6), dpi=220)
 
-    # Panel (a): 为什么单点配对微扰有效？（实验 E & 实验 G 真实数据）
+    # Panel (a): experiment E, experiment G, and the measured feature camouflage.
+    # Defaults are those stored means. Perm and aniso are separate measurements.
+
+    # Perm+aniso is not one bar: those two attacks were measured separately.
     mech_labels = [
         "Clean SFT\n(Paired)",
-        "Perm +\nAniso-Scale",
-        "RankGauss\n(Marginal)",
+        "Perm\n(channels)",
+        "Aniso scale\n(features)",
+        "RankGauss\n(Exp E)",
         "Equal-RMS\n25% Mix",
         "Equal-RMS\n50% Mix",
         "Equal-RMS\n75% Mix",
-        "Shuffle\n(No Pair)",
-        "Unrelated\nFloor",
+        "Shuffle\n(Exp E)",
     ]
-    mech_sims = [0.363, 0.364, 0.348, 0.337, 0.312, 0.259, 0.253, 0.253]
-    mech_stds = [0.006, 0.006, 0.008, 0.006, 0.008, 0.007, 0.008, 0.001]
-    mech_wins = ["32/32", "32/32", "32/32", "32/32", "29/32", "27/32", "5/32", "Floor"]
-    mech_colors = ["#1f4e78", "#1f4e78", "#2e8b57", "#3498db", "#5dade2", "#85c1e9", "#c0392b", "#7f8c8d"]
+    mech_sims = [0.3634, 0.3634, 0.3412, 0.3476, 0.3373, 0.3116, 0.2586, 0.2525]
+    mech_stds = [0.0063, 0.0063, 0.0070, 0.0080, 0.0059, 0.0076, 0.0070, 0.0083]
+    mech_wins = ["32/32", "", "", "32/32", "32/32", "29/32", "27/32", "5/32"]
+    mech_colors = ["#1f4e78", "#1f4e78", "#d35400", "#2e8b57", "#3498db", "#5dade2", "#85c1e9", "#c0392b"]
+    if measured_path.exists():
+        bars = json.loads(measured_path.read_text(encoding="utf-8")).get("fig5a")
+        if bars:
+            mech_labels = bars["labels"]
+            mech_sims = bars["sims"]
+            mech_stds = bars["stds"]
+            mech_wins = bars["wins"]
+            mech_colors = bars["colors"]
 
     xm1 = np.arange(len(mech_labels))
     bars_m1 = ax_m1.bar(xm1, mech_sims, yerr=mech_stds, capsize=3, width=0.56,
@@ -1614,7 +1649,8 @@ def plot_all_figures():
     ax_m1.set_title("(a) Mechanism ①: Paired Perturbation vs Shuffle/Mix", fontsize=10.5, fontweight="bold")
     ax_m1.grid(axis="y", linestyle="--", alpha=0.35)
     for bar, val, win in zip(bars_m1, mech_sims, mech_wins):
-        ax_m1.text(bar.get_x() + bar.get_width() / 2, val + 0.010, f"{val:.3f}\n({win})",
+        label = f"{val:.3f}" if not win else f"{val:.3f}\n({win})"
+        ax_m1.text(bar.get_x() + bar.get_width() / 2, val + 0.008, label,
                    ha="center", va="bottom", fontsize=7.2, fontweight="bold")
     ax_m1.legend(loc="upper right", fontsize=8.0)
 
@@ -1752,18 +1788,31 @@ def main():
         m2x2 = evaluate_mechanism_2x2()
         print(json.dumps(m2x2, indent=2, ensure_ascii=False))
     elif args.cmd == "run_static":
-        # Run HuRef & AWM on available bases + camouflage test suite
-        camo = evaluate_camouflage_test_suite()
-        (SOTA_DIR / "camouflage_test.json").write_text(json.dumps(camo, indent=1, ensure_ascii=False))
-        print("[Static/Camo] Saved camouflage_test.json:", json.dumps(camo, indent=1))
+        # Run HuRef & AWM on available bases + camouflage test suite.
+        # Scores are unchanged. Each finished pair is written immediately so a
+        # killed run resumes from the next pair instead of repeating the base.
+        camo_path = SOTA_DIR / "camouflage_test.json"
+        camo = json.loads(camo_path.read_text(encoding="utf-8")) if camo_path.exists() else {}
+        if camo.get("Ours"):
+            print("[Static/Camo] reuse camouflage_test.json", flush=True)
+        else:
+            camo = evaluate_camouflage_test_suite()
+            camo_path.write_text(json.dumps(camo, indent=1, ensure_ascii=False), encoding="utf-8")
+            print("[Static/Camo] saved camouflage_test.json keys=" + ",".join(camo.keys()), flush=True)
         target_bases = [b for b in args.targets if b in BASES] or list(BASES)
-        static_res = {}
+        static_path = SOTA_DIR / "static_baselines.json"
+        static_res = json.loads(static_path.read_text(encoding="utf-8")) if static_path.exists() else {}
         for b in target_bases:
             v_key = f"{b}_victim"
-            m_vic, tok_vic = load_suite_model(v_key)
-            static_res[b] = {}
             peers = [k for k, spec in SUITE_MODELS.items() if k != v_key and (spec["base"] == b or spec["base"] == "unrel")]
-            for pk in peers:
+            done = static_res.get(b, {})
+            pending = [pk for pk in peers if "HuRef" not in done.get(pk, {}) or "AWM" not in done.get(pk, {})]
+            if not pending:
+                print(f"[Static] skip {b} ({len(peers)} peers already stored)", flush=True)
+                continue
+            m_vic, tok_vic = load_suite_model(v_key)
+            static_res.setdefault(b, {})
+            for pk in pending:
                 m_sus, tok_sus = load_suite_model(pk)
                 h_scores, h_sec = compute_huref_ics(m_vic, tok_vic, m_sus, tok_sus)
                 a_scores, a_sec = compute_awm_ucka(m_vic, tok_vic, m_sus, tok_sus)
@@ -1771,12 +1820,14 @@ def main():
                     "HuRef": {"scores": h_scores, "mean": float(np.mean(h_scores)), "std": float(np.std(h_scores)), "seconds": h_sec},
                     "AWM": {"scores": a_scores, "mean": float(np.mean(a_scores)), "std": float(np.std(a_scores)), "seconds": a_sec},
                 }
+                tmp = static_path.with_suffix(".json.tmp")
+                tmp.write_text(json.dumps(static_res, indent=1, ensure_ascii=False), encoding="utf-8")
+                os.replace(tmp, static_path)
                 print(f"[{b} -> {pk}] HuRef={np.mean(h_scores):.4f} ({h_sec:.1f}s) | AWM={np.mean(a_scores):.4f} ({a_sec:.1f}s)", flush=True)
                 del m_sus
                 gc.collect()
             del m_vic
             gc.collect()
-        (SOTA_DIR / "static_baselines.json").write_text(json.dumps(static_res, indent=1, ensure_ascii=False))
     elif args.cmd == "evaluate":
         evaluate_all()
     elif args.cmd == "plot":

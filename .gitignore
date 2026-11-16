@@ -27,6 +27,7 @@ llm_migration_v2/**/__pycache__/
 
 # llm_migration_v4 local products (regenerable; 7B feats are large)
 llm_migration_v4/feats/
+llm_migration_v4/feats_all
 llm_migration_v4/ckpt/
 llm_migration_v4/**/__pycache__/
 

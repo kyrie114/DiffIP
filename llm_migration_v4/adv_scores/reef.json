@@ -103,5 +103,30 @@
   "cka": 1.0,
   "layer_rule": "18",
   "layers": 32
+ },
+ "prune_dpoff": {
+  "cka": 0.9468581859833249,
+  "layer_rule": "18",
+  "layers": 28
+ },
+ "weight_perm": {
+  "cka": 0.9705557517846528,
+  "layer_rule": "18",
+  "layers": 32
+ },
+ "drop2_chat": {
+  "cka": 0.9640975556285417,
+  "layer_rule": "18",
+  "layers": 30
+ },
+ "drop8_chat": {
+  "cka": 0.9017577960581084,
+  "layer_rule": "18",
+  "layers": 24
+ },
+ "drop12_chat": {
+  "cka": 0.7829925153462102,
+  "layer_rule": "18",
+  "layers": 20
  }
 }

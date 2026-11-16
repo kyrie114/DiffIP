@@ -4,4 +4,6 @@ __pycache__/
 *.pyc
 feats_newseed/
 feats_qwen3/
+feats/
+reef_acts/
 acts_reef/
