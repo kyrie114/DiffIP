@@ -824,34 +824,49 @@ def evaluate_camouflage_test_suite() -> dict:
                         for j in range(len(blocks))] for i in range(len(blocks))])
     gamma_nc = np.exp(rng.uniform(-2.5, 2.5, size=(D,))).astype(np.float32)
 
-    def _ours_sim_on_array(sus_arr: np.ndarray) -> dict:
-        seed_means = []
-        for k in range(3):
-            p_sims = []
-            for p in range(32):
-                pr = project_sequences(sus_arr[p, k, :, :128], vic_f[p, k, :, :128], 8)
-                dl = [fit_step_alignment(pr.suspect[i], pr.victim[i]).distance for i in range(4)]
-                p_sims.append(math.exp(-sum(dl) / len(dl)))
-            seed_means.append(float(np.mean(p_sims)))
+    def _ours_norm_on_array(sus_arr: np.ndarray) -> dict:
+        sn, _, _, elap = score_ours_pair_normalized(sus_arr, vic_f, dims=8)
+        seed_means = sn.mean(axis=0).tolist()
         return {
             "scores": seed_means,
             "mean": float(np.mean(seed_means)),
             "std": float(np.std(seed_means)),
+            "seconds": elap,
         }
 
-    t_ours0 = time.time()
-    ours_clean = _ours_sim_on_array(ft_f)
-    ours_time_per_pair = (time.time() - t_ours0) / 3.0
-    ours_perm = _ours_sim_on_array(ft_f[..., perm_idx])
-    ours_scale = _ours_sim_on_array(ft_f * aniso_s)
-    ours_rot_rms = _ours_sim_on_array((ft_f @ R_orth) * gamma_nc)
+    def _ours_raw_on_array(sus_arr: np.ndarray) -> dict:
+        sr, elap = score_ours_pair(sus_arr, vic_f, dims=8)
+        seed_means = sr.mean(axis=0).tolist()
+        return {
+            "scores": seed_means,
+            "mean": float(np.mean(seed_means)),
+            "std": float(np.std(seed_means)),
+            "seconds": elap,
+        }
+
+    ours_clean = _ours_norm_on_array(ft_f)
+    ours_perm = _ours_norm_on_array(ft_f[..., perm_idx])
+    ours_scale = _ours_norm_on_array(ft_f * aniso_s)
+    ours_rot_rms = _ours_norm_on_array((ft_f @ R_orth) * gamma_nc)
+
+    raw_clean = _ours_raw_on_array(ft_f)
+    raw_perm = _ours_raw_on_array(ft_f[..., perm_idx])
+    raw_scale = _ours_raw_on_array(ft_f * aniso_s)
+    raw_rot_rms = _ours_raw_on_array((ft_f @ R_orth) * gamma_nc)
 
     res["Ours"] = {
-        "clean": ours_clean,
-        "perm": ours_perm,
-        "aniso_scale": ours_scale,
-        "rot_rmsnorm": ours_rot_rms,
-        "online_pair_seconds": ours_time_per_pair,
+        "clean": {k: v for k, v in ours_clean.items() if k != "seconds"},
+        "perm": {k: v for k, v in ours_perm.items() if k != "seconds"},
+        "aniso_scale": {k: v for k, v in ours_scale.items() if k != "seconds"},
+        "rot_rmsnorm": {k: v for k, v in ours_rot_rms.items() if k != "seconds"},
+        "online_pair_seconds": ours_clean["seconds"],
+        "raw_mse": {
+            "clean": {k: v for k, v in raw_clean.items() if k != "seconds"},
+            "perm": {k: v for k, v in raw_perm.items() if k != "seconds"},
+            "aniso_scale": {k: v for k, v in raw_scale.items() if k != "seconds"},
+            "rot_rmsnorm": {k: v for k, v in raw_rot_rms.items() if k != "seconds"},
+            "online_pair_seconds": raw_clean["seconds"],
+        },
     }
 
     # 2. REEF on the same transformations (if reef_acts exist)
@@ -882,6 +897,11 @@ def evaluate_camouflage_test_suite() -> dict:
         for key in ("HuRef", "AWM"):
             if key in stored and "rot_rmsnorm" in stored[key]:
                 res[key] = stored[key]
+        for key in ("weight_attack_identity",):
+            if key in stored:
+                res[key] = stored[key]
+    if res:
+        camo_path.write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf-8")
     return res
 
 
@@ -931,7 +951,12 @@ def evaluate_mechanism_2x2() -> dict:
     scale_pert_cka = _pert_cka(ft_4l * aniso_s)
     neg_pert_ckas = {nk: _pert_cka(arr) for nk, arr in neg_4l_map.items()}
 
-    # Row 4 & 5: Perturbed Cloud + PCA8+ALS (Clean vs Shuffle vs Scale)
+    # Row 4 & 5: Perturbed Cloud + PCA8+ALS (Clean vs Shuffle vs Scale) - Normalized & Raw
+    sims_clean_n, _, _, _ = score_ours_pair_normalized(ft_4l, vic_4l, dims=8)
+    sims_shuf_n, _, _, _ = score_ours_pair_normalized(ft_4l[:, :, :, shuf_idx, :], vic_4l, dims=8)
+    sims_scale_n, _, _, _ = score_ours_pair_normalized(ft_4l * aniso_s, vic_4l, dims=8)
+    neg_ours_sims_n = {nk: float(score_ours_pair_normalized(arr, vic_4l, dims=8)[0].mean()) for nk, arr in neg_4l_map.items()}
+
     sims_clean, _ = score_ours_pair(ft_4l, vic_4l, dims=8)
     sims_shuf, _ = score_ours_pair(ft_4l[:, :, :, shuf_idx, :], vic_4l, dims=8)
     sims_scale, _ = score_ours_pair(ft_4l * aniso_s, vic_4l, dims=8)
@@ -942,6 +967,13 @@ def evaluate_mechanism_2x2() -> dict:
         "sft_aniso_scale": scale_pert_cka,
         "negatives": neg_pert_ckas,
         "max_neg": max(neg_pert_ckas.values()) if neg_pert_ckas else None,
+    }
+    out["perturbed_cloud_als_ours_norm"] = {
+        "sft_clean": float(sims_clean_n.mean()),
+        "sft_shuffle_broken_pairing": float(sims_shuf_n.mean()),
+        "sft_aniso_scale": float(sims_scale_n.mean()),
+        "negatives": neg_ours_sims_n,
+        "max_neg": max(neg_ours_sims_n.values()) if neg_ours_sims_n else None,
     }
     out["perturbed_cloud_als_ours"] = {
         "sft_clean": float(sims_clean.mean()),
@@ -1097,7 +1129,7 @@ def evaluate_all() -> dict:
                 pn = locate_ours_feat(nk)
                 if pn is not None:
                     n_4l = load_ours_4layers(pn)
-                    sims_n, _ = score_ours_pair(n_4l, vic_ours, dims=8)
+                    sims_n, _, _, _ = score_ours_pair_normalized(n_4l, vic_ours, dims=8)
                     neg_ours_by_key[nk] = sims_n  # [32, 3]
                     neg_ours_prompt_max.append(sims_n.mean(axis=1))  # [32]
                     neg_ours_flat.append(sims_n.flatten())
@@ -1138,7 +1170,7 @@ def evaluate_all() -> dict:
                     prk = locate_ours_feat(rk)
                     if prk is not None:
                         s_4l = load_ours_4layers(prk)
-                        sims_p, elap = score_ours_pair(s_4l, vic_ours, dims=8)
+                        sims_p, _, _, elap = score_ours_pair_normalized(s_4l, vic_ours, dims=8)
                         pos_ours_by_key[rk] = sims_p  # [32, 3]
                         pos_ours_flat.append(sims_p.flatten())
                         time_ours.append(elap)
@@ -1218,7 +1250,7 @@ def evaluate_all() -> dict:
 
             summary["per_base_role"][b][role] = role_res
 
-    # Cross-base matrix: 源 (Base A..D victim) | 目标簇 (Base A..D derivatives mean similarity)
+    # Cross-base matrix: 源 (Base A..D victim) | 目标簇 (Base A..D derivatives mean normalized similarity)
     for b_src in BASES:
         summary["cross_base_matrix"][b_src] = {}
         p_src = locate_ours_feat(f"{b_src}_victim")
@@ -1232,7 +1264,7 @@ def evaluate_all() -> dict:
                 p_dk = locate_ours_feat(dk)
                 if p_dk is not None:
                     d_4l = load_ours_4layers(p_dk)
-                    sims_d, _ = score_ours_pair(d_4l, v_src, dims=8)
+                    sims_d, _, _, _ = score_ours_pair_normalized(d_4l, v_src, dims=8)
                     vals.append(float(sims_d.mean()))
             if vals:
                 summary["cross_base_matrix"][b_src][b_dst] = {
@@ -1450,6 +1482,65 @@ def _export_markdown_and_latex_tables(summary: dict):
     md_path = SOTA_DIR / "main_table_and_efficiency.md"
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"[Evaluate] Saved Markdown table to {md_path}", flush=True)
+
+    # Also export clean Overleaf booktabs LaTeX tables
+    tex = [
+        "% Auto-generated by llm_migration_v5/suite_sota.py",
+        "% Requires: \\usepackage{booktabs}",
+        "\\begin{table*}[t]",
+        "  \\centering",
+        "  \\small",
+        "  \\caption{Main comparison across 4 base models $\\times$ 4 derivation types (ROC AUC mean$\\pm$std, with mean margin $\\Delta$) and function-preserving camouflage attacks (Test column).}",
+        "  \\label{tab:main_comparison}",
+        "  \\begin{tabular}{lccccc}",
+        "    \\toprule",
+        "    Method & Pruning & Quantization & Fine-tuning & Domain CPT & Test (Perm / Scale / Rot+$\\gamma'$) \\\\",
+        "    \\midrule",
+    ]
+    for m_name in ["Ours", "REEF", "HuRef", "AWM"]:
+        cells = []
+        for role in ROLES:
+            c = summary.get("by_role_aggregated", {}).get(role, {}).get(m_name, {})
+            if c:
+                cells.append(f"{c['auc_mean']:.3f}$\\pm${c['auc_std']:.3f}")
+            else:
+                cells.append("--")
+        camo = summary.get("camouflage_test", {}).get(m_name, {})
+        if camo and "rot_rmsnorm" in camo:
+            t_str = f"{camo['perm']['mean']:.3f} / {camo['aniso_scale']['mean']:.3f} / {camo['rot_rmsnorm']['mean']:.3f}"
+        else:
+            t_str = "--"
+        m_lbl = "\\textbf{Ours (DiffIP-LLM)}" if m_name == "Ours" else m_name
+        tex.append(f"    {m_lbl} & " + " & ".join(cells) + f" & {t_str} \\\\")
+    tex.extend([
+        "    \\bottomrule",
+        "  \\end{tabular}",
+        "\\end{table*}",
+        "",
+        "\\begin{table}[t]",
+        "  \\centering",
+        "  \\small",
+        "  \\caption{Cross-base discrimination matrix (Normalized Trajectory Similarity $\\exp(-\\overline{1-R_\\ell^2})$).}",
+        "  \\label{tab:cross_base}",
+        "  \\begin{tabular}{lcccc}",
+        "    \\toprule",
+        "    Source $\\backslash$ Target Cluster & Base A & Base B & Base C & Base D \\\\",
+        "    \\midrule",
+    ])
+    for b_src in BASES:
+        rc = []
+        for b_dst in BASES:
+            cell = summary.get("cross_base_matrix", {}).get(b_src, {}).get(b_dst, {})
+            if cell:
+                v = f"{cell['mean']:.3f}$\\pm${cell['std']:.3f}"
+                rc.append(f"\\textbf{{{v}}}" if b_src == b_dst else v)
+            else:
+                rc.append("--")
+        tex.append(f"    {b_src} & " + " & ".join(rc) + " \\\\")
+    tex.extend(["    \\bottomrule", "  \\end{tabular}", "\\end{table}"])
+    tex_path = SOTA_DIR / "main_table_overleaf.tex"
+    tex_path.write_text("\n".join(tex) + "\n", encoding="utf-8")
+    print(f"[Evaluate] Saved LaTeX table to {tex_path}", flush=True)
 
 
 # ==============================================================================
