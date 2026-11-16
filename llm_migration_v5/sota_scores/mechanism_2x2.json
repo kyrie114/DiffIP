@@ -12,19 +12,33 @@
     },
     "max_neg": 0.13947324904094915
   },
-  "perturbed_cloud_als_ours": {
-    "sft_clean": 0.3634179967169516,
-    "sft_shuffle_broken_pairing": 0.25284750974899195,
-    "sft_aniso_scale": 0.34120739691844176,
+  "perturbed_cloud_als_ours_norm": {
+    "sft_clean": 0.634905536237364,
+    "sft_shuffle_broken_pairing": 0.3771507443547036,
+    "sft_aniso_scale": 0.6024997184215911,
     "negatives": {
-      "unrel_llama1_7b": 0.2526527505513073,
-      "unrel_openllama_7b": 0.2530506477763654,
-      "unrel_baichuan_7b": 0.2524653743668735,
-      "baseD_victim": 0.2528209816157248,
-      "baseB_victim": 0.25366888688411887,
-      "unrel_qwen2_5_7b": 0.25362637049836045
+      "unrel_llama1_7b": 0.3768872851476519,
+      "unrel_openllama_7b": 0.3779830321586956,
+      "unrel_baichuan_7b": 0.37663265160543197,
+      "baseD_victim": 0.3773347277011279,
+      "baseB_victim": 0.3793495831571505,
+      "unrel_qwen2_5_7b": 0.37819196058683024
     },
-    "max_neg": 0.25366888688411887
+    "max_neg": 0.3793495831571505
+  },
+  "perturbed_cloud_als_ours": {
+    "sft_clean": 0.36341811817718456,
+    "sft_shuffle_broken_pairing": 0.25284749834825465,
+    "sft_aniso_scale": 0.3412073085353944,
+    "negatives": {
+      "unrel_llama1_7b": 0.25265297786759905,
+      "unrel_openllama_7b": 0.25305003145170035,
+      "unrel_baichuan_7b": 0.25246537328261315,
+      "baseD_victim": 0.2528182944442055,
+      "baseB_victim": 0.2536689068607397,
+      "unrel_qwen2_5_7b": 0.25362636100076447
+    },
+    "max_neg": 0.2536689068607397
   },
   "truthfulqa_heterogeneous": {
     "cka_sft_clean": 0.9676001140579563,
@@ -37,14 +51,14 @@
       "baseB_victim": 0.9467410660126779,
       "unrel_qwen2_5_7b": 0.923333237502972
     },
-    "als_sft_clean": 1.4821071457366315e-87,
+    "als_sft_clean": 1.4675562419156601e-87,
     "als_negatives": {
-      "unrel_llama1_7b": 1.543595735473413e-58,
-      "unrel_openllama_7b": 3.035665980858054e-126,
-      "unrel_baichuan_7b": 1.4284029472640376e-304,
-      "baseD_victim": 1.476198285408632e-123,
-      "baseB_victim": 2.5764471165372965e-94,
-      "unrel_qwen2_5_7b": 3.171621927311386e-148
+      "unrel_llama1_7b": 1.6736360171220193e-58,
+      "unrel_openllama_7b": 2.9214723829082532e-126,
+      "unrel_baichuan_7b": 1.4277824164067336e-304,
+      "baseD_victim": 5.5470517868124304e-124,
+      "baseB_victim": 2.569121868914858e-94,
+      "unrel_qwen2_5_7b": 3.1252511606622683e-148
     }
   }
 }
