@@ -990,7 +990,7 @@ def evaluate_mechanism_2x2() -> dict:
 # ==============================================================================
 
 def score_ours_pair(sus_4l: np.ndarray, vic_4l: np.ndarray, dims: int = 8) -> tuple[np.ndarray, float]:
-    """Return [32, 3] similarity matrix and elapsed seconds."""
+    """Return [32, 3] similarity matrix exp(-mean_l MSE_l) and elapsed seconds."""
     t0 = time.time()
     sims = np.zeros((32, 3), dtype=np.float64)
     for p in range(32):
@@ -999,6 +999,35 @@ def score_ours_pair(sus_4l: np.ndarray, vic_4l: np.ndarray, dims: int = 8) -> tu
             dl = [fit_step_alignment(pr.suspect[i], pr.victim[i]).distance for i in range(4)]
             sims[p, k] = math.exp(-sum(dl) / len(dl))
     return sims, float(time.time() - t0)
+
+
+def score_ours_pair_normalized(sus_4l: np.ndarray, vic_4l: np.ndarray, dims: int = 8) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+    """Per-layer victim-variance normalized residual 1 - R_l^2 = MSE_l / Var(Y_l) in [0, 1].
+
+    Fixes cross-architecture scale imbalance (Qwen3 high-norm intermediate layers vs MPT low-norm layers)
+    without altering suspect-side GL(d) affine invariance.
+    Returns:
+        sims_norm: [32, 3] bounded similarity exp(-mean_l(1 - R_l^2)) in [exp(-1), 1]
+        nmse_layers: [32, 3, 4] per-layer 1 - R_l^2
+        vic_vars: [32, 3, 4] victim PCA-d energy Var(Y_l)
+        elapsed_sec: float
+    """
+    t0 = time.time()
+    sims_norm = np.zeros((32, 3), dtype=np.float64)
+    nmse_layers = np.zeros((32, 3, 4), dtype=np.float64)
+    vic_vars = np.zeros((32, 3, 4), dtype=np.float64)
+    for p in range(32):
+        for k in range(3):
+            pr = project_sequences(sus_4l[p, k, :, :128], vic_4l[p, k, :, :128], dims)
+            for i in range(4):
+                vic_i = pr.victim[i]
+                vc = vic_i - vic_i.mean(axis=0, keepdims=True)
+                vvar = float(np.mean(np.sum(vc * vc, axis=1)))
+                vic_vars[p, k, i] = vvar
+                dist = fit_step_alignment(pr.suspect[i], vic_i).distance
+                nmse_layers[p, k, i] = float(np.clip(dist / max(vvar, 1e-12), 0.0, 1.0))
+            sims_norm[p, k] = math.exp(-float(np.mean(nmse_layers[p, k])))
+    return sims_norm, nmse_layers, vic_vars, float(time.time() - t0)
 
 
 def compute_roc_auc(pos_scores: np.ndarray, neg_scores: np.ndarray) -> float:
@@ -1055,6 +1084,7 @@ def evaluate_all() -> dict:
 
         # Precompute negative scores for this base victim
         neg_ours_prompt_max = []
+        neg_ours_by_key = {}
         neg_ours_flat = []
         neg_reef_flat = []
         neg_huref_flat = []
@@ -1068,6 +1098,7 @@ def evaluate_all() -> dict:
                 if pn is not None:
                     n_4l = load_ours_4layers(pn)
                     sims_n, _ = score_ours_pair(n_4l, vic_ours, dims=8)
+                    neg_ours_by_key[nk] = sims_n  # [32, 3]
                     neg_ours_prompt_max.append(sims_n.mean(axis=1))  # [32]
                     neg_ours_flat.append(sims_n.flatten())
             if vic_reef is not None:
@@ -1085,6 +1116,10 @@ def evaluate_all() -> dict:
             if neg_ours_prompt_max else None
         )
         neg_ours_vec = np.concatenate(neg_ours_flat) if neg_ours_flat else np.array([])
+        neg_ours_probe_vec = (
+            np.concatenate([arr.mean(axis=0) for arr in neg_ours_by_key.values()])
+            if neg_ours_by_key else np.array([])
+        )
         neg_reef_vec = np.asarray(neg_reef_flat, dtype=np.float64)
         neg_huref_vec = np.asarray(neg_huref_flat, dtype=np.float64)
         neg_awm_vec = np.asarray(neg_awm_flat, dtype=np.float64)
@@ -1094,6 +1129,7 @@ def evaluate_all() -> dict:
             role_res = {"Ours": {}, "REEF": {}, "HuRef": {}, "AWM": {}}
 
             # 1) Ours
+            pos_ours_by_key = {}
             pos_ours_flat = []
             margins_ours = []
             time_ours = []
@@ -1103,6 +1139,7 @@ def evaluate_all() -> dict:
                     if prk is not None:
                         s_4l = load_ours_4layers(prk)
                         sims_p, elap = score_ours_pair(s_4l, vic_ours, dims=8)
+                        pos_ours_by_key[rk] = sims_p  # [32, 3]
                         pos_ours_flat.append(sims_p.flatten())
                         time_ours.append(elap)
                         if neg_ours_max_per_prompt is not None:
@@ -1110,9 +1147,29 @@ def evaluate_all() -> dict:
             if pos_ours_flat and len(neg_ours_vec) > 0:
                 p_vec = np.concatenate(pos_ours_flat)
                 m_vec = np.concatenate(margins_ours) if margins_ours else (p_vec - np.mean(neg_ours_vec))
+                # True DiffIP-LLM protocol: same-prompt relative margin Delta_p over ordered (anchor, held_out) pairs
+                delta_aucs, delta_tprs = [], []
+                if len(neg_ours_by_key) >= 2:
+                    neg_names = list(neg_ours_by_key.keys())
+                    for anc_k, test_k in itertools.permutations(neg_names, 2):
+                        anc_arr = neg_ours_by_key[anc_k]
+                        tst_arr = neg_ours_by_key[test_k]
+                        pos_delta = np.concatenate([(arr - anc_arr).flatten() for arr in pos_ours_by_key.values()])
+                        neg_delta = (tst_arr - anc_arr).flatten()
+                        delta_aucs.append(compute_roc_auc(pos_delta, neg_delta))
+                        delta_tprs.append(compute_tpr_at_fpr(pos_delta, neg_delta, 0.05))
+                pos_probe_vec = np.concatenate([arr.mean(axis=0) for arr in pos_ours_by_key.values()])
+                raw_auc = compute_roc_auc(p_vec, neg_ours_vec)
+                raw_tpr = compute_tpr_at_fpr(p_vec, neg_ours_vec, 0.05)
+                primary_auc = float(np.mean(delta_aucs)) if delta_aucs else compute_roc_auc(pos_probe_vec, neg_ours_probe_vec)
+                primary_tpr = float(np.mean(delta_tprs)) if delta_tprs else compute_tpr_at_fpr(pos_probe_vec, neg_ours_probe_vec, 0.05)
                 role_res["Ours"] = {
-                    "auc": compute_roc_auc(p_vec, neg_ours_vec),
-                    "tpr_at_5fpr": compute_tpr_at_fpr(p_vec, neg_ours_vec, 0.05),
+                    "auc": primary_auc,
+                    "tpr_at_5fpr": primary_tpr,
+                    "probe_auc": compute_roc_auc(pos_probe_vec, neg_ours_probe_vec),
+                    "probe_tpr_at_5fpr": compute_tpr_at_fpr(pos_probe_vec, neg_ours_probe_vec, 0.05),
+                    "raw_prompt_auc": raw_auc,
+                    "raw_prompt_tpr_at_5fpr": raw_tpr,
                     "margin_mean": float(np.mean(m_vec)),
                     "margin_std": float(np.std(m_vec)),
                     "sim_mean": float(np.mean(p_vec)),
@@ -1213,6 +1270,133 @@ def evaluate_all() -> dict:
     _export_markdown_and_latex_tables(summary)
     print(f"[Evaluate] Saved full metrics to {out_json}", flush=True)
     return summary
+
+
+def diagnose_bases() -> dict:
+    """
+    零 GPU 前向诊断脚本：分析 4 个基座 (Base A/B/C/D) 在原始 exp(-mean_d) 下的尺度失配根因，
+    并对比逐层受害者方差归一化残差 1 - R_l^2 = MSE_l / Var(Y_l) 的改善效果。
+    产出: sota_scores/cross_base_diagnosis.json 与 cross_base_diagnosis.md
+    """
+    unrel_keys = [k for k, v in SUITE_MODELS.items() if v["base"] == "unrel"]
+    report = {"bases": {}, "cross_base_matrix_norm": {}}
+
+    for b in BASES:
+        v_key = f"{b}_victim"
+        pv = locate_ours_feat(v_key)
+        if pv is None:
+            print(f"[Diagnose] skip {b} (missing victim feat)", flush=True)
+            continue
+        vic = load_ours_4layers(pv)
+        neg_keys = unrel_keys + [f"{ob}_victim" for ob in BASES if ob != b]
+        neg_raw, neg_norm, vic_vars_all = {}, {}, []
+        for nk in neg_keys:
+            pn = locate_ours_feat(nk)
+            if pn is None:
+                continue
+            arr_n = load_ours_4layers(pn)
+            sr, _ = score_ours_pair(arr_n, vic, dims=8)
+            sn, _, vvars, _ = score_ours_pair_normalized(arr_n, vic, dims=8)
+            neg_raw[nk] = sr
+            neg_norm[nk] = sn
+            vic_vars_all.append(vvars.mean(axis=(0, 1)))
+
+        layer_var_mean = np.mean(np.stack(vic_vars_all, axis=0), axis=0).tolist() if vic_vars_all else []
+        role_summary = {}
+        for role in ROLES:
+            r_keys = [k for k, v in SUITE_MODELS.items() if v["base"] == b and v["role"] == role]
+            pos_raw, pos_norm = {}, {}
+            for rk in r_keys:
+                pr = locate_ours_feat(rk)
+                if pr is None:
+                    continue
+                arr_p = load_ours_4layers(pr)
+                sr, _ = score_ours_pair(arr_p, vic, dims=8)
+                sn, nmse_l, _, _ = score_ours_pair_normalized(arr_p, vic, dims=8)
+                pos_raw[rk] = sr
+                pos_norm[rk] = sn
+            if not pos_raw or len(neg_raw) < 2:
+                continue
+
+            def _eval_protocol(p_dict, n_dict):
+                d_aucs, d_tprs = [], []
+                n_names = list(n_dict.keys())
+                for anc, tst in itertools.permutations(n_names, 2):
+                    pd = np.concatenate([(arr - n_dict[anc]).flatten() for arr in p_dict.values()])
+                    nd = (n_dict[tst] - n_dict[anc]).flatten()
+                    d_aucs.append(compute_roc_auc(pd, nd))
+                    d_tprs.append(compute_tpr_at_fpr(pd, nd, 0.05))
+                pos_probe = np.concatenate([arr.mean(axis=0) for arr in p_dict.values()])
+                neg_probe = np.concatenate([arr.mean(axis=0) for arr in n_dict.values()])
+                return {
+                    "delta_auc": float(np.mean(d_aucs)),
+                    "delta_tpr_5fpr": float(np.mean(d_tprs)),
+                    "probe_auc": compute_roc_auc(pos_probe, neg_probe),
+                    "probe_tpr_5fpr": compute_tpr_at_fpr(pos_probe, neg_probe, 0.05),
+                    "pos_mean": float(pos_probe.mean()),
+                    "neg_mean": float(neg_probe.mean()),
+                }
+
+            role_summary[role] = {
+                "raw_mse": _eval_protocol(pos_raw, neg_raw),
+                "norm_r2": _eval_protocol(pos_norm, neg_norm),
+            }
+        report["bases"][b] = {
+            "victim_layer_pca_var_mean": layer_var_mean,
+            "roles": role_summary,
+        }
+
+    # Normalized 4x4 cross-base matrix
+    for b_src in BASES:
+        report["cross_base_matrix_norm"][b_src] = {}
+        pv = locate_ours_feat(f"{b_src}_victim")
+        if pv is None:
+            continue
+        vic = load_ours_4layers(pv)
+        for b_dst in BASES:
+            d_keys = [k for k, v in SUITE_MODELS.items() if v["base"] == b_dst and v["role"] != "victim"]
+            vals = []
+            for dk in d_keys:
+                pk = locate_ours_feat(dk)
+                if pk is not None:
+                    sn, _, _, _ = score_ours_pair_normalized(load_ours_4layers(pk), vic, dims=8)
+                    vals.append(float(sn.mean()))
+            if vals:
+                report["cross_base_matrix_norm"][b_src][b_dst] = {
+                    "mean": float(np.mean(vals)),
+                    "std": float(np.std(vals)),
+                }
+
+    out_p = SOTA_DIR / "cross_base_diagnosis.json"
+    out_p.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    md = [
+        "# Cross-Base Scale Diagnosis: Raw MSE vs Layer-Normalized Residual ($1 - R_l^2$)",
+        "",
+        "## 1. Per-Base Layer PCA Energy & AUC Comparison (Same-Prompt $\\Delta_p$ & Probe-Mean)",
+        "",
+        "| Base | Role | Raw $\\Delta_p$ AUC | Raw Probe AUC | Raw (Pos / Neg) | **Norm ($1-R_l^2$) $\\Delta_p$ AUC** | **Norm Probe AUC** | **Norm (Pos / Neg)** |",
+        "| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |",
+    ]
+    for b in BASES:
+        binfo = report["bases"].get(b, {})
+        for role in ROLES:
+            rinfo = binfo.get("roles", {}).get(role)
+            if not rinfo:
+                continue
+            r, n = rinfo["raw_mse"], rinfo["norm_r2"]
+            md.append(
+                f"| {b} | {role} | {r['delta_auc']:.3f} | {r['probe_auc']:.3f} | {r['pos_mean']:.3f} / {r['neg_mean']:.3f} "
+                f"| **{n['delta_auc']:.3f}** | **{n['probe_auc']:.3f}** | {n['pos_mean']:.3f} / {n['neg_mean']:.3f} |"
+            )
+    md.extend(["", "## 2. Victim 4-Layer PCA-8 Energy (`Var(Y_l)`)", ""])
+    for b in BASES:
+        vs = report["bases"].get(b, {}).get("victim_layer_pca_var_mean", [])
+        if vs:
+            md.append(f"- **{b}**: {[round(v, 4) for v in vs]}")
+    (SOTA_DIR / "cross_base_diagnosis.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    print(f"[Diagnose] Saved {out_p} and cross_base_diagnosis.md", flush=True)
+    return report
 
 
 def _export_markdown_and_latex_tables(summary: dict):
@@ -1337,7 +1521,7 @@ def plot_all_figures():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "DejaVu Sans", "Arial", "SimHei"]
+    plt.rcParams["font.sans-serif"] = ["DejaVu Sans", "Arial", "Helvetica"]
     plt.rcParams["axes.unicode_minus"] = False
 
     # ------------------------------------------------------------------
@@ -1351,10 +1535,10 @@ def plot_all_figures():
         "baseD": "(d) Base D: MPT-7B",
     }
     role_titles = {
-        "pruning": "① Pruning (剪枝 ±)",
-        "quantization": "② Quantization (量化 ±)",
-        "finetune": "③ Fine-tuning (微调 ±)",
-        "domain": "④ Domain CPT (领域 ±)",
+        "pruning": "(1) Pruning (±std)",
+        "quantization": "(2) Quantization (±std)",
+        "finetune": "(3) Fine-tuning (±std)",
+        "domain": "(4) Domain CPT (±std)",
     }
     methods_short = ["Ours", "REEF", "HuRef", "AWM"]
     fig1, axes = plt.subplots(4, 4, figsize=(16.5, 12.8), dpi=220, sharey=True)
@@ -1377,22 +1561,23 @@ def plot_all_figures():
 
             ax.set_xticks(x)
             ax.set_xticklabels(methods_short, fontsize=8.5, fontweight="bold")
-            ax.set_ylim(0.40, 1.08)
+            ax.set_ylim(0.0, 1.08)
             ax.grid(axis="y", linestyle="--", alpha=0.35)
 
             if r_idx == 0:
                 ax.set_title(base_titles[b], fontsize=10.5, fontweight="bold", pad=8)
             if c_idx == 0:
                 ax.set_ylabel(f"{role_titles[role]}\nMetric Value", fontsize=9.5, fontweight="bold")
-            if r_idx == 0 and c_idx == 0:
-                ax.legend(loc="lower left", fontsize=7.5, framealpha=0.9)
 
+    handles0, labels0 = axes[0, 0].get_legend_handles_labels()
+    fig1.legend(handles0, labels0, loc="upper center", bbox_to_anchor=(0.5, 0.968),
+                ncol=3, fontsize=9.5, frameon=True, framealpha=0.95)
     sup_tag = " [Layout Preview - Run `evaluate` on Server for Full Measured Values]" if is_preview else ""
     fig1.suptitle(
         f"Fig. 1: Multi-Metric Lineage Identification across 4 Base Models × 4 Derivation Types (16 Subplots){sup_tag}",
         fontsize=13, fontweight="bold", y=0.992
     )
-    fig1.tight_layout(rect=[0, 0, 1, 0.978])
+    fig1.tight_layout(rect=[0, 0, 1, 0.940])
     out_p1 = FIGS_DIR / "fig1_16subplots_4bases_4types.png"
     fig1.savefig(out_p1, dpi=220)
     fig1.savefig(FIGS_DIR / "fig1_16subplots_4bases_4types.pdf")
@@ -1418,19 +1603,22 @@ def plot_all_figures():
                         mat[i, j] = s_data[bs][bd]["mean"]
 
     fig4, ax4 = plt.subplots(figsize=(6.8, 5.4), dpi=220)
-    im = ax4.imshow(mat, cmap="YlGnBu", vmin=0.38, vmax=0.68)
+    vmin_4 = float(max(0.0, mat.min() - 0.02))
+    vmax_4 = float(min(1.0, mat.max() + 0.02))
+    im = ax4.imshow(mat, cmap="YlGnBu", vmin=vmin_4, vmax=vmax_4)
     b_labels = ["Base A\n(Llama-2-7B)", "Base B\n(Llama-3-8B)", "Base C\n(Qwen3-8B)", "Base D\n(MPT-7B)"]
     ax4.set_xticks(range(4))
     ax4.set_yticks(range(4))
     ax4.set_xticklabels(b_labels, fontsize=9, fontweight="bold")
     ax4.set_yticklabels(b_labels, fontsize=9, fontweight="bold")
-    ax4.set_xlabel("Target Suspect Lineage Cluster (A / B / C / D)", fontsize=10, fontweight="bold")
-    ax4.set_ylabel("Source Victim Model (源 | A / B / C / D)", fontsize=10, fontweight="bold")
+    ax4.set_xlabel("Target Suspect Lineage Cluster (Base A / B / C / D)", fontsize=10, fontweight="bold")
+    ax4.set_ylabel("Source Victim Model (Base A / B / C / D)", fontsize=10, fontweight="bold")
     ax4.set_title("Cross-Base Discrimination Matrix (Ours)", fontsize=11, fontweight="bold")
+    mid_thresh = 0.5 * (vmin_4 + vmax_4)
     for i in range(4):
         for j in range(4):
             val = mat[i, j]
-            txt_color = "white" if val > 0.55 else "#1a252f"
+            txt_color = "white" if val > mid_thresh else "#1a252f"
             tag = " (Same)" if i == j else ""
             ax4.text(j, i, f"{val:.3f}{tag}", ha="center", va="center", color=txt_color, fontsize=9, fontweight="bold")
     fig4.colorbar(im, ax=ax4, fraction=0.046, pad=0.04, label="Mean Trajectory Similarity S")
@@ -1472,15 +1660,15 @@ def plot_all_figures():
                        error_kw={"elinewidth": 1.2, "ecolor": "#1b4f35"})
         ax1.set_xticks(x)
         ax1.set_xticklabels([f"d={d}\n({'Default' if d==8 else 'Pass'})" for d in dims], fontsize=9)
-        ax1.set_ylim(0.85, 1.02)
-        ax1_t.set_ylim(0.0, 0.16)
+        ax1.set_ylim(0.85, 1.038)
+        ax1_t.set_ylim(0.0, 0.165)
         ax1.set_ylabel("Held-out ROC AUC", fontsize=10, color="#1f4e78", fontweight="bold")
         ax1_t.set_ylabel("Same-Prompt Relative Margin Δ", fontsize=10, color="#2e8b57", fontweight="bold")
-        ax1.set_title("(a) Ablation ①: PCA Subspace Dimension d", fontsize=11, fontweight="bold")
+        ax1.set_title("(a) Ablation (1): PCA Subspace Dimension d", fontsize=11, fontweight="bold")
         ax1.grid(axis="y", linestyle="--", alpha=0.35)
         lines1, labels1 = ax1.get_legend_handles_labels()
         lines2, labels2 = ax1_t.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, labels1 + labels2, loc="lower right", fontsize=8.5, framealpha=0.92)
+        ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper right", ncol=2, fontsize=8.2, framealpha=0.95)
 
         # (b) ② 层间选择消融（结合实验 A mid2 与 实验二 4 种层抽法）
         sub_map = {
@@ -1537,7 +1725,7 @@ def plot_all_figures():
         ax2_t.set_ylim(0.0, 0.12)
         ax2.set_ylabel("Held-out SFT Recall (TPR)", fontsize=10, color="#1f4e78", fontweight="bold")
         ax2_t.set_ylabel("Relative Margin Δ", fontsize=10, color="#d35400", fontweight="bold")
-        ax2.set_title("(b) Ablation ②: Layer Selection Strategy", fontsize=11, fontweight="bold")
+        ax2.set_title("(b) Ablation (2): Layer Selection Strategy", fontsize=11, fontweight="bold")
         ax2.grid(axis="y", linestyle="--", alpha=0.35)
         l1, lb1 = ax2.get_legend_handles_labels()
         l2, lb2 = ax2_t.get_legend_handles_labels()
@@ -1643,10 +1831,10 @@ def plot_all_figures():
                         color=mech_colors, alpha=0.92, error_kw={"elinewidth": 1.1})
     ax_m1.axhline(0.2533, color="#c0392b", linestyle="--", linewidth=1.2, label="Unrelated Floor (0.253)")
     ax_m1.set_xticks(xm1)
-    ax_m1.set_xticklabels(mech_labels, fontsize=7.8, fontweight="bold")
-    ax_m1.set_ylim(0.20, 0.41)
+    ax_m1.set_xticklabels([s.replace("\n", " ") for s in mech_labels], fontsize=7.8, fontweight="bold", rotation=22, ha="right")
+    ax_m1.set_ylim(0.20, 0.415)
     ax_m1.set_ylabel("Trajectory Similarity S (±seed std)", fontsize=9.5, fontweight="bold")
-    ax_m1.set_title("(a) Mechanism ①: Paired Perturbation vs Shuffle/Mix", fontsize=10.5, fontweight="bold")
+    ax_m1.set_title("(a) Mechanism (1): Paired Perturbation vs Shuffle/Mix", fontsize=10.5, fontweight="bold")
     ax_m1.grid(axis="y", linestyle="--", alpha=0.35)
     for bar, val, win in zip(bars_m1, mech_sims, mech_wins):
         label = f"{val:.3f}" if not win else f"{val:.3f}\n({win})"
@@ -1689,7 +1877,7 @@ def plot_all_figures():
     ax_m2.set_xticklabels(cal_labels, fontsize=7.8, fontweight="bold", rotation=15)
     ax_m2.set_ylim(0.0, 1.12)
     ax_m2.set_ylabel("Metric Value (↑ higher is better)", fontsize=9.5, fontweight="bold")
-    ax_m2.set_title("(b) Mechanism ②: Same-Prompt Δ_p vs Ablations (r=0.956)", fontsize=10.5, fontweight="bold")
+    ax_m2.set_title("(b) Mechanism (2): Same-Prompt Δ_p vs Ablations (r=0.956)", fontsize=10.5, fontweight="bold")
     ax_m2.grid(axis="y", linestyle="--", alpha=0.35)
     ax_m2.legend(loc="upper right", fontsize=7.8)
 
@@ -1768,7 +1956,7 @@ def _resolve_keys(args_list: list[str]) -> list[str]:
 
 def main():
     ap = argparse.ArgumentParser(description="Advisor's 4-Base x 4-Derivation SOTA & Efficiency + Mechanism Suite")
-    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "mechanism", "evaluate", "plot"])
+    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "mechanism", "diagnose_bases", "evaluate", "plot"])
     ap.add_argument("targets", nargs="*", help="Model keys or base groups (baseA, baseB, baseC, baseD, all)")
     args = ap.parse_args()
 
@@ -1787,6 +1975,9 @@ def main():
     elif args.cmd == "mechanism":
         m2x2 = evaluate_mechanism_2x2()
         print(json.dumps(m2x2, indent=2, ensure_ascii=False))
+    elif args.cmd == "diagnose_bases":
+        rep = diagnose_bases()
+        print((SOTA_DIR / "cross_base_diagnosis.md").read_text(encoding="utf-8"))
     elif args.cmd == "run_static":
         # Run HuRef & AWM on available bases + camouflage test suite.
         # Scores are unchanged. Each finished pair is written immediately so a
