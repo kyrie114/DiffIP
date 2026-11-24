@@ -14,6 +14,7 @@ v4 的 7B 主线、消融和判定入口保持原样。这一部分只做 `论�
 | 新种子 3123 / 4123 / 5123 上的三条阈值 | `exp_gap_seeds.py` | 已算完，`exp_gap_seeds_result.json` |
 | 官方 REEF 式干净激活 | `collect_reef.py`，`exp_gap_reef.py` | 已算完，`exp_gap_reef_result.json` |
 | 第二个底座 Qwen3-8B | v4 `collect.py` 写入 `feats_qwen3/`，再跑 `exp_gap_qwen3.py` | 已算完，12 对都不通过 |
+| 同规则准确率对比（CKA 新种子三条规则 + REEF 偶/奇留出） | `exp_gap_accuracy.py`（纯 numpy，不加载模型） | 已算完，`exp_gap_accuracy_result.json`，`表_同规则准确率对比.md` |
 
 数字和通过与否写在 [`进度.md`](进度.md)。历史均匀 4 层特征仍用 v4 的 `feats/` 与 `feats_all/`，这一部分不覆盖它们。
 
