@@ -45,7 +45,10 @@ V4_FEAT_DIR=../llm_migration_v5/feats_qwen3 V4_SEED_SETS=123,1123,2123 \
 - `试验方案_导师手稿4基座4衍生与SOTA对比.md`：导师手稿 4 基座 × 4 衍生类型专项方案
 - `导师手稿对应实验落地指南.md`：导师手稿逐块解析与度量指标说明
 - `论文实验章节完整设计方案.md`：单主基座深挖与机理拆解初版方案
-- `figs_sota/`：论文图
+- `试验方案_四基座重跑.md`：2026-11-24 本机全流程重跑方案（42 次新采集 + 30 次协议一致复用 + 44 对静态基线）
+- `prep_sota_reuse.py`：重跑数据复用准备（3 个 Ours 复制 + 13 个 REEF TQA-200 激活转置，幂等）
+- `表_四基座重跑对比.md`：重跑结果 Ours vs REEF/HuRef/AWM 统一对比与跨机器复现性核对
+- `figs_sota/`：论文图（含 `fig1_caliber_comparison.png` 三口径对照图）
 
 ```bash
 cd llm_migration_v5
