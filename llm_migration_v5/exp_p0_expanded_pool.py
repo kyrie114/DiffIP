@@ -169,7 +169,7 @@ def _load_p0_model(mid: str):
     if not HAS_TORCH:
         raise RuntimeError("PyTorch / transformers required for collection.")
     C._shim_removed_llama_rope()
-    tok = C.load_tok(mid)
+    tok = _relax_tokenizer_pad(C.load_tok(mid))
     cfg = AutoConfig.from_pretrained(mid, trust_remote_code=True)
     C._shim_mpt_remote_class(mid, cfg)
     rs = getattr(cfg, "rope_scaling", None)
@@ -181,10 +181,97 @@ def _load_p0_model(mid: str):
     mtype = str(getattr(cfg, "model_type", "")).lower()
     if "internlm2" in name_l or mtype.startswith("internlm2"):
         cfg.attn_implementation = "sdpa"
+    if not hasattr(cfg, "max_length") and hasattr(cfg, "seq_length"):
+        cfg.max_length = cfg.seq_length
+    if "chatglm" in name_l or mtype.startswith("chatglm"):
+        _patch_chatglm_post_init(mid, cfg)
     m = AutoModelForCausalLM.from_pretrained(
         mid, config=cfg, torch_dtype=torch.bfloat16, trust_remote_code=True
     ).eval()
+    dev = _forward_device()
+    if dev is not None:
+        m = m.to(dev)
     return m, tok
+
+
+def _relax_tokenizer_pad(tok):
+    """Old remote tokenizers reject padding_side, which current transformers always passes."""
+    import inspect
+
+    orig = getattr(tok, "_pad", None)
+    if orig is None:
+        return tok
+    try:
+        sig = inspect.signature(orig)
+    except (TypeError, ValueError):
+        return tok
+    if any(p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()):
+        return tok
+    allowed = set(sig.parameters)
+
+    def wrapped(*args, **kwargs):
+        return orig(*args, **{k: v for k, v in kwargs.items() if k in allowed})
+
+    tok._pad = wrapped
+    return tok
+
+
+def _patch_chatglm_embeds(causal_cls):
+    """ChatGLM reads input_ids.shape even when the caller passes inputs_embeds."""
+    import sys
+
+    inner = getattr(sys.modules.get(causal_cls.__module__), "ChatGLMModel", None)
+    if inner is None or getattr(inner, "_p0_embeds_patched", False):
+        return
+    orig_fwd = inner.forward
+
+    def fwd(self, input_ids=None, inputs_embeds=None, **kwargs):
+        if input_ids is None and inputs_embeds is not None:
+            input_ids = torch.zeros(
+                inputs_embeds.shape[:2], dtype=torch.long, device=inputs_embeds.device
+            )
+        return orig_fwd(self, input_ids=input_ids, inputs_embeds=inputs_embeds, **kwargs)
+
+    inner.forward = fwd
+    inner._p0_embeds_patched = True
+
+
+def _patch_chatglm_post_init(mid: str, cfg):
+    """Old ChatGLM remote code never calls post_init(), which newer transformers requires."""
+    from transformers.dynamic_module_utils import get_class_from_dynamic_module
+
+    ref = (getattr(cfg, "auto_map", None) or {}).get("AutoModelForCausalLM")
+    if not ref:
+        return
+    cls = get_class_from_dynamic_module(ref, mid)
+    if getattr(cls, "_p0_post_init_patched", False):
+        return
+    orig = cls.__init__
+
+    def wrapped(self, *args, __orig=orig, **kwargs):
+        __orig(self, *args, **kwargs)
+        if not hasattr(self, "all_tied_weights_keys"):
+            self.post_init()
+
+    cls.__init__ = wrapped
+    cls._p0_post_init_patched = True
+    _patch_chatglm_embeds(cls)
+
+
+def _forward_device():
+    spec = os.environ.get("DIFFIP_DEVICE", "").strip().lower()
+    if spec in ("", "cpu"):
+        return None
+    if spec == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("DIFFIP_DEVICE=cuda but this torch build has no CUDA")
+    return spec
+
+
+def _release_model(model):
+    del model
+    gc.collect()
+    if torch.cuda.is_available() and _forward_device() == "cuda":
+        torch.cuda.empty_cache()
 
 
 def _infer_num_layers(model) -> int:
@@ -218,16 +305,32 @@ def _orient_hs(tensor, batch_size: int):
     return tensor
 
 
+def _cuda_chunk(n: int, device) -> int:
+    if getattr(device, "type", "") != "cuda":
+        return n
+    return max(1, min(n, int(os.environ.get("DIFFIP_CUDA_CHUNK", "8"))))
+
+
 def _forward_pooled_4layers(model, embeds, layers: list[int]) -> np.ndarray:
     bs = embeds.shape[0]
-    am = torch.ones(embeds.shape[:2], dtype=torch.long)
+    am = torch.ones(embeds.shape[:2], dtype=torch.long, device=embeds.device)
+
+    def _one(emb, mask):
+        out = model(inputs_embeds=emb, attention_mask=mask,
+                    use_cache=False, output_hidden_states=True)
+        hs = out.hidden_states
+        picked = torch.stack([_orient_hs(hs[i + 1], emb.shape[0]) for i in layers], 0)
+        return picked.mean(dim=2)
+
+    step = _cuda_chunk(bs, embeds.device)
     try:
         with torch.no_grad():
-            out = model(inputs_embeds=embeds, attention_mask=am,
-                        use_cache=False, output_hidden_states=True)
-        hs = out.hidden_states
-        picked = torch.stack([_orient_hs(hs[i + 1], bs) for i in layers], 0)
-        return picked.mean(dim=2).to(torch.float32).cpu().numpy()
+            if step >= bs:
+                pooled = _one(embeds, am)
+            else:
+                parts = [_one(embeds[s:s + step], am[s:s + step]) for s in range(0, bs, step)]
+                pooled = torch.cat(parts, dim=1)
+        return pooled.to(torch.float32).cpu().numpy()
     except RuntimeError as e:
         print(f"  batched forward failed ({str(e)[:80]}); falling back to batch=1", flush=True)
         res = [[] for _ in layers]
@@ -244,7 +347,7 @@ def _forward_pooled_4layers(model, embeds, layers: list[int]) -> np.ndarray:
 
 def _forward_last_all_layers(model, embed_tensor) -> np.ndarray:
     bs = embed_tensor.shape[0]
-    am = torch.ones(embed_tensor.shape[:2], dtype=torch.long)
+    am = torch.ones(embed_tensor.shape[:2], dtype=torch.long, device=embed_tensor.device)
     with torch.no_grad():
         out = model(inputs_embeds=embed_tensor, attention_mask=am,
                     use_cache=False, output_hidden_states=True)
@@ -281,9 +384,13 @@ def collect_ours_one(key: str):
         ids = tok(prompt, return_tensors="pt").input_ids
         if ids.shape[1] == 0:
             raise RuntimeError(f"[P0-Ours] {key} prompt {p+1} encoded to 0 tokens")
+        ids = ids.to(E.weight.device)
         base_emb = E(ids).detach()
         for k, seed in enumerate(C.SEED_SETS):
-            x = C.perturb_batch(base_emb, C.N_MAX, seed)
+            # Noise stays on the CPU generator so the perturbation sequence matches the CPU run.
+            x = C.perturb_batch(base_emb.detach().to("cpu"), C.N_MAX, seed)
+            if base_emb.device.type != "cpu":
+                x = x.to(base_emb.device)
             feats[p, k] = _forward_pooled_4layers(m, x, L4)
             if not np.isfinite(feats[p, k]).all():
                 raise RuntimeError(f"[P0-Ours] {key} prompt {p+1} seed {k} non-finite!")
@@ -297,8 +404,7 @@ def collect_ours_one(key: str):
     os.replace(tmp_out, out)
     partial.unlink(missing_ok=True)
     print(f"[P0-Ours] saved {out.name} shape={feats.shape} L4={L4} in {time.time()-t0:.1f}s", flush=True)
-    del m
-    gc.collect()
+    _release_model(m)
 
 
 def collect_reef_one(key: str):
@@ -317,7 +423,7 @@ def collect_reef_one(key: str):
         ids = tok(text, return_tensors="pt").input_ids
         if ids.shape[1] == 0:
             raise RuntimeError(f"[P0-REEF] {key} TQA row {idx+1} encoded to 0 tokens")
-        e = E(ids).detach()
+        e = E(ids.to(E.weight.device)).detach()
         last_vec = _forward_last_all_layers(m, e)
         if not np.isfinite(last_vec).all():
             raise RuntimeError(f"[P0-REEF] {key} TQA row {idx+1} non-finite!")
@@ -329,8 +435,7 @@ def collect_reef_one(key: str):
     np.savez(tmp_out, last=arr, collect_seconds=float(time.time() - t0))
     os.replace(tmp_out, out)
     print(f"[P0-REEF] saved {out.name} shape={arr.shape} in {time.time()-t0:.1f}s", flush=True)
-    del m
-    gc.collect()
+    _release_model(m)
 
 
 def _std_col(X: np.ndarray) -> np.ndarray:
@@ -480,8 +585,9 @@ def cmd_evaluate(include_large: bool):
     tO = 0.9776
     if acc_res_path.exists():
         acc_res = json.loads(acc_res_path.read_text(encoding="utf-8-sig"))
-        tE = float(acc_res["part2"]["t_even_max_neg5"])
-        tO = float(acc_res["part2"]["t_odd_max_neg5"])
+        part2 = acc_res.get("part2") or acc_res.get("part2_reef_heldout") or {}
+        tE = float(part2["t_even_max_neg5"])
+        tO = float(part2["t_odd_max_neg5"])
 
     if pv_reef is not None:
         v_acts = _load_reef_layers_first(pv_reef)  # [L, 200, D]
