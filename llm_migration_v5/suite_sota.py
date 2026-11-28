@@ -329,9 +329,22 @@ def _decoder_stack(model):
     inner = getattr(model, "model", None)
     if inner is not None and hasattr(inner, "layers"):
         return inner.layers
+    if inner is not None:
+        dec = getattr(inner, "decoder", None)
+        if dec is not None and hasattr(dec, "layers"):
+            return dec.layers
+    gpt = getattr(model, "gpt_neox", None)
+    if gpt is not None and hasattr(gpt, "layers"):
+        return gpt.layers
     tr = getattr(model, "transformer", None)
-    if tr is not None and hasattr(tr, "blocks"):
-        return tr.blocks
+    if tr is not None:
+        if hasattr(tr, "h"):
+            return tr.h
+        if hasattr(tr, "blocks"):
+            return tr.blocks
+        enc = getattr(tr, "encoder", None)
+        if enc is not None and hasattr(enc, "layers"):
+            return enc.layers
     raise RuntimeError(f"Cannot locate decoder layers on {type(model).__name__}")
 
 
@@ -602,6 +615,34 @@ reef_Bootstrap_scores = reef_bootstrap_scores
 # 5. 静态权重基线：HuRef (NeurIPS 2024) 与 AWM (ICLR 2026) 跨架构统一实现
 # ==============================================================================
 
+def _split_packed_qkv(packed: torch.Tensor, model) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Split a fused QKV matrix into [out, in] tensors. Repeat KV heads up to Q when grouped."""
+    cfg = model.config
+    hidden = int(getattr(cfg, "hidden_size", packed.shape[1]))
+    n_heads = int(getattr(cfg, "num_attention_heads", 0) or getattr(cfg, "n_head", 0))
+    head_dim = int(getattr(cfg, "head_dim", 0) or getattr(cfg, "kv_channels", 0) or (hidden // max(n_heads, 1)))
+    n_kv = int(getattr(cfg, "multi_query_group_num", 0) or getattr(cfg, "num_key_value_heads", 0) or n_heads)
+    q_out = n_heads * head_dim
+    kv_out = n_kv * head_dim
+    if packed.shape[0] == 3 * hidden:
+        # BLOOM and GPT-NeoX store Q,K,V inside each head: (n_heads, 3, head_dim), not three blocks.
+        fused = packed.view(n_heads, 3, head_dim, packed.shape[1])
+        wq = fused[:, 0].reshape(hidden, packed.shape[1])
+        wk = fused[:, 1].reshape(hidden, packed.shape[1])
+        wv = fused[:, 2].reshape(hidden, packed.shape[1])
+        return wq, wk, wv
+    if q_out > 0 and packed.shape[0] == q_out + 2 * kv_out:
+        wq = packed[:q_out]
+        wk = packed[q_out:q_out + kv_out]
+        wv = packed[q_out + kv_out:]
+        if wk.shape[0] != wq.shape[0] and wq.shape[0] % wk.shape[0] == 0:
+            rep = wq.shape[0] // wk.shape[0]
+            wk = wk.view(n_kv, head_dim, -1).repeat_interleave(rep, dim=0).reshape(wq.shape[0], -1)
+            wv = wv.view(n_kv, head_dim, -1).repeat_interleave(rep, dim=0).reshape(wq.shape[0], -1)
+        return wq, wk, wv
+    raise RuntimeError(f"Cannot split packed QKV of shape {tuple(packed.shape)}")
+
+
 def _extract_layer_weights(model, layer_idx: int) -> dict[str, torch.Tensor]:
     """Extract (W_q, W_k, W_v, W_o, W_up, W_down) in shape [out_dim, in_dim]
     handling Llama, Qwen2/Qwen3 (GQA), Baichuan (W_pack), and MPT (Wqkv)."""
@@ -614,7 +655,8 @@ def _extract_layer_weights(model, layer_idx: int) -> dict[str, torch.Tensor]:
             wq = attn.q_proj.weight.detach().float()
             wk = attn.k_proj.weight.detach().float()
             wv = attn.v_proj.weight.detach().float()
-            wo = attn.o_proj.weight.detach().float()
+            out = attn.o_proj if hasattr(attn, "o_proj") else attn.out_proj
+            wo = out.weight.detach().float()
             # Handle GQA (Llama-3, Qwen2.5, Qwen3): repeat KV heads to match Q out_features
             if wk.shape[0] != wq.shape[0] and wq.shape[0] % wk.shape[0] == 0:
                 rep = wq.shape[0] // wk.shape[0]
@@ -634,6 +676,16 @@ def _extract_layer_weights(model, layer_idx: int) -> dict[str, torch.Tensor]:
         # MPT-7B
         wq, wk, wv = layer.attn.Wqkv.weight.detach().float().chunk(3, dim=0)
         wo = layer.attn.out_proj.weight.detach().float()
+    elif hasattr(layer, "self_attention") and hasattr(layer.self_attention, "query_key_value"):
+        # BLOOM and ChatGLM pack QKV on self_attention.
+        attn = layer.self_attention
+        wq, wk, wv = _split_packed_qkv(attn.query_key_value.weight.detach().float(), model)
+        wo = attn.dense.weight.detach().float()
+    elif hasattr(layer, "attention") and hasattr(layer.attention, "query_key_value"):
+        # GPT-NeoX (Pythia, RedPajama-INCITE)
+        attn = layer.attention
+        wq, wk, wv = _split_packed_qkv(attn.query_key_value.weight.detach().float(), model)
+        wo = attn.dense.weight.detach().float()
     else:
         raise RuntimeError(f"Unknown attention module on {type(layer).__name__}")
 
@@ -646,8 +698,14 @@ def _extract_layer_weights(model, layer_idx: int) -> dict[str, torch.Tensor]:
         elif hasattr(mlp, "fc1"):
             w1 = mlp.fc1.weight.detach().float()
             w2 = mlp.fc2.weight.detach().float()
+        elif hasattr(mlp, "dense_h_to_4h"):
+            w1 = mlp.dense_h_to_4h.weight.detach().float()
+            w2 = mlp.dense_4h_to_h.weight.detach().float()
         else:
             raise RuntimeError(f"Unknown MLP structure on {type(mlp).__name__}")
+    elif hasattr(layer, "fc1"):
+        w1 = layer.fc1.weight.detach().float()
+        w2 = layer.fc2.weight.detach().float()
     elif hasattr(layer, "ffn"):
         # MPT-7B
         w1 = layer.ffn.up_proj.weight.detach().float()
@@ -655,6 +713,9 @@ def _extract_layer_weights(model, layer_idx: int) -> dict[str, torch.Tensor]:
     else:
         raise RuntimeError(f"Unknown FFN module on {type(layer).__name__}")
 
+    # SwiGLU stores [gate; up] in one matrix. The down projection matches the up half.
+    if w1.shape[0] == 2 * w2.shape[1] and w1.shape[1] == w2.shape[0]:
+        w1 = w1.chunk(2, dim=0)[1]
     return {"wq": wq, "wk": wk, "wv": wv, "wo": wo, "w1": w1, "w2": w2}
 
 
@@ -1020,6 +1081,28 @@ def evaluate_mechanism_2x2() -> dict:
 # ==============================================================================
 # 7. 在线打分、指标汇总与主表生成（AUC / TPR@5%FPR / Relative Margin ± std）
 # ==============================================================================
+
+def per_layer_joint_scores(sus_4l: np.ndarray, vic_4l: np.ndarray, dims: int = 8) -> tuple[np.ndarray, np.ndarray]:
+    """Per-layer exp(-d_l) and exp(-(1-R_l^2)) after one PCA on all four layers.
+
+    This is the layer split inside score_ours_pair / score_ours_pair_normalized, not a fresh PCA per layer.
+    """
+    n_prompt, n_seed = sus_4l.shape[0], sus_4l.shape[1]
+    raw = np.zeros((n_prompt, n_seed, 4), dtype=np.float64)
+    norm = np.zeros((n_prompt, n_seed, 4), dtype=np.float64)
+    for p in range(n_prompt):
+        for k in range(n_seed):
+            pr = project_sequences(sus_4l[p, k, :, :128], vic_4l[p, k, :, :128], dims)
+            for i in range(pr.suspect.shape[0]):
+                vic_i = pr.victim[i]
+                dist = float(fit_step_alignment(pr.suspect[i], vic_i).distance)
+                raw[p, k, i] = math.exp(-dist)
+                centered = vic_i - vic_i.mean(axis=0, keepdims=True)
+                vvar = float(np.mean(np.sum(centered * centered, axis=1)))
+                nmse = float(np.clip(dist / max(vvar, 1e-12), 0.0, 1.0))
+                norm[p, k, i] = math.exp(-nmse)
+    return raw, norm
+
 
 def score_ours_pair(sus_4l: np.ndarray, vic_4l: np.ndarray, dims: int = 8) -> tuple[np.ndarray, float]:
     """Return [32, 3] similarity matrix exp(-mean_l MSE_l) and elapsed seconds."""
@@ -2047,7 +2130,7 @@ def _resolve_keys(args_list: list[str]) -> list[str]:
 
 def main():
     ap = argparse.ArgumentParser(description="Advisor's 4-Base x 4-Derivation SOTA & Efficiency + Mechanism Suite")
-    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "mechanism", "diagnose_bases", "evaluate", "plot"])
+    ap.add_argument("cmd", choices=["status", "collect_ours", "collect_reef", "run_static", "score_static_pair", "mechanism", "diagnose_bases", "evaluate", "plot"])
     ap.add_argument("targets", nargs="*", help="Model keys or base groups (baseA, baseB, baseC, baseD, all)")
     args = ap.parse_args()
 
@@ -2069,6 +2152,25 @@ def main():
     elif args.cmd == "diagnose_bases":
         rep = diagnose_bases()
         print((SOTA_DIR / "cross_base_diagnosis.md").read_text(encoding="utf-8"))
+    elif args.cmd == "score_static_pair":
+        if len(args.targets) != 2:
+            raise SystemExit("score_static_pair needs victim_key suspect_key")
+        v_key, s_key = args.targets
+        torch.set_num_threads(1)
+        m_vic, tok_vic = load_suite_model(v_key)
+        m_sus, tok_sus = load_suite_model(s_key)
+        h_scores, h_sec = compute_huref_ics(m_vic, tok_vic, m_sus, tok_sus)
+        a_scores, a_sec = compute_awm_ucka(m_vic, tok_vic, m_sus, tok_sus)
+        print(
+            "HuRef scores=" + ",".join(f"{s:.16f}" for s in h_scores)
+            + f" mean={float(np.mean(h_scores)):.16f} seconds={h_sec:.4f}",
+            flush=True,
+        )
+        print(
+            "AWM scores=" + ",".join(f"{s:.16f}" for s in a_scores)
+            + f" mean={float(np.mean(a_scores)):.16f} seconds={a_sec:.4f}",
+            flush=True,
+        )
     elif args.cmd == "run_static":
         # Run HuRef & AWM on available bases + camouflage test suite.
         # Scores are unchanged. Each finished pair is written immediately so a
